@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://www.watch4net.com/XMLCollector" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/XMLCollector xmlcollector.xsd ">
+	<simultaneous-collecting>1</simultaneous-collecting>
+	<polling-interval>600</polling-interval>
+	<collecting-group>group</collecting-group>
+	<source>VNXBlock-Collector</source>
+	<refresh>3600</refresh>
+
+	<collecting-configuration id="VNX-Block-Alerts" max-threads="1" timeout="300" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="device name subcategory">
+		 <for-each>INSTANCE</for-each>
+		<data>
+			<include-contexts>conf/context-block.xml</include-contexts>	<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.ChainedWebServiceRequestsExecutor</data-accessor>
+			<input></input>
+			<host>@spa</host>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+			<parameter name="connect-type">
+				<value>all</value>
+			</parameter>
+			<parameter name="data-timeout">
+				<value>240</value>
+			</parameter>
+			<parameter name="data-retry">
+				<value>2</value>
+			</parameter>
+			<parameter name="executor-type">
+				<value>MD2</value>
+			</parameter>
+			<parameter name="username-context-parameter">
+				<value>@username</value>
+			</parameter>
+
+			<parameter name="password-context-parameter">
+				<value>@password</value>
+			</parameter>
+
+			<parameter name="userscope-context-parameter">
+				<value>@userscope</value>
+			</parameter>
+
+			<parameter name="request-1">
+				<value>conf/requests/clariion-ecom-request.xml</value>
+				<value>conf/vnxblock.xsl</value>
+				<value>strict</value>
+				<value>https://(host)/cimom [P,FC]</value>
+			</parameter>
+
+			<parameter name="output-folder">
+				<value>conf/tmp</value>
+			</parameter>
+		</data>
+
+		<timestamp type="use-system-time" />
+		<value name="VNXBlockAlerts" type="counter" value="//PROPERTY[@NAME='alertCode']/VALUE">
+			<property-set>VNXBlockProperties</property-set>
+		</value>
+
+		<property-set name="VNXBlockProperties">
+			 <property name="category" type="hard-coded" value="Availability"/>
+			 <property name="device" type="hard-coded" value="@friendlyname"/>
+			 <property name="devtype" type="hard-coded" value="Array"/>
+			 <property name="sourceeventtype" type="data" value="//PROPERTY[@NAME='className']/VALUE"/>
+			 <property name="sourcedomainname" type="data" value="//PROPERTY[@NAME='alertName']/VALUE"/>
+			 <property name="source" type="hard-coded" value="VNXBlock-Collector"/>
+			 <property name="openedat" type="data" value="//PROPERTY[@NAME='timeStamp']/VALUE"/>
+			 <property name="severity" type="data" value="//PROPERTY[@NAME='alertLevel']/VALUE"/>
+			 <property name="eventstate" type="hard-coded" value="ACTIVE"/>
+			 <property name="sourceip" type="hard-coded" value="@spa"/>
+			 <property name="eventtext" type="data" value="//PROPERTY[@NAME='NaviJrEmailMsg']/VALUE"/>
+			 <property name="messagekey" type="data" value="//PROPERTY[@NAME='NaviFullAlertDetailedMsg']/VALUE"/>
+			 <property name="sstype" type="hard-coded" value="@sstype"/>
+			 <property name="host" type="hard-coded" value="@spa"/>
+			 <property name="deviceid" type="hard-coded" value="@deviceid"/>
+             <property name="eventname" type="data" value="//PROPERTY[@NAME='alertCode']/VALUE"/>
+			 <property name="paramname1" type="hard-coded" value="#1"/>
+			 <property name="paramvalue1" type="data" value="//VALUE.ARRAY/VALUE[position() = 1]"/>
+			 <property name="paramname2" type="hard-coded" value="#2"/>
+			 <property name="paramvalue2" type="data" value="//VALUE.ARRAY/VALUE[position() = 2]"/>
+			 <property name="paramname3" type="hard-coded" value="#3"/>
+			 <property name="paramvalue3" type="data" value="//VALUE.ARRAY/VALUE[position() = 3]"/>
+			 <property name="paramname4" type="hard-coded" value="#4"/>
+			 <property name="paramvalue4" type="data" value="//VALUE.ARRAY/VALUE[position() = 4]"/>
+			 <property name="paramname5" type="hard-coded" value="#5"/>
+			 <property name="paramvalue5" type="data" value="//VALUE.ARRAY/VALUE[position() = 5]"/>
+			 <property name="paramname6" type="hard-coded" value="#6"/>
+			 <property name="paramvalue6" type="data" value="//VALUE.ARRAY/VALUE[position() = 6]"/>
+		</property-set>		
+	</collecting-configuration>
+</configuration>

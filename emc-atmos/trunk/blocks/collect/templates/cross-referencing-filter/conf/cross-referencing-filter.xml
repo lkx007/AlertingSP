@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			   xmlns="http://www.watch4net.com/CrossReferencingFilter"
+			   xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	
+	<blind-write>true</blind-write>
+    <data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	
+	<!-- Get Properties for Site from System management interface -->
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-Site'</condition>
+		<match-on>device</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>nodesUp</get-property>
+		<get-property>nodesDown</get-property>
+	</reference>
+	
+	<!-- Get Properties for Node from ACRT interface -->
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-Node'</condition>
+		<match-on>device</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>cluster</get-property>
+		<get-property>clustid</get-property>
+		<get-property>siteid</get-property>
+	</reference>
+	
+	<!-- Get Properties for Node from System management interface -->
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-Node'</condition>
+		<match-on>device</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>mgmtIp</get-property>
+	</reference>
+	
+	<!-- This CRF is used to populate location property from RMG into cluster and node instances. -->
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-Site' | datagrp=='ATMOS-Cluster' | datagrp=='ATMOS-Node'</condition>
+		<match-on>sitename</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>location</get-property>
+	</reference>
+	<!-- This CRF is used to populate location property into filesystem from Node. -->
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-FileSystem' | datagrp=='ATMOS-Node'</condition>
+		<match-on>nodename</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>location</get-property>
+		<get-property>cluster</get-property>
+		<get-property>sitename</get-property>
+	</reference>
+	<!-- This CRF is used to populate ACRT properties to all Metrics of the Child Instances of Nodes (Processor, Memory, FileSystem and Service) -->
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-Node' | datagrp=='ATMOS-Memory' | datagrp=='ATMOS-FileSystem' | datagrp=='ATMOS-Processor' | datagrp=='ATMOS-Service'</condition>
+		<match-on>nodename</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>cluster</get-property>
+		<get-property>clustid</get-property>
+		<get-property>siteid</get-property>
+	</reference>
+	
+	<!-- This CRF is used to populate properties from Processor instances into Node. -->
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-Processor' | datagrp=='ATMOS-Node'</condition>
+		<match-on>nodename</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>nodetype</get-property>
+		<get-property>osname</get-property>
+		<get-property>atmosver</get-property>
+		<get-property>numcpu</get-property>
+		<get-property>cpuspeed</get-property>
+	</reference>
+	<!-- This CRF is used to populate atmos version property into cluster and site instances. -->
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-Node' | datagrp=='ATMOS-Site' | datagrp=='ATMOS-Cluster' | datagrp=='ATMOS-Service'</condition>
+		<match-on>sitename</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>atmosver</get-property>
+	</reference>
+	
+	<!-- This CRF is used to apply Tenant properties to each individual UID -->
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-Tenant' | datagrp=='ATMOS-SubTenant'</condition>
+		<match-on>tenantnm</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>tenuuid</get-property>
+	</reference>
+	<reference>
+		<condition type="filter">datagrp=='ATMOS-Users' | datagrp=='ATMOS-SubTenant'</condition>
+		<match-on>stenname</match-on>
+		<include-properties>true</include-properties>
+		<expiration>0</expiration>
+		<get-property>tenantnm</get-property>
+		<get-property>stenuuid</get-property>
+		<get-property>tenuuid</get-property>
+	</reference>
+</configuration>

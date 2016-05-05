@@ -1,0 +1,36 @@
+<div>
+	<p>
+		<h2>Summary:</h2>
+		Managed Service Alert configuration Solution Pack. This is a custom solution pack which installs around 200+ alert definaitons to the Alerting Backend. Most of these Alerts configuration are for Device Monitoring perspective and Generate the SNMP trap based on the alerting condition.
+	</p>
+	<p>
+		<h2>Main Device type Alerts included are:</h2>
+		<ul>
+			<li>ATMOS Alerts</li>
+			<li>EMC Centera Alerts</li>
+			<li>EMC DataDomain Alerts</li>
+			<li>FibreSwitch Alerts (Cisco and Brocade)</li>
+			<li>IBM DS Arrays Alerts</li>
+			<li>EMC ISILON Alerts</li>
+			<li>EMC RecoverPoint Alerts</li>
+			<li>EMC VMAX Alerts</li>
+			<li>EMC VNX Alerts (Both Block and File)</li>
+			<li>EMC VPLEX Alerts</li>
+			<li>VmWare vCenter Alerts</li>
+			<li>EMC XtremIO Alerts</li>
+		</ul>
+	</p>
+	<p>
+		<h2>Support list:</h2>
+		<ul>
+			<li>EMC SRM Setup >= SRM 3.6.2.0 [SRM 3.6 SP2 and above]  </li>
+		</ul>
+	</p>
+	<p>
+		<h2>Requirements:</h2>
+		<ul>
+			<li>While installing any Solution Pack, use port 62010 as the alerting backend port - this custom service will add the DataEnricment components to Alerting Data</li>
+			<li>You need to add <b><font color="green">apg.manager.watchdog.timeout=900000</font></b> on SRM Primary Backend Server /opt/APG/Tools/Module-Manager/<VERSION>/conf/module.properties file.</li>
+		</u1>
+	</p>
+</div>

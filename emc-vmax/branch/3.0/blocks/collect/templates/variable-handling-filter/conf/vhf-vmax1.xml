@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+    <handling-configuration id="ALLCAPS">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">partsn | portwwn | nodewwn | initwwn </parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyStringCaseHandler">
+            <parameter name="to-upper-case">partsn portwwn nodewwn initwwn</parameter>
+            <parameter name="to-lower-case">thisisnotused</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!-- Remove any "RemoveMe" metrics -->
+    <handling-configuration id="vmaxRemoveMe">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <!-- TODO: Rename VMAX-ACCESS.MVLunCapacity to RemoveMe? -->  
+            <parameter name="filter">name=='RemoveMe'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler" />
+    </handling-configuration>
+    
+    <!-- Set RawCapacity metric value using RawCapacity's rawcap property so it can be aggregated by SAH filter. -->    
+    <handling-configuration id="SetRawCapacity">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">name=='RawCapacity' &amp; parttype=='LUN' &amp; dgstype=='Thick'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+            <parameter name="file" type="file">conf/pah-lunrawcapacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!-- Set Thin LUN IsUsed based on its ConsumedCapacity -->
+    <!-- For Thin LUNs, the PAH will set isused=1 for ConsumedCapacity > 0 and isbound=1; 
+         else isused=0.
+         NOTE: The "!isused" filter is used to prevent existing replica chain isused value from being reset by this PAH.  -->
+    <handling-configuration id="ThinLunVdevIsUsed">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">(!isused | isused=='N/A') &amp; name=='ConsumedCapacity' &amp; parttype=='LUN' &amp; dgstype=='Thin'
+            </parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+            <parameter name="file" type="file">conf/pah-thin-isused.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!-- Set Thick LUN IsUsed based on if LUN is a pool contributor and is bound -->
+    <!-- For Bound Pool Contributor LUNs, the PAH will set isused=0. 
+         For all other LUNs, it computes isused=ismapped * ismasked (i.e. 1 for both Mapped=1 and Masked=1 else 0).
+         NOTE: The "!isused" filter is used to prevent existing replica chain isused value from being reset by this PAH. -->
+    <handling-configuration id="ThickLunIsUsed">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">(!isused | isused=='N/A') &amp; name=='Capacity' &amp; parttype=='LUN' &amp; dgstype=='Thick'
+                    &amp; ispolctr &amp; ispcbnd 
+                    &amp; ismasked &amp; ismapped
+            </parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+            <parameter name="file" type="file">conf/pah-thick-isused.xml</parameter>
+        </handler>
+    </handling-configuration>
+    
+    <!-- Set LUN to Director Port Association "partstat" property based on raw value and time of state change -->
+    <handling-configuration id="AssociationState">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">name=='LUNtoDirectorPortAssociation'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.VariableStateMonitorHandler">
+            <parameter name="state-value">value.getValue() == 0</parameter>
+            <parameter name="property-name">partstat</parameter>
+            <parameter name="property-value">if (value.getTimestamp() - state.getLastChangedAt() >= 86400 
+                &amp;&amp; state.getCurrentValue() == true) { false; } else {true;}</parameter>
+        </handler>
+    </handling-configuration>
+</configuration>

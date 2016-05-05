@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>MirrorSync_</name>
+			<leaf>
+				<name>Mirror_NAME</name>
+				<group>info-1</group>
+			</leaf>
+			<leaf>
+				<name>Mirror_UID</name>
+				<group>info-2</group>
+			</leaf>
+			<leaf>
+				<name>Image_Size</name>
+				<group>info-3</group>
+			</leaf>
+			<leaf>
+				<name>Primary_IMAGE</name>
+				<group>info-4</group>
+			</leaf>
+			<leaf>
+				<name>Second_IMAGE</name>
+				<group>info-5</group>
+			</leaf>
+
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)MirrorView Name(.*?)(?=(MirrorView Name|$))</regex>
+			<sub-regex group="0">
+                            <regex name="info">(?s):\s+(\p{Print}+)\r*\nMirrorView Description:.*MirrorView UID:\s+(.*)\r*\nLogical Unit Numbers:.*Image Size:\s+(\d+).*Is Image Primary:\s+YES\s*\r*\nLogical Unit UID:\s+(.*)\r*\nImage Condition:\s+Primary Image.*Is Image Primary:\s+NOs*\r*\nLogical Unit UID:\s+(.*)\r*\nImage State:.*</regex>
+                     </sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+	    <data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Storage Processors</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) mirror -sync -list</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!-- NaviCLI command output:
+MirrorView Name:  John
+MirrorView Description:
+MirrorView UID:  50:06:01:60:C7:20:27:89:02:00:00:00:00:00:00:00
+Logical Unit Numbers:  111
+Remote Mirror Status:  Mirrored
+MirrorView State:  Active
+MirrorView Faulted:  NO
+MirrorView Transitioning:  NO
+Quiesce Threshold:  60
+Minimum number of images required:  0
+Image Size:  2097152
+Image Count:  2
+Write Intent Log Used:  NO
+Images:
+Image UID:  50:06:01:60:C7:20:27:89
+Is Image Primary:  YES
+Logical Unit UID:  60:06:01:60:45:E0:28:00:3C:32:4E:2F:99:2B:E3:11
+Image Condition:  Primary Image
+Preferred SP:  A
+
+Image UID:  50:06:01:60:C7:20:2B:D9
+Is Image Primary:  NO
+Logical Unit UID:  60:06:01:60:73:61:30:00:A7:96:A3:4F:99:2B:E3:11
+Image State:  Synchronized
+Image Condition:  Normal
+Recovery Policy:  Automatic
+Preferred SP:  A
+Synchronization Rate:  Medium
+Image Faulted:  NO
+Image Transitioning:  NO
+Synchronizing Progress(%):  100
+
+-->
+<!-- parsing-tester output:
+TEST HOST
+        MirrorSync_0
+                Mirror_NAME: John
+                Mirror_UID: 50:06:01:60:C7:20:27:89:02:00:00:00:00:00:00:00
+                Image_Size: 2097152
+                Primary_IMAGE: 60:06:01:60:45:E0:28:00:3C:32:4E:2F:99:2B:E3:11
+                Second_IMAGE: 60:06:01:60:73:61:30:00:A7:96:A3:4F:99:2B:E3:11
+
+-->

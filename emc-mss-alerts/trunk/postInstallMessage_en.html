@@ -1,0 +1,74 @@
+<p>
+<b>1. </b>Enable the TCP port 62010 on SRM Primary backend server<br>
+command : <br>
+<span style="margin-left:6em"><b><font color="red"># enable_firewall_port.sh TCP 62010</font></b>
+</p>
+<p>
+<b>2. </b>You need to add <b><font color="brown">apg.manager.watchdog.timeout=900000</font></b> on SRM Primary Backend Server <b>/opt/APG/Tools/Module-Manager/<VERSION>/conf/module.properties</b> file.
+<br> We need this only for Alerting SP un-installation. One easy workaround is to run the following CLI command on SRM PrimaryBackend sever to uninstall the PreConfigured alerts.
+<br>
+command : <br>
+<span style="margin-left:6em"><b><font color="brown">#/opt/APG/bin/manage-moduel remove emc-mss-alerts-alerts</font></b>
+</P>
+<p>
+<b>3. </b>All alerts from this Soluiton Packs are disabled by default. Enable the required alerts by login to <a href="/alerting-frontend/" target="_blank">Alerting-Frontend</a>.
+</p>
+<p>
+<b>4. </b>Edit the LoadBalancer connector SP and LoadBalancer Arbiter SP alerting port as <b><font color="red">62010</font></b> and destination host should be PrimaryBackend Server</a>.
+</p>
+<p>
+<b>5. </b>Make sure that <b><font color="green">'collector-manager emc-mss-alerts'</font></b> is up and running without any error in log file.
+</p>
+<p>
+<b>6. </b>Use this Trap Receiver configuration in EMC Jumpoff box <b><font color="brown">trap_mrg.conf</font></b> file <br>
+<br>
+BEGIN_TRAP .1.3.6.1.4.1.11970.1.1.2 6 2<br>
+<span style="margin-left:2em">Margin of 2em</span></span><br>
+<span style="margin-left:2em">SysNameOrAddr:    $V4$</span><br>
+<span style="margin-left:2em">InstanceName:     $V6$</span><br>
+<span style="margin-left:2em">ClassName:        $V5$</span><br>
+<span style="margin-left:2em">Category:         Performance</span><br>
+<span style="margin-left:2em">EventText:      Watch4net APG Event: $V1$ $V2$ $V3$ $V4$ $V5$ $V6$ $V7$ $V8$ $V9$ $V10$ $V11$ $V12$</span><br>
+<span style="margin-left:2em">EventName:        $V8$</span><br>
+<span style="margin-left:2em">Expiration:       21600</span><br>
+<span style="margin-left:4em">Map:            {</span><br>
+	
+                                <span style="margin-left:10em">V3-severity</span><br>
+                                <span style="margin-left:10em">1 = 1</span><br>
+                                <span style="margin-left:10em">2 = 2</span><br>
+                                <span style="margin-left:10em">3 = 3</span><br>
+                                <span style="margin-left:10em">4 = 4</span><br>
+								<span style="margin-left:10em">5 = 5</span><br>
+                                <span style="margin-left:10em">6 = 6</span><br>
+								<span style="margin-left:10em">Critical = 1</span><br>
+								<span style="margin-left:10em">Major = 2</span><br>
+								<span style="margin-left:10em">Warning = 3</span><br>
+								<span style="margin-left:10em">Info = 4</span><br>
+								<span style="margin-left:10em">Clear = 6</span><br>
+								<span style="margin-left:10em">CRITICAL = 1</span><br>
+								<span style="margin-left:10em">MAJOR = 2</span><br>
+								<span style="margin-left:10em">MINOR = 3</span><br>
+								<span style="margin-left:10em">INFORMATIONAL = 4</span><br>
+								<span style="margin-left:10em">CLEAR = 6</span><br>
+                        <span style="margin-left:4em">}</span><br>
+                        <span style="margin-left:4em">{</span><br>
+                                <span style="margin-left:10em">V3-state</span><br>
+                                <span style="margin-left:10em">1 = NOTIFY</span><br>
+                                <span style="margin-left:10em">2 = NOTIFY</span><br>
+                                <span style="margin-left:10em">3 = NOTIFY</span><br>
+                                <span style="margin-left:10em">4 = NOTIFY</span><br>
+                                <span style="margin-left:10em">5 = NOTIFY</span><br>
+                                <span style="margin-left:10em">6 = CLEAR</span><br>
+                        <span style="margin-left:4em">}</span><br>
+		
+        <span style="margin-left:4em">Severity: $V3-severity$</span><br>
+        <span style="margin-left:4em">State: $V3-state$</span><br>
+        <span style="margin-left:4em">UnknownAgent: CREATE</span><br>
+        <span style="margin-left:4em">EventType: DURABLE</span><br>
+        <span style="margin-left:4em">UserDefined7: $V7$ </span><br>
+        <span style="margin-left:4em">UserDefined9: $V9$ [ Source IP : $A$ - Alert Name : $V12$ ]</span><br>  
+        <span style="margin-left:4em">UserDefined10: $V11$</span><br>
+        <span style="margin-left:4em">LogFile: SRM_Alert.log</span><br> 
+END_TRAP
+</p>
+

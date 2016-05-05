@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.watch4net.com/spatial-aggregation-handler" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.watch4net.com/spatial-aggregation-handler spatial-aggregation-handler.xsd"> 
+ 
+    <!-- Count of Array's SymCLI Capacity metrics -->
+    <aggregation id="VMAXCLIMetricCount" forward-input="true">
+        <filter>(source=='VMAX-Collector' &amp; datagrp='VMAX-SE-TOPO-%')</filter>
+	<group-by>device</group-by>
+        <compute spatial="count">
+            <output-timestamp use="max" rounding="ceiling" rounding-base="1" />
+            <output-group>group</output-group>
+            <inventory period="1800" removal-timeout="3600" />
+        </compute>
+        <properties>
+            <add name="w4ncert">1.0</add>
+            <add name="datatype">EMC Array</add>
+            <add name="sstype">Block</add>
+            <add name="source">VMAX-MC</add>
+            <add name="datagrp">APG-SAF-MC</add>
+            <add name="name">vmaxclimetrics</add>
+            <add name="unit">nb</add>
+        </properties>
+    </aggregation>
+	
+    <!-- Count of Array's SMI-S metrics -->
+    <aggregation id="VMAXSMISMetricCount" forward-input="true">
+        <filter>(source=='VMAX-Collector' &amp; datagrp='VMAX-SMI-PERF-%')</filter>
+	<group-by>device</group-by>
+        <compute spatial="count">
+            <output-timestamp use="max" rounding="ceiling" rounding-base="1" />
+            <output-group>group</output-group>
+            <inventory period="3600" removal-timeout="7200" />
+        </compute>
+        <properties>
+            <add name="w4ncert">1.0</add>
+            <add name="datatype">EMC Array</add>
+            <add name="sstype">Block</add>
+            <add name="source">VMAX-MC</add>
+            <add name="datagrp">APG-SAF-MC</add>
+            <add name="name">vmaxsmismetrics</add>
+            <add name="unit">nb</add>
+        </properties>
+    </aggregation>
+	
+    <!-- Count of Array's Uni4VMAX metrics -->
+    <aggregation id="VMAXUniMetricCount" forward-input="true">
+        <filter>(source=='VMAX-Collector' &amp; datagrp='VMAX-UNIVMAX-PERF-%')</filter>
+	<group-by>device</group-by>
+        <compute spatial="count">
+            <output-timestamp use="max" rounding="ceiling" rounding-base="1" />
+            <output-group>group</output-group>
+            <inventory period="7200" removal-timeout="14400" />
+        </compute>
+        <properties>
+            <add name="w4ncert">1.0</add>
+            <add name="datatype">EMC Array</add>
+            <add name="sstype">Block</add>
+            <add name="source">VMAX-MC</add>
+            <add name="datagrp">APG-SAF-MC</add>
+            <add name="name">vmaxunimetrics</add>
+            <add name="unit">nb</add>
+        </properties>
+    </aggregation>
+	
+</config>

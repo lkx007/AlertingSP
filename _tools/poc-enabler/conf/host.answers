@@ -1,0 +1,14 @@
+dependencies..host.action.0=yes
+questions.host..storage.failover=0
+questions.host..storage.timeseries.socketconnector.host=localhost
+questions.host..storage.timeseries.socketconnector.port=2020
+questions.host..use_alert=0
+questions.host..alert.timeseries.socketconnector.host=localhost
+questions.host..alert.timeseries.socketconnector.port=2010
+#Host
+questions.host.host-collect.info[0].ip=10.5.24.245
+questions.host.host-collect.info[0].username=dcasati
+questions.host.host-collect.info[0].password=1bigLab!
+questions. =
+questions. =
+questions.host..host[1].want=1

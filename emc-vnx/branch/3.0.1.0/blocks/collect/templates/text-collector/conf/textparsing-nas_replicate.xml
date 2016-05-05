@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 	xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>1</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>table-like-tree</tree-type>
+		<master-delimiter>\n</master-delimiter>
+		<sub-delimiter skip-empty-tokens="false" >
+			<delimiter>,</delimiter>
+			<trimmer>"</trimmer>
+		</sub-delimiter>
+		<parameter name="table-params">
+			<value>REPLICATE_</value>
+			<value>"id.*</value>
+			<value/>
+		</parameter>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-file.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.cli.RemoteCLICommandExecutor</data-accessor>
+		<stop-on-first-result>false</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>VNXFile-group</group-name>
+				<host-config>
+					<connection-type>ssh</connection-type>
+					<host-list>@csprimary</host-list>
+					<parameter name="auth-method">
+						<value>password</value>
+					</parameter>
+					<parameter name="username">
+						<value>@fileusername</value>
+					</parameter>
+					<parameter name="password">
+						<value>@filepassword</value>
+					</parameter>
+					<parameter name="hardcoded-os">
+						<value>vnxfile-repl</value>
+					</parameter>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<group-name>VNXFile-group</group-name>
+			<command-list>
+				<command type="defined">VNXFile repl</command>
+				<argument/>
+				<result-must-be-parsed>true</result-must-be-parsed>
+			</command-list>
+		</command-configuration>
+		<parameter name="command-definition-directory">
+			<value>./conf</value>
+		</parameter>
+	</data-config>
+</configuration>

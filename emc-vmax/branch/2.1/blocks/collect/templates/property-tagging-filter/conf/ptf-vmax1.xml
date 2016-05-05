@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<property-tagging-filter-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter  property-tagging-filter-config.xsd" xmlns="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter">
+	<refresh unit="minutes">60</refresh>
+	<files>
+		<text-file path="conf/ptf-vmax-dgstype.csv">
+			<accessor accessor-class="StaticAccessor">
+				<parameter name="field-separator">,</parameter>
+				<parameter name="field-quoting">"</parameter>
+				<parameter name="line">LUN,@@,Thick</parameter>
+				<parameter name="line">METALUN,@@,Thick</parameter>
+			</accessor>
+			<field-separator>,</field-separator>
+			<default-symbol>**</default-symbol>
+			<null-symbol>@@</null-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="regex">parttype</key-property>
+				<key-property delete-after-use="false" string-type="regex">dgstype</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>dgstype</new-property>
+			</new-properties>
+		</text-file>
+		<text-file path="conf/ptf-vmax-unprotected.csv">
+			<accessor accessor-class="StaticAccessor">
+				<parameter name="field-separator">,</parameter>
+				<parameter name="field-quoting">"</parameter>
+				<parameter name="line">LUN,Unprotected,0</parameter>
+			</accessor>
+			<field-separator>,</field-separator>
+			<default-symbol>**</default-symbol>
+			<null-symbol>@@</null-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="regex">parttype</key-property>
+				<key-property delete-after-use="false" string-type="regex">config</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>roc1</new-property>
+			</new-properties>
+		</text-file>
+	</files>
+</property-tagging-filter-config>

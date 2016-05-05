@@ -1,0 +1,50 @@
+[+storage.timeseries.socketconnector]
+host = hostname
+port = port
+
+[+alert.timeseries.socketconnector]
+host = hostname
+port = port
+
+[events]
+host = hostname
+port = port
+
+[block]
+naviseccli.path =string ?
+spa = hostname
+spb = hostname
+serial = string
+userscope = string(global,local,LDAP)
+username = username
+password = password
+
+[file]
+csprimary = hostname
+serial = string
+username = username
+password = password
+
+[vnx]
+type = string(unified,block,file)
+friendlyname = string
+if type == 'unified'
+  block
+  file
+elif type == 'block'
+  block
+elif type == 'file'
+  file
+fi
+
+[main]
+# use_failover is defined in storage to avoid redefining timeseries which would fail
+storage.failover = boolean
+storage.timeseries.socketconnector
+# explicit condition since we can’t use ? which would redefine timeseries and fail
+use_alert = boolean
+if use_alert
+  alert.timeseries.socketconnector
+fi
+events
+vnx +

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<property-tagging-filter-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter  property-tagging-filter-config.xsd" xmlns="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter">
+	<refresh unit="minutes">0</refresh>
+	<files>
+		<text-file path="conf/vnxblock_messages.csv">
+			<field-separator>,</field-separator>
+			<default-symbol>**</default-symbol>
+			<null-symbol>@@</null-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="string">messagekey</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>fullmsg</new-property>
+			</new-properties>
+		</text-file>
+	</files>
+</property-tagging-filter-config>

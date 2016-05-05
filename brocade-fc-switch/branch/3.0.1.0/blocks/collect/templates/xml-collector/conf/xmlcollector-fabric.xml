@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://www.watch4net.com/XMLCollector" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/XMLCollector xmlcollector.xsd ">
+	<simultaneous-collecting>1</simultaneous-collecting>
+	<polling-interval>3600</polling-interval>
+	<collecting-group>group</collecting-group>
+	<source>Brocade-Collector</source>
+	<refresh>3600</refresh>
+	<collecting-configuration id="Brocade_VirtualFabric" max-threads="1" timeout="600" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="source part device parttype name">
+		<data>
+			<include-contexts>conf/context-smiproviders.xml</include-contexts>
+			<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.ChainedWebServiceRequestsExecutor</data-accessor>
+			<input>(host)</input>
+			<host>@connectionstring</host>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+			<parameter name="username">
+				<value>@username</value>
+			</parameter>
+			<parameter name="password">
+				<value>@password</value>
+			</parameter>
+			<parameter name="connect-type">
+				<value>all</value>
+			</parameter>
+			<parameter name="request-1">
+                <value>conf/BROCADE_PhysicalSwitch.request</value>
+                <value>conf/VF_LogicalSwitchInPhysicalSwitch_Req_Gen.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: EnumerateInstances;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>
+			<parameter name="request-2">
+                <value>tmp/Brocade_VirtualFabric/LogicalSwitchInPhysicalSwitch_Req_Folder</value>
+                <value>conf/VirtualFabricForLogicalSwitch_Req_Gen.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: Associators;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>
+			<parameter name="request-3">
+                <value>tmp/Brocade_VirtualFabric/VirtualFabricForLogicalSwitch_Req_Folder</value>
+                <value>conf/VirtualFabricOut.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: Associators;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>			
+			<parameter name="output-folder">
+				<value>tmp/Brocade_VirtualFabric/VirtualFabricOut/</value>
+			</parameter>			
+			<parameter name="data-timeout">
+				<value>600</value>
+			</parameter>
+			<parameter name="connection-timeout">
+				<value>300</value>
+			</parameter>
+		</data>
+		<value name="EnabledState" type="counter" unit="" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_Fabric']/PROPERTY[@NAME='EnabledState']/VALUE">
+			<timestamp type="use-system-time" />
+            	<property-set>VirtualFabric_Properties</property-set>
+        	</value>
+		<property-set name="VirtualFabric_Properties">
+            <property name="datagrp" type="hard-coded" value="BROCADE_VIRTUALFABRIC" />
+           	<property name="w4ncert" type="hard-coded" value="1.0" />
+			<property name="partid" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_Fabric']/PROPERTY.ARRAY[@NAME='OtherIdentifyingInfo']/VALUE.ARRAY/VALUE[1]"/>				
+			<property name="parttype" type="hard-coded" value="Fabric" />	
+			<property name="part" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_Fabric']/PROPERTY[@NAME='ElementName']/VALUE"/>			
+			<property name="partwwn" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_Fabric']/PROPERTY[@NAME='Name']/VALUE" />
+			<property name="lswwn" type="data" value="/MESSAGE/@LOGICALDEVICEID" />
+			<property name="lsname" type="data" value="/MESSAGE/@LOGICALDEVICENAME"/>			
+			<property name="devtype" type="hard-coded" value="FabricSwitch" />
+			<property name="deviceid" type="data" value="/MESSAGE/@DEVICEID" />
+			<property name="device" type="data" value="/MESSAGE/@DEVICE" />
+			<property name="lstype" type="data" value="/MESSAGE/@LOGICALDEVICETYPE" />
+        	</property-set>
+	</collecting-configuration>		
+</configuration>

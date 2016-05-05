@@ -1,0 +1,17 @@
+EMC VMAX
+========
+
+Version 2.0 (collect 2.0, reports 2.0)
+ * Performance collection is now using Unisphere 1.6
+ * Adding parsing for datadev, to have better Usable capacity (#465)
+ * Added devices/pool utilization (#326)
+
+Version 1.1 (collect 1.1, reports 1.1)
+ * collect: Fix for #381. We now pad leading 0 in the serial number.
+ * reports: Fix for #335. Pool capacity unit is now presented correctly.
+ * reports: Minor fix
+ * collect: Fix WWN in caps (f/F)
+ * reports: Fix for #334.  Raw capacity report renamed to Capacity report, and calculation is now more accurate. Offset can still be present, but related to rounding, with error margin of <0.5%
+
+Version 1.0 (collect 1.0, reports 1.0)
+ * Initial release, from ReportPack for VMAX

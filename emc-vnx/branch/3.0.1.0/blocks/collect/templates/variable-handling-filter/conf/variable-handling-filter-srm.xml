@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013-2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+
+	<!-- For meta head luns we drop metrics that don't have dgraid and dgname. This was done earlier for other luns.-->
+	<handling-configuration id="Variable-Blocker-RemoveMe">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(parttype='LUN' &amp; ismetah=='1' &amp; !dgraid &amp; !dgname) </parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler"/>
+	</handling-configuration>
+
+    <!-- Convert 'Capacity' or 'PresentedCapacity' metric from MB to GB for parttype==Disk, LUN, MetaMember or MetaHead -->
+    <handling-configuration id="VNX-CAPACITY-GB">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">((name=='Capacity' &amp; (parttype=='Disk' | parttype=='LUN' | parttype=='MetaMember' | parttype=='MetaHead')) | 
+			(name=='PresentedCapacity' &amp; ismetah=='1') &amp; source='VNXBlock-Collector')</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+            <parameter name="file" type="file">conf/pah-scale-Capacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+	<!-- Convert disksize property from MB to GB for parttype==Disk -->
+    <handling-configuration id="VNX-DISKSIZE-GB">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">source=='VNXBlock-Collector' &amp; parttype=='Disk' &amp; disksize</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+            <parameter name="file" type="file">conf/pah-scale-disksize.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!-- Compute isused property based on isMapped/ isMasked for THICK LUNs not tagged via replica chain-->
+    <handling-configuration id="VNX-LUNS-ISUSED-THICK-NON-SYSTEM">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='LUN' &amp; name=='Capacity' &amp; dgstype=='Thick' &amp; private=='NO' &amp; !isused</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+            <parameter name="file" type="file">conf/pah-isused.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!-- Compute isused property based on ConsumedCapacity for THIN LUNs not tagged via replica chain-->
+    <handling-configuration id="VNX-LUNS-ISUSED-THIN">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='LUN' &amp; name=='ConsumedCapacity' &amp; dgstype=='Thin' &amp; private=='NO' &amp; dgroup &amp; !isused</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+            <parameter name="file" type="file">conf/pah-isused-THIN.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!-- Compute isused property for System Resources-->
+    <handling-configuration id="VNX-LUNS-ISUSED-SYSTEM-RESOURCE">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='LUN' &amp; name=='Capacity' &amp; private=='YES'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+            <parameter name="file" type="file">conf/pah-isused-SYSTEM.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!-- Compute the 'ConfiguredRaw' metric-->
+    <handling-configuration id="VNX-CONFIGURED-RAW">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='RAID Group' | parttype=='Storage Pool' | name=='RemoveMeZero'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-ConfiguredRaw.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!-- Compute the 'ConfiguredUsable' metric-->
+    <handling-configuration id="VNX-CONFIGURED-USABLE">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='RAID Group' | parttype=='Storage Pool' | name=='RemoveMeZero'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-ConfiguredUsable.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Compute the 'HotSpareCapacity' metric-->
+    <handling-configuration id="VNX-HOT-SPARE-RAW">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='Disk' | name=='RemoveMeZero'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-HotSpareCapacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Compute the 'UnconfiguredCapacity' metric -->
+    <handling-configuration id="VNX-UNCONFIGURED">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">parttype=='Disk' | parttype=='RAID Group' | parttype=='Storage Pool' | name=='RemoveMeZero'</parameter>
+                </matcher>
+                <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+                        <parameter name="file" type="file">conf/sah-UnconfiguredCapacity.xml</parameter>
+                </handler>
+        </handling-configuration>
+
+    <!--Compute the 'RawCapacity' metric -->
+    <handling-configuration id="VNX-RAW-CAPACITY">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='Disk' | name=='RemoveMeZero'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-RawCapacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+	
+	<!-- Compute 'Capacity' metric for Replica Mirror Pools (aggregation of pool members' capacity)-->
+    <handling-configuration id="VNX-REPLICA-POOL-CAPACITY">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='LUN'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-ReplicaPoolCapacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Create new property named 'devconf' which contains the same value as 'dgraid' for LUN-->
+    <handling-configuration id="Create-LUN-devconf">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='LUN'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+            <parameter name="file" type="file">conf/peh-create-LUN-devconf.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Rollup the MetaMember performance metrics and propagate to MetaHead LUN-->
+    <handling-configuration id="VNX-METAMEMBER-PERF-ROLLUP">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='MetaMember'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-MetaHead-PerfRollupMetrics.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Rollup srclun performance metrics and propagate to snapshot LUN-->
+    <handling-configuration id="VNX-SNAPSHOT-ROLLUP">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='LUN' &amp; name=='Capacity'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-SnapshotMetrics.xml</parameter>
+        </handler>
+    </handling-configuration>
+</configuration>

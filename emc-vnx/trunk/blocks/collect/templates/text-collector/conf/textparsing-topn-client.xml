@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 	xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd ">
+	<max-threads>1</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>table-like-tree</tree-type>
+		<master-delimiter>\n</master-delimiter>
+		<sub-delimiter skip-empty-tokens="false" >
+			<delimiter>;</delimiter>
+			<trimmer>"</trimmer>
+		</sub-delimiter>
+		<parameter name="table-params">
+			<value>ROW_</value>
+			<value>Time.*</value>
+			<value/>
+		</parameter>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-file.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.FileReader</data-accessor>
+		<stop-on-first-result>false</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>VNXFile parser</group-name>
+				<host-config>
+					<host-list>folder</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command type="custom">w4n_data/60min/@id</command>
+			</command-list>
+		</command-configuration>
+		<parameter name="file-regex">
+			<value>.*@(cifs|nfs).(client|user)@top@.*\.csv</value>
+		</parameter>
+		<parameter name="filename-properties-extraction">
+			<value>(.*)@(cifs|nfs).(client|user)@.*@(\d+).csv</value>
+			<value>device/1</value>
+			<value>protocol/2</value>
+		</parameter>
+		<parameter name="retrieve-files">
+			<value>sftp</value>
+			<value>60</value>
+			<value>@csprimary</value>
+			<value>@fileusername</value>
+			<value>@filepassword</value>
+			<value>/tmp/w4n_data/60min/@id</value>
+			<value>60000</value>
+			<value>120000</value>
+			<value>0</value>
+			<value>true</value>
+		</parameter>
+		<parameter name="file-close-action">
+			<value>delete</value>
+		</parameter>
+	</data-config>
+</configuration>

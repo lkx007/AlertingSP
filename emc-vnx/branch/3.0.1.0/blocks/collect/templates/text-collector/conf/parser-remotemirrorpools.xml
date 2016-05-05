@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>REMOTE_MIRROR_POOL_</name>
+			<node>
+				<name>LUNS_</name>
+				<leaf>
+					<name>SP</name>
+					<group>lun-1</group>
+				</leaf>
+				<leaf>
+					<name>LUN Name</name>
+					<group>lun-2</group>
+				</leaf>				
+			</node>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="allocated">(?s)Storage Processor:(.*?)(?=(Storage Processor:|$))</regex>
+			<sub-regex group="1">
+				<regex name="lun">(?s)(\p{Print}*)\r*\nLun Number:\s+(\d+)\r*\n</regex>
+			</sub-regex>						
+		</regex-group-config> 
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>POOLs</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) mirrorview -listlog</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+** mirrorview -listlog  **
+
+Storage Processor:   SP A
+Lun Number:          100
+Storage Processor:   SP B
+Lun Number:          102
+
+-->

@@ -1,0 +1,8 @@
+LUN,**,(Flash Drive|Enterprise Flash Drive),**,**,Platinum
+LUN,RAID-1,Fibre Channel,**,**,Gold
+LUN,RAID-5,Fibre Channel,**,**,Silver
+LUN,**,SATA,**,**,Bronze
+LUN,CHANGEME,CHANGEME,@@,@@,Custom1
+LUN,CHANGEME,CHANGEME,@@,@@,Custom2
+LUN,CHANGEME,CHANGEME,@@,@@,Custom3
+LUN,@@,@@,**,**,@@

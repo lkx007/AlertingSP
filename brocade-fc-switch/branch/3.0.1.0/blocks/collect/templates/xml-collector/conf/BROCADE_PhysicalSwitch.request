@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CIM CIMVERSION="2.0" DTDVERSION="2.0">
+	<MESSAGE ID="54" PROTOCOLVERSION="1.0">
+		<SIMPLEREQ>
+			<IMETHODCALL NAME="EnumerateInstances">
+				<LOCALNAMESPACEPATH>
+					<NAMESPACE NAME="root" />
+					<NAMESPACE NAME="brocade1" />
+				</LOCALNAMESPACEPATH>
+				<IPARAMVALUE NAME="ClassName">
+					<CLASSNAME NAME="Brocade_PhysicalComputerSystem" />
+				</IPARAMVALUE>
+				<IPARAMVALUE NAME="PropertyList">
+					<VALUE.ARRAY>
+						<VALUE>Name</VALUE>
+						<VALUE>ElementName</VALUE>
+					</VALUE.ARRAY>
+				</IPARAMVALUE>					
+			</IMETHODCALL>
+		</SIMPLEREQ>
+	</MESSAGE>
+</CIM>

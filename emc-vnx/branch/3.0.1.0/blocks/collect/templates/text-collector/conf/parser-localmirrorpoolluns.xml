@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>LOCAL_MIRROR_POOL_</name>
+			<leaf><name>SPA</name>
+				<group>cpl-1</group>
+			</leaf>
+			<leaf><name>SPB</name>
+				<group>cpl-2</group>
+			</leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="cpls">(?s)Cpl:\s+Yes(.*?)(?=(Cpl:\s+Yes|$))</regex>		
+			<sub-regex group="1">
+				<regex name="cpl">(?s)CplSPA:\s+(\d+)\r*\nCplSPB:\s+(\d+)\r*\n</regex>
+			</sub-regex>
+		</regex-group-config> 
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>POOLs</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) snapview -listclonefeature</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+** snapview –listclonegroup  **
+CanCreate:  No
+MaxCloneGroupsUsingCPL:  1024
+MaxClonesPerGroup:  8
+MaxLUNsPerSource:  1
+MaxCloneMemory:  10485760
+MaxClones:  2048
+Cpl:  No
+CplSPA:  -1
+CplSPB:  -1
+MinCplSize:  2097152
+DriverVersion:  2
+AvailableLUNs:  267, 215, 85, 112, 324, 144, 291, 320, 401, 271, 355, 8, 262, 268, 232, 335, 236, 176, 264, 321, 68, 153, 300, 177, 120, 1022, 331, 148, 183, 338, 98, 228, 70, 272, 20, 147, 3, 170, 322, 115, 224, 25, 31, 166, 371, 126, 314, 127, 214, 315, 308, 13, 269, 258, 194, 313, 209, 358, 293, 277, 196, 189, 240, 75, 130, 26, 347, 221, 201, 365, 397, 244, 40, 133, 256, 141, 71, 9, 34, 239, 138, 374, 247, 286, 118, 180, 225, 263, 207, 39, 65, 281, 16, 93, 4, 287, 301, 36, 297, 343, 187, 289, 193, 274, 136, 399, 106, 302, 368, 160, 54, 305, 43, 334, 77, 167, 359, 210, 10, 89, 317, 333, 362, 131, 110, 76, 260, 288, 226, 175, 185, 19, 23, 150, 117, 46, 208, 168, 102, 298, 1023, 79, 270, 200, 129, 88, 66, 142, 261, 62, 205, 152, 299, 255, 235, 119, 139, 135, 80, 336, 275, 220, 344, 61, 114, 1, 223, 74, 122, 330, 199, 0, 250, 179, 154, 394, 369, 245, 52, 44, 229, 246, 329, 78, 328, 213, 217, 257, 11, 116, 156, 18, 140, 363, 165, 59, 158, 285, 312, 356, 230, 182, 306, 125, 276, 323, 242, 69, 24, 101, 283, 345, 295, 47, 238, 396, 108, 339, 266, 203, 234, 307, 212, 284, 163, 400, 146, 219, 279, 132, 7, 32, 57, 372, 92, 319, 311, 169, 402, 192, 171, 348, 63, 337, 310, 14, 326, 2, 111, 6, 173, 191, 53, 105, 296, 341, 27, 94, 231, 86, 325, 159, 145, 366, 55, 292, 252, 41, 357, 29, 303, 121, 143, 107, 109, 360, 151, 184, 346, 332, 265, 340, 174, 218, 21, 17, 5, 134, 273, 37, 33, 237, 95, 373, 104, 206, 253, 91, 128, 87, 38, 64, 48, 186, 254, 15, 195, 84, 259, 35, 197, 342, 28, 149, 249, 222, 73, 83, 178, 97, 241, 367, 50, 56, 42, 280, 30, 233, 164, 327, 155, 304, 81, 361, 181, 243, 124, 282, 67, 22, 216, 72, 278, 161, 103, 294, 96, 202, 162, 90, 99, 188, 290, 137, 370, 248, 49, 227, 198, 204, 45, 251, 100, 113, 211, 318, 309, 12, 123, 364, 60, 82, 190, 172, 157, 316, 51
+AllowProtectedRestore:  No
+-->

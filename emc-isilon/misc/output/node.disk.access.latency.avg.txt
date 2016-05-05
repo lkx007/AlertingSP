@@ -1,0 +1,73 @@
+https://10.247.96.201:8080/platform/1/statistics/keys/node.disk.access.latency.avg
+
+
+{
+"keys" : 
+[
+
+{
+"aggregation_type" : "avg",
+"base_name" : "node.disk.perfs",
+"default_cache_time" : 0,
+"description" : "Average access latency for all disks",
+"key" : "node.disk.access.latency.avg",
+"policies" : 
+[
+
+{
+"interval" : 5,
+"persistent" : false,
+"retention" : 4200
+},
+
+{
+"interval" : 120,
+"persistent" : true,
+"retention" : 1209600
+}
+],
+"policy_cache_time" : 7,
+"real_name" : null,
+"scope" : "node",
+"type" : "double",
+"units" : "seconds"
+}
+]
+}
+
+
+https://10.247.96.201:8080/platform/1/statistics/current?key=node.disk.access.latency.avg&devid=all
+
+
+{
+"stats" : 
+[
+
+{
+"devid" : 1,
+"error" : "value not representable",
+"error_code" : null,
+"key" : "node.disk.access.latency.avg",
+"time" : 1393261114,
+"value" : null
+},
+
+{
+"devid" : 2,
+"error" : "value not representable",
+"error_code" : null,
+"key" : "node.disk.access.latency.avg",
+"time" : 1393261116,
+"value" : null
+},
+
+{
+"devid" : 3,
+"error" : "value not representable",
+"error_code" : null,
+"key" : "node.disk.access.latency.avg",
+"time" : 1393261115,
+"value" : null
+}
+]
+}

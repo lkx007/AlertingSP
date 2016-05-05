@@ -1,0 +1,73 @@
+https://10.247.96.201:8080/platform/1/statistics/keys/node.disk.xfers.out.rate.avg
+
+
+{
+"keys" : 
+[
+
+{
+"aggregation_type" : "avg",
+"base_name" : "node.disk.perfs",
+"default_cache_time" : 0,
+"description" : "Average output transfers per second for all disks",
+"key" : "node.disk.xfers.out.rate.avg",
+"policies" : 
+[
+
+{
+"interval" : 5,
+"persistent" : false,
+"retention" : 4200
+},
+
+{
+"interval" : 120,
+"persistent" : true,
+"retention" : 1209600
+}
+],
+"policy_cache_time" : 7,
+"real_name" : null,
+"scope" : "node",
+"type" : "double",
+"units" : "operations per second"
+}
+]
+}
+
+
+https://10.247.96.201:8080/platform/1/statistics/current?key=node.disk.xfers.out.rate.avg&devid=all
+
+
+{
+"stats" : 
+[
+
+{
+"devid" : 1,
+"error" : "value not representable",
+"error_code" : null,
+"key" : "node.disk.xfers.out.rate.avg",
+"time" : 1393258394,
+"value" : null
+},
+
+{
+"devid" : 2,
+"error" : "value not representable",
+"error_code" : null,
+"key" : "node.disk.xfers.out.rate.avg",
+"time" : 1393258391,
+"value" : null
+},
+
+{
+"devid" : 3,
+"error" : "value not representable",
+"error_code" : null,
+"key" : "node.disk.xfers.out.rate.avg",
+"time" : 1393258391,
+"value" : null
+}
+]
+}

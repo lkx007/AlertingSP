@@ -1,0 +1,108 @@
+[#ftl]
+[#if use_advancedsettings]
+    [#assign pollingperiod = topology.pollingperiod]
+[#else]
+    [#assign pollingperiod = 1200]
+[/#if]
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<config xmlns="http://www.watch4net.com/Collecting/InlineCalculationFilter1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.watch4net.com/Collecting/InlineCalculationFilter1 inline-calculation-filter.xsd">
+
+    <!-- Set LUN Used Capacity -->
+    <!--  
+          * Bound DATA Device and SAVE Device UsedCapacity=0 to avoid double-counting
+          * Thick LUN Used is the same as Capacity.  Unbound SAVE and DATA Devices are treated as Thick LUNs.
+          * Thin LUN Used is ConsumedCapacity
+          * Unbound Thin Devices (TDEV) have LUN Used = 0
+          * DLDEV UsedCapacity = 0
+          * TODO: Check if VDEV LUN Used should be 0 since we are going not going to sum them and instead use Snap Pool capacity
+    -->
+    
+    <!-- Bound SAVE Device or DATA Device have capacity of 0 so we do not double-count --> 
+    <result name="UsedCapacity" unit="GB" time-window="${pollingperiod}s">
+        <input keep="true">Capacity</input>
+        <group-by>device</group-by>
+        <group-by>parttype</group-by>
+        <group-by>part</group-by>
+        <filter><![CDATA[devtype=='Array' & parttype=='LUN' & dgstype=='Thick' 
+                            & name=='Capacity' & ispolctr=='1' & ispcbnd=='1']]>
+        </filter>
+        <properties propagation="all" />
+        <jexl-formula>
+            <![CDATA[(0);]]>
+        </jexl-formula>
+    </result>
+    
+    <!-- Thick LUN UsedCapacity for normal Thick LUNs as well as Unbound DATA and SAVE Device -->
+    <result name="UsedCapacity" unit="GB" time-window="${pollingperiod}s">
+        <input keep="true">Capacity</input>
+        <group-by>device</group-by>
+        <group-by>parttype</group-by>
+        <group-by>part</group-by>
+        <filter><![CDATA[devtype=='Array' & parttype=='LUN' & dgstype=='Thick' 
+                            & name=='Capacity' & ispcbnd=='0']]>
+        </filter>
+        <properties propagation="all"/>
+        <jexl-formula>
+            <![CDATA[(Capacity);]]>
+        </jexl-formula>
+    </result>
+
+    <!-- Thin LUN UsedCapacity=ConsumedCapacity for bound TDEVs and VDEVs -->
+    <result name="UsedCapacity" unit="GB" time-window="${pollingperiod}s">
+        <input keep="true">ConsumedCapacity</input>
+        <group-by>device</group-by>
+        <group-by>parttype</group-by>
+        <group-by>part</group-by>
+        <filter><![CDATA[devtype=='Array' & parttype=='LUN' & dgstype=='Thin' 
+                            & name=='ConsumedCapacity' & isbound=='1']]>
+        </filter>
+        <properties propagation="all"/>
+        <jexl-formula>
+            <![CDATA[(ConsumedCapacity);]]>
+        </jexl-formula>
+    </result>
+    
+    <!-- DLDEV LUNs are virtual and have no capacity -->
+    <!-- DLDEV LUN UsedCapacity=0 -->
+    <result name="UsedCapacity" unit="GB" time-window="${pollingperiod}s">
+        <input keep="true">Capacity</input>
+        <group-by>device</group-by>
+        <group-by>parttype</group-by>
+        <group-by>part</group-by>
+        <filter><![CDATA[devtype=='Array' & parttype=='LUN' & dgstype=='Thin' 
+                            & (config='%DLDEV%')]]>
+        </filter>
+        <properties propagation="all"/>
+        <jexl-formula>
+            <![CDATA[(0);]]>
+        </jexl-formula>
+    </result>
+    
+    <!-- Thin LUN UsedCapacity=0 for unbound TDEV -->
+    <result name="UsedCapacity" unit="GB" time-window="${pollingperiod}s">
+        <input keep="true">ConsumedCapacity</input>
+        <group-by>device</group-by>
+        <group-by>parttype</group-by>
+        <group-by>part</group-by>
+        <filter><![CDATA[devtype=='Array' & parttype=='LUN' & dgstype=='Thin' 
+                            & name=='ConsumedCapacity' & isbound=='0']]>
+        </filter>
+        <properties propagation="all"/>
+        <jexl-formula>
+            <![CDATA[(0);]]>
+        </jexl-formula>
+    </result>
+    
+</config>

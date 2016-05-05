@@ -1,0 +1,37 @@
+query=PREFIX srm:<http://ontologies.emc.com/2013/08/srm#> 
+SELECT DISTINCT ?rcpathid ?device ?part ?rep1arry ?rep1lun ?rep2arry ?rep2lun ?rep3arry ?rep3lun ?capacity
+WHERE
+{
+	?srclun a srm:StorageVolume.
+	OPTIONAL{?srclun srm:replicatedFrom ?temp}.
+	FILTER(!BOUND(?temp))
+	?srclun srm:displayName ?partid.
+	?srclun srm:residesOnStorageArray ?srcarry.
+	?srcarry a srm:StorageArray.
+	?srcarry srm:displayName ?device.
+	?srcarry srm:model ?devmodel.
+	FILTER(STRSTARTS(?devmodel,"VNXBlock"))
+	?srclun srm:replicatedTo ?replica1.
+	?replica1 srm:displayName ?rep1lunid.
+	?replica1 srm:residesOnStorageArray /srm:displayName ?rep1arry.
+	OPTIONAL{
+		?replica1 srm:replicatedTo ?replica2.
+		?replica2 srm:displayName ?rep2lunid.
+		?replica2 srm:residesOnStorageArray /srm:displayName ?rep2arry.
+		OPTIONAL{
+			?replica2 srm:replicatedTo ?replica3.
+			?replica3 srm:displayName ?rep3lunid.
+			?replica3 srm:residesOnStorageArray /srm:displayName ?rep3arry.
+		}
+	}
+	LET(?rep2arry := IF(!BOUND(?rep2arry),"",?rep2arry))
+	LET(?rep2lun := IF(!BOUND(?rep2lunid),"",CONCAT("LOGICAL UNIT NUMBER ",STR(?rep2lunid))))
+	LET(?rep2lunid := IF(!BOUND(?rep2lunid),"",?rep2lunid))
+	LET(?rep3arry := IF(!BOUND(?rep3arry),"",?rep3arry))
+	LET(?rep3lun := IF(!BOUND(?rep3lun),"",CONCAT("LOGICAL UNIT NUMBER ",STR(?rep3lunid))))
+	LET(?rep3lunid := IF(!BOUND(?rep3lunid),"",?rep3lunid))
+	LET(?capacity := "0")
+	BIND(CONCAT("LOGICAL UNIT NUMBER ",STR(?partid)) AS ?part)
+	BIND(CONCAT("LOGICAL UNIT NUMBER ",STR(?rep1lunid)) AS ?rep1lun)
+	BIND(CONCAT(STR(?device),STR(?partid),STR(?rep1arry),STR(?rep1lunid),STR(?rep2arry),STR(?rep2lunid),STR(?rep3arry),STR(?rep3lunid)) AS ?rcpathid)
+}

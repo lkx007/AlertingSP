@@ -1,0 +1,5 @@
+smiprovider.pollingperiod.default=3600
+smiprovider.datatimeout.default=600
+smiprovider.connectiontimeout.default=300
+smiprovider.usesecure.default=true
+passive_discovery.brocade_zones.default=false

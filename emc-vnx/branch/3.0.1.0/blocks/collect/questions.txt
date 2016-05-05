@@ -1,0 +1,92 @@
+#EXPORT .vnx AS device(friendlyname)
+
+[+storage.timeseries.socketconnector]
+host = hostname
+port = port
+
+[+alert.timeseries.socketconnector]
+host = hostname
+port = port
+
+[+gateway]host = hostnameport = portusername = stringpassword = password[+topologyservice]
+host = hostname
+gateway
+
+[+propertystore]
+host = hostname
+port = port
+username = username
+password = password
+
+[events]
+host = hostname
+port = port
+
+[block]
+spa = hostname
+spb = hostname
+use_secfile = boolean
+if use_secfile
+  secfilepath = string ?
+else
+  userscope = string(global,local,LDAP)
+  username = username
+  password = password
+fi
+
+[file]
+csprimary = hostname
+cssecondary = hostname ?
+username = username
+password = password
+
+[unity]
+management = hostname
+username = username
+password = password
+
+[alertconsolidation]
+host = host
+port = port
+
+[vnx]
+type = string(unified,block,file)
+friendlyname = string
+if type == 'unified'
+  block
+  file
+elif type == 'block'
+  block
+elif type == 'file'
+  file
+elif type == 'unity'
+  unity
+fi
+
+[main]
+# use_failover is defined in storage to avoid redefining timeseries which would fail
+storage.failover = boolean
+storage.timeseries.socketconnector
+
+# explicit condition since we can't use ? which would redefine timeseries and fail
+use_alert = boolean
+if use_alert
+  alert.timeseries.socketconnector
+fi
+propertystore
+use_topo = boolean
+if use_topo
+  topologyservice
+fi
+events
+alertconsolidation
+naviseccli.path =string ?
+vnx *
+use_advancedsettings = boolean
+if use_advancedsettings
+  topology.pollingperiod = integer[300,3600]
+  perf.pollingperiod = integer[300,3600]
+  nopoll = boolean
+  alertcollect = boolean
+fi
+

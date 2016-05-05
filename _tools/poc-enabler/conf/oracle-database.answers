@@ -1,0 +1,17 @@
+dependencies.oracle-database-collect.oracle-database.action.0=yes
+questions.oracle-database.oracle-database-collect.storage.failover=0
+questions.oracle-database.oracle-database-collect.storage.timeseries.socketconnector.host=localhost
+questions.oracle-database.oracle-database-collect.storage.timeseries.socketconnector.port=2020
+questions.oracle-database.oracle-database-collect.use_alert=0
+questions.oracle-database.oracle-database-collect.alert.timeseries.socketconnector.host=localhost
+questions.oracle-database.oracle-database-collect.alert.timeseries.socketconnector.port=2010
+#Oracle-database
+questions.oracle-database.oracle-database-collect.oracle.database[0].mode=2
+questions.oracle-database.oracle-database-collect.oracle.database[0].host=5.5.5.5
+questions.oracle-database.oracle-database-collect.oracle.database[0].port=1571
+questions.oracle-database.oracle-database-collect.oracle.database[0].servicename=w4nDB
+questions.oracle-database.oracle-database-collect.oracle.database[0].username=admin
+questions.oracle-database.oracle-database-collect.oracle.database[0].password=senha
+questions.oracle-database.oracle-database-collect.oracle.database[1].want=1
+questions.oracle-database.oracle-database-collect.use_enrichment=1
+questions.oracle-database.oracle-database-collect.use_advancedsettings=1

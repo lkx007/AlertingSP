@@ -1,0 +1,4 @@
+#collect
+emcisilon.system.credentials.username.default=admin
+emcisilon.perf.pollingperiod.default=300
+emcisilon.topology.pollingperiod.default=900

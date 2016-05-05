@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema"
+               xmlns="http://www.watch4net.com/GroupFilter">
+
+    <data-accessor>com.watch4net.apg.v2.collector.plugins.groupfilter.data.mem.MemoryDataAccessor</data-accessor>
+
+    <!-- Meta head gets disksize and disktype of its members if they are the same for all members.
+    It they differ, it is set to Mixed.  Members are mapped to its meta head via metahid that matches
+    the partid of the meta head.
+    isfcache is set to enabled if it is enabled for at least one meta member. -->
+
+    <!-- Metrics of meta members -->
+    <group-member>
+        <condition property="devtype">Array</condition>
+        <condition property="parttype">MetaMember</condition>
+        <condition property="ismetam">1</condition>
+        <identity>device</identity>
+        <identity>metahid</identity>
+        <destination name="metahead"/>
+        <addtogroup>disktype</addtogroup>
+        <addtogroup>disksize</addtogroup>
+        <addtogroup>isfcache</addtogroup>
+        <addtogroup>dgraid</addtogroup>
+        <addtogroup>dgtype</addtogroup>
+        <addtogroup>dgname</addtogroup>
+        <addtogroup>pooltype</addtogroup>
+        <addtogroup>poolname</addtogroup>
+    </group-member>
+
+    <!-- Metrics of meta head-->
+    <group-member>
+        <condition property="devtype">Array</condition>
+        <condition property="parttype">LUN</condition>
+        <condition property="ismetah">1</condition>
+        <identity>device</identity>
+        <identity>partid</identity>
+        <source name="metahead"/>
+        <pullfromgroup substitute="Mixed">disktype</pullfromgroup>
+        <pullfromgroup substitute="Mixed">disksize</pullfromgroup>
+        <pullfromgroup>isfcache</pullfromgroup>
+        <pullfromgroup>dgraid</pullfromgroup>
+        <pullfromgroup>dgtype</pullfromgroup>
+        <pullfromgroup>dgname</pullfromgroup>
+        <pullfromgroup>pooltype</pullfromgroup>
+        <pullfromgroup>poolname</pullfromgroup>
+    </group-member>
+</configuration>

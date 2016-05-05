@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>METALUN_INFO_</name>
+			<leaf>
+				<name>metalunid</name>
+				<group>meta-1</group>
+			</leaf>
+			<leaf>
+				<name>metalunname</name>
+				<group>meta-2</group>
+			</leaf>
+			<leaf>
+				<name>TotalCapacity (MB)</name>
+				<group>meta-3</group>
+			</leaf>
+			<leaf>
+				<name>PresentedCapacity (MB)</name>
+				<group>meta-4</group>
+			</leaf>
+			<leaf>
+				<name>WWN</name>
+				<group>meta-5</group>
+			</leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)MetaLUN Number(.*?)(?=(MetaLUN Number|$))</regex>
+			<sub-regex group="1">
+				<regex name="meta">(?s)(\d+)[\r\n]MetaLUN Name:\s+(.*)[\r\n]Total User Capacity \(Blocks/Megabytes\):[\s]+[\d]+/([\d]+)[\r\n]Actual User Capacity \(Blocks/Megabytes\):[\s]+[\d]+/([\d]+)[\r\n]MetaLUN WWN:[\s]+(..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..)[\r\n]</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>METALUNS</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) metalun -list -name -totalusercap -actualusercap -metalunwwn</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+MetaLUN Number:  238
+MetaLUN Name:  lglov037_8
+Total User Capacity (Blocks/Megabytes):  10485760/5120
+Actual User Capacity (Blocks/Megabytes):  10485760/5120
+MetaLUN WWN:  60:06:01:60:37:30:2D:00:AB:5C:9C:0A:25:1B:E3:11
+-->
+

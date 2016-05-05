@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules xmlns="http://www.watch4net.com/Events/TrapReceiver" xmlns:xsi="http://www.w3.org/2001/XMLSchema">
+    <!-- Rule for VMAX Health alerts -->
+    <rule ip-address="*" oid="*" specific-id="*" generic-id="*" enterprise-id=".1.3.6.1.4.1.1139.3">
+        <handle destination="data">
+            <constant-conversion key="source" value="VMAX" />
+        </handle>
+    </rule>
+	<rule ip-address="*" oid="*" specific-id="*" generic-id="*" enterprise-id=".1.3.6.1.3.94">
+        <handle destination="data">
+            <constant-conversion key="source" value="VMAX" />
+        </handle>
+    </rule>
+</rules>

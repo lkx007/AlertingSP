@@ -1,0 +1,917 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules xmlns="http://www.watch4net.com/Events/TrapReceiver"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema">
+    <!-- IF-MIB : linkDown -->
+    <rule ip-address="*" enterprise-id=".1.3.6.1.6.3.1.1.5.3" generic-id="*" oid=".1.3.6.1.6.3.1.1.5.3">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="fullmsg" value="down" />
+            <variablename-conversion from="ifDescr" to="part" />
+            <constant-conversion key="sourceeventtype" value="link" />
+            <constant-conversion key="sourcedomainname" value="linkDown" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="severity" value="critical" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!-- IF-MIB : linkUp -->
+    <rule ip-address="*" enterprise-id=".1.3.6.1.6.3.1.1.5.4" generic-id="*" oid=".1.3.6.1.6.3.1.1.5.4">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="fullmsg" value="up" />
+            <variablename-conversion from="ifDescr" to="part" />
+            <constant-conversion key="sourceeventtype" value="link" />
+            <constant-conversion key="sourcedomainname" value="linkUp" />
+            <constant-conversion key="category" value="Availability" />
+            <variablename-conversion from="ifDescr" to="part" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+	<!-- CISCO-AAA-SERVER-MIB : casServerStateChange -->
+	<rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.10.56.2.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="casState" to="fullmsg" />
+            <constant-conversion key="sourceeventtype" value="AAA server state change" />
+            <constant-conversion key="sourcedomainname" value="casServerStateChange" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="part" value="AAA server" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="CAS Server" />
+        </handle>
+    </rule>
+    <!-- CISCO-RF-MIB : ciscoRFSwactNotif-->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.176.2.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="cRFStatusUnitId" to="part" />
+            <constant-conversion key="sourceeventtype" value="Redundancy framework" />
+            <constant-conversion key="sourcedomainname" value="ciscoRFSwactNotif" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="parttype" value="Active Redundant Unit" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- CISCO-RF-MIB : ciscoRFProgressionNotif-->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.176.2.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="cRFStatusUnitId" to="part" />
+            <variablename-conversion from="cRFStatusUnitState" to="fullmsg" />
+            <constant-conversion key="sourceeventtype" value="Redundancy framework" />
+            <constant-conversion key="sourcedomainname" value="ciscoRFProgressionNotif" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="parttype" value="Active Redundant Unit" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- CISCO-RF-MIB : ciscoRFIssuStateNotif-->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.176.2.0.3">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="cRFStatusUnitId" to="part" />
+            <variablename-conversion from="cRFStatusUnitState" to="fullmsg" />
+            <constant-conversion key="sourceeventtype" value="Redundancy framework" />
+            <constant-conversion key="sourcedomainname" value="ciscoRFIssuStateNotif" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="parttype" value="Active Redundant Unit" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- CISCO-FCS-MIB : fcsReqRejNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.297.1.4.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="sourceeventtype" value="Fabric Configuration" />
+            <constant-conversion key="sourcedomainname" value="fcsReqRejNotify" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="parttype" value="FCS" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- CISCO-FCS-MIB : fcsDiscoveryCompleteNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.297.1.4.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="sourceeventtype" value="Fabric Configuration" />
+            <constant-conversion key="sourcedomainname" value="fcsDiscoveryCompleteNotify" />
+            <constant-conversion key="category" value="Availability" />
+            <variablename-conversion from="fcsVsanDiscoveryName" to="part" />
+            <constant-conversion key="parttype" value="FCS" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- CISCO-HC-ALARM-MIB :cHcRisingAlarm -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.10.93.2.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="sourceeventtype" value="RMON" />
+            <constant-conversion key="sourcedomainname" value="cHcRisingAlarm" />
+            <constant-conversion key="category" value="Performance" />
+            <variablename-conversion from="cHcAlarmRisingEventIndex" to="part" />
+            <constant-conversion key="parttype" value="Cisco HC Rising Alarm" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- CISCO-HC-ALARM-MIB :cHcFallingAlarm -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.10.93.2.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="sourceeventtype" value="RMON" />
+            <constant-conversion key="sourcedomainname" value="cHcFallingAlarm" />
+            <constant-conversion key="category" value="Performance" />
+            <variablename-conversion from="cHcAlarmFallingEventIndex" to="part" />
+            <constant-conversion key="parttype" value="Cisco HC Falling Alarm" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- coldstart Trap -->
+    <rule ip-address="*" oid=".1.3.6.1.6.3.1.1.5.1" enterprise-id=".1.3.6.1.6.3.1.1.5.1" generic-id="*" >
+        <handle destination="data">
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="sourceeventtype" value="SNMP Trap" />
+            <constant-conversion key="sourcedomainname" value="coldstart" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="SNMP Agent" />
+        </handle>
+    </rule>
+    <!-- warmstart Trap -->
+    <rule ip-address="*" oid=".1.3.6.1.6.3.1.1.5.2" enterprise-id=".1.3.6.1.6.3.1.1.5.2" generic-id="*" >
+        <handle destination="data">
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="sourceeventtype" value="SNMP Trap" />
+            <constant-conversion key="sourcedomainname" value="warmstart" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="SNMP Agent" />
+        </handle>
+    </rule>
+    <!-- CISCO-IF-EXTENSION-MIB : cieLinkDown -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.276.0.1">
+        <handle destination="data">
+        <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="fullmsg" value="down" />
+            <variablename-conversion from="ifIndex" to="part" />
+            <constant-conversion key="sourceeventtype" value="link" />
+            <constant-conversion key="sourcedomainname" value="cieLinkDown" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="severity" value="critical" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!-- CISCO-IF-EXTENSION-MIB : cieLinkUp -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.276.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="fullmsg" value="up" />
+            <variablename-conversion from="ifIndex" to="part" />
+            <constant-conversion key="sourceeventtype" value="link" />
+            <constant-conversion key="sourcedomainname" value="cieLinkUp" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!-- CISCO-IF-EXTENSION-MIB : cieDelayedLinkUpDownNotif -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.276.0.3">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion to="fullmsg" from="cieIfOperStatusCause" />
+            <variablename-conversion from="ifName" to="part" />
+            <constant-conversion key="sourceeventtype" value="link" />
+            <constant-conversion key="sourcedomainname" value="cieDelayedLinkUpDownNotif" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!--CISCO-VSAN-MIB : vsanStatusChange -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.282.1.3.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="fullmsg" value="VSAN" />
+            <variablename-conversion from="notifyVsanIndex" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="VSAN" />
+            <constant-conversion key="sourcedomainname" value="vsanStatusChange" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN" />
+        </handle>
+    </rule>
+    <!-- CISCO-VSAN-MIB : vsanPortMembershipChange -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.282.1.3.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="fullmsg" value="VSAN Port membership changed" />
+            <variablename-conversion from="ifIndex" to="part" />
+            <variablename-conversion from="vsanFcFeElementName" to="device" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="VSAN" />
+            <constant-conversion key="sourcedomainname" value="vsanPortMembershipChange" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN port" />
+        </handle>
+    </rule>
+    <!-- CISCO-FC-FE-MIB : fcTrunkIfUpNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.289.1.3.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion to="fullmsg" from="fcTrunkIfOperStatusCauseDescr" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Trunk" />
+            <constant-conversion key="sourcedomainname" value="fcTrunkIfUpNotify" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Interface" />
+            <constant-conversion key="part" value="FC Trunk" />
+        </handle>
+    </rule>
+    <!-- CISCO-FC-FE-MIB : fcTrunkIfDownNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.289.1.3.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion to="fullmsg" from="fcTrunkIfOperStatusCauseDescr" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Trunk" />
+            <constant-conversion key="sourcedomainname" value="fcTrunkIfDownNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Interface" />
+            <constant-conversion key="part" value="FC Trunk" />
+        </handle>
+    </rule>
+    <!-- CISCO-FC-FE-MIB : fcotInserted -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.289.1.3.0.4">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="fullmsg" value="Fibre Channel Optical Transmitter inserted" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Link" />
+            <constant-conversion key="sourcedomainname" value="fcotInserted" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="FC Optical Transmitter" />
+        </handle>
+    </rule>
+    <!-- CISCO-FC-FE-MIB : fcotRemoved -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.289.1.3.0.5">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="fullmsg" value="Fibre Channel Optical Transmitter removed" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Link" />
+            <constant-conversion key="sourcedomainname" value="fcotRemoved" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="FC Optical Transmitter" />
+        </handle>
+    </rule>
+    <!-- CISCO-IETF-VRRP-MIB : cVrrpNotificationNewMaster -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.10.999.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="vrrp" />
+            <constant-conversion key="sourcedomainname" value="cVrrpNotificationNewMaster" />
+			<variablename-conversion from="cVrrpOperationsMasterIpAddr" to="part" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="SNMP agent" />
+        </handle>
+    </rule>
+    <!-- CISCO-DM-MIB : dmNewPrincipalSwitchNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.302.1.3.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="notifyVsanIndex" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="fcdomain" />
+            <constant-conversion key="sourcedomainname" value="dmNewPrincipalSwitchNotify" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN" />
+        </handle>
+    </rule>
+    <!-- CISCO-DM-MIB : dmDomainIdNotAssignedNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.302.1.3.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="notifyVsanIndex" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="fcdomain" />
+            <constant-conversion key="sourcedomainname" value="dmDomainIdNotAssignedNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN" />
+        </handle>
+    </rule>
+    <!-- CISCO-DM-MIB : dmFabricChangeNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.302.1.3.0.3">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="notifyVsanIndex" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="fcdomain" />
+            <constant-conversion key="sourcedomainname" value="dmFabricChangeNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN" />
+        </handle>
+    </rule>
+    <!-- CISCO-CFS-MIB : ciscoCFSMergeFailNotif -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.433.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="cfsMergeFailReasonDescription" to="eventtext" />
+            <variablename-conversion from="cfsMergeFailFeatureName" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="cfs" />
+            <constant-conversion key="sourcedomainname" value="ciscoCFSMergeFailNotif" />
+            <constant-conversion key="severity" value="error" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Fabric" />
+        </handle>
+    </rule>
+    <!-- CISCO-CFS-MIB : ciscoCFSFeatureActionNotif -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.433.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="cfsFeatureOpLastActionResult" to="fullmsg" />
+            <variablename-conversion from="cfsFeatureOpLastAction" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="cfs" />
+            <constant-conversion key="sourcedomainname" value="ciscoCFSFeatureActionNotif" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Fabric" />
+        </handle>
+    </rule>
+	 <!-- CISCO-ENTITY-FRU-CONTROL-MIB :  cefcModuleStatusChange -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.117.2.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="part" value="CEFC Feature" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Entity" />
+            <constant-conversion key="sourcedomainname" value="cefcModuleStatusChange" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="FC switch" />
+        </handle>
+    </rule>
+	
+	<!-- CISCO-ENTITY-FRU-CONTROL-MIB :  cefcPowerStatusChange -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.117.2.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="part" value="FRU" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Entity" />
+            <constant-conversion key="sourcedomainname" value="cefcPowerStatusChange" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="FRU" />
+        </handle>
+    </rule>
+	
+    <!-- CISCO-ENTITY-FRU-CONTROL-MIB : cefcFRUInserted -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.117.2.0.3">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="entPhysicalContainedIn" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Entity" />
+            <constant-conversion key="sourcedomainname" value="cefcFRUInserted" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="FRU Container" />
+        </handle>
+    </rule>
+    <!-- CISCO-ENTITY-FRU-CONTROL-MIB : cefcFRURemoved -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.117.2.0.4">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="entPhysicalContainedIn" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Entity" />
+            <constant-conversion key="sourcedomainname" value="cefcFRURemoved" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="FRU Container" />
+        </handle>
+    </rule>
+    <!-- CISCO-ENTITY-FRU-CONTROL-MIB :cefcUnrecognizedFRU -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.117.2.0.5">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="entPhysicalName" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Entity" />
+            <constant-conversion key="sourcedomainname" value="cefcUnrecognizedFRU" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="FRU Container" />
+        </handle>
+    </rule>
+    <!-- CISCO-ENTITY-FRU-CONTROL-MIB : cefcFanTrayStatusChange -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.117.2.0.6">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="cefcFanTrayOperStatus" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Entity" />
+            <constant-conversion key="sourcedomainname" value="cefcFanTrayStatusChange" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Fan Tray" />
+        </handle>
+    </rule>
+    <!-- CISCO-ENTITY-FRU-CONTROL-MIB : cefcPowerSupplyOutputChange -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.117.2.0.7">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="entPhysicalName" to="part" />
+			<variablename-conversion from="cefcPSOutputModeCurrent" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Entity" />
+            <constant-conversion key="sourcedomainname" value="cefcPowerSupplyOutputChange" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Power Supply Entity" />
+        </handle>
+    </rule>
+    <!-- CISCO-LICENSE-MGR-MIB : clmLicenseExpiryNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.369.3.0.1">
+        <handle destination="data">
+		    <variablename-conversion from="clmLicenseExpiryDate" to="fullmsg" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="License" />
+            <constant-conversion key="sourcedomainname" value="clmLicenseExpiryNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="License Manager" />
+            <constant-conversion key="part" value="License" />
+        </handle>
+    </rule>
+    <!-- CISCO-LICENSE-MGR-MIB : clmNoLicenseForFeatureNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.369.3.0.2">
+        <handle destination="data">
+		    <variablename-conversion from="clmLicenseGracePeriod" to="fullmsg" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="License" />
+            <constant-conversion key="sourcedomainname" value="clmNoLicenseForFeatureNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="License Manager" />
+            <constant-conversion key="part" value="License" />
+        </handle>
+    </rule>
+    <!-- CISCO-LICENSE-MGR-MIB : clmLicenseFileMissingNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.369.3.0.3">
+        <handle destination="data">
+		    <variablename-conversion from="clmNoOfMissingUsageLicenses" to="fullmsg" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="License" />
+            <constant-conversion key="sourcedomainname" value="clmLicenseFileMissingNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="License Manager" />
+            <constant-conversion key="part" value="License" />
+        </handle>
+    </rule>
+    <!-- CISCO-LICENSE-MGR-MIB : clmlicenseexpirywarningnotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.369.3.0.4">
+        <handle destination="data">
+		    <variablename-conversion from="clmLicenseExpiryDate" to="fullmsg" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="License" />
+            <constant-conversion key="sourcedomainname" value="clmlicenseexpirywarningnotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="License Manager" />
+            <constant-conversion key="part" value="License" />
+        </handle>
+    </rule>
+    <!-- CISCO-ZS-MIB : zoneServiceReqRejNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.294.1.4.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="zoneMemberID" to="part" />
+            <variablename-conversion from="zoneServiceRejReasonCodeExp" to="eventtext" />
+			<variablename-conversion from="zoneServiceRejReasonCode" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Zone" />
+            <constant-conversion key="sourcedomainname" value="zoneServiceReqRejNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Zone member" />
+        </handle>
+    </rule>
+    <!-- CISCO-ZS-MIB : zoneMergeSuccessNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.294.1.4.0.3">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="zoneMergeSuccessVSANNum" to="part" />
+			<variablename-conversion from="ifIndex" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Zone" />
+            <constant-conversion key="sourcedomainname" value="zoneMergeSuccessNotify" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN" />
+        </handle>
+    </rule>
+    <!-- CISCO-ZS-MIB : zoneMergeFailureNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.294.1.4.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="zoneMergeFailureVSANNum" to="part" />
+            <variablename-conversion from="zoneMergeFailureReason" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Zone" />
+            <constant-conversion key="sourcedomainname" value="zoneMergeFailureNotify" />
+            <constant-conversion key="severity" value="critical" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN" />
+        </handle>
+    </rule>
+    <!-- CISCO-ZS-MIB : zoneDefZoneBehaviourChngNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.294.1.4.0.4">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="zoneDefaultZoneBehaviour" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Zone" />
+            <constant-conversion key="sourcedomainname" value="zoneDefZoneBehaviourChngNotify" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Zone" />
+            <constant-conversion key="part" value="Default Zoning Behaviour" />
+        </handle>
+    </rule>
+    <!-- CISCO-ZS-MIB : zoneUnsuppMemInIntOpModeNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.294.1.4.0.5">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="zoneVsanId" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Zone" />
+            <constant-conversion key="sourcedomainname" value="zoneUnsuppMemInIntOpModeNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN" />
+        </handle>
+    </rule>
+    <!-- CISCO-VIRTUAL-NW-IF-MIB : virtualNwIfCreateEntryNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.290.1.3.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="ifName" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="VNI" />
+            <constant-conversion key="sourcedomainname" value="virtualNwIfCreateEntryNotify" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VNI" />
+        </handle>
+    </rule>
+    <!-- CISCO-VIRTUAL-NW-IF-MIB : virtualNwIfDeleteEntryNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.290.1.3.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="virtualNwIfIndex" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="VNI" />
+            <constant-conversion key="sourcedomainname" value="virtualNwIfDeleteEntryNotify" />
+            <constant-conversion key="severity" value="warn" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VNI" />
+        </handle>
+    </rule>
+    <!-- RMON-MIB : risingAlarm -->
+    <rule ip-address="*" enterprise-id=".1.3.6.1.2.1.16" generic-id="*" oid=".1.3.6.1.2.1.16.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="alarmIndex" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="RMON" />
+            <constant-conversion key="sourcedomainname" value="risingAlarm" />
+            <constant-conversion key="severity" value="error" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="RMON alarm" />
+        </handle>
+    </rule>
+    <!-- RMON-MIB : fallingAlarm -->
+    <rule ip-address="*" enterprise-id=".1.3.6.1.2.1.16" generic-id="*" oid=".1.3.6.1.2.1.16.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="alarmIndex" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="RMON" />
+            <constant-conversion key="sourcedomainname" value="fallingAlarm" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="RMON alarm" />
+        </handle>
+    </rule>
+    <!-- CISCO-CONFIG-MAN-MIB : ccmCLIRunningConfigChanged -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.43.2.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="ccmHistoryEventTerminalType" to="part" />
+            <constant-conversion key="category" value="Configuration" />
+            <constant-conversion key="sourceeventtype" value="Config" />
+            <constant-conversion key="sourcedomainname" value="ccmCLIRunningConfigChanged" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="CLI Running Configuration" />
+        </handle>
+    </rule>
+    <!-- SNMPv2-MIB : authenticationfailure -->
+    <rule ip-address="*" enterprise-id=".1.3.6.1.6.3.1.1.5.5" generic-id="*" oid=".1.3.6.1.6.3.1.1.5.5">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="snmp" />
+            <constant-conversion key="sourcedomainname" value="authenticationfailure" />
+            <constant-conversion key="fullmsg" value="SNMP Authentication failed." />
+            <constant-conversion key="severity" value="error" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="SNMP Agent" />
+        </handle>
+    </rule>
+    <!-- CISCO-EXT-SCSI-MIB : ciscoExtScsiLunDiscDoneNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.299.1.2.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+             <constant-conversion key="part" value="Scsi LUN" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="scsi" />
+            <constant-conversion key="sourcedomainname" value="ciscoExtScsiLunDiscDoneNotify" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="SCSI" />
+        </handle>
+    </rule>
+    <!-- CISCO-FCTRACEROUTE-MIB : fcTraceRouteCompletionNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.296.1.3.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="fcTraceRouteTargetAddr" to="part" />
+            <variablename-conversion from="fcTraceRouteOperStatus" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="fctrace" />
+            <constant-conversion key="sourcedomainname" value="fcTraceRouteCompletionNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="FC Trace Route" />
+        </handle>
+    </rule>
+    <!-- CISCO-FDMI-MIB : cfdmiRejectRegNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.373.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="notifyVsanIndex" to="part" />
+            <variablename-conversion from="cfdmiRejectReasonCodeExpl" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="FDMI" />
+            <constant-conversion key="sourcedomainname" value="cfdmiRejectRegNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN" />
+        </handle>
+    </rule>
+    <!-- CISCO-SYSTEM-EXT-MIB : cseFailSwCoreNotifyExtended -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.305.1.4.3.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="cseSwCoresFileName" to="part" />
+            <variablename-conversion from="sysName" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="Sysmgr" />
+            <constant-conversion key="sourcedomainname" value="cseFailSwCoreNotifyExtended" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Software" />
+        </handle>
+    </rule>
+    <!-- CISCO-FEATURE-CONTROL-MIB : ciscoFeatureOpStatusChange -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.377.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="category" value="Configuration" />
+            <constant-conversion key="sourceeventtype" value="Feature control" />
+            <constant-conversion key="sourcedomainname" value="ciscoFeatureOpStatusChange" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Feature" />
+            <constant-conversion key="part" value="Feature Control" />
+        </handle>
+    </rule>
+    <!-- CISCO-FEATURE-CONTROL-MIB : ciscoFeatOpStatusChange -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.377.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <constant-conversion key="category" value="Configuration" />
+            <constant-conversion key="sourceeventtype" value="Feature control" />
+            <constant-conversion key="sourcedomainname" value="ciscoFeatOpStatusChange" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Feature" />
+            <constant-conversion key="part" value="Feature Control" />
+        </handle>
+    </rule>
+    <!-- CISCO-RSCN-MIB : rscnElsRejectReqNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.292.1.4.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="rscnNotifyFcId" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="RSCN" />
+            <constant-conversion key="sourcedomainname" value="rscnElsRejectReqNotify" />
+            <constant-conversion key="severity" value="error" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Registered State Notification" />
+        </handle>
+    </rule>
+    <!-- CISCO-RSCN-MIB : rscnIlsRejectReqNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.292.1.4.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="rscnNotifyFcId" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="RSCN" />
+            <constant-conversion key="sourcedomainname" value="rscnIlsRejectReqNotify" />
+            <constant-conversion key="severity" value="error" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Registered State Notification" />
+        </handle>
+    </rule>
+    <!-- CISCO-RSCN-MIB : rscnElsRxRejectReqNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.292.1.4.0.3">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="rscnNotifyFcId" to="part" />
+            <variablename-conversion from="rscnElsRejReasonCode" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="RSCN" />
+            <constant-conversion key="sourcedomainname" value="rscnElsRxRejectReqNotify" />
+            <constant-conversion key="severity" value="error" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Registered State Notification" />
+        </handle>
+    </rule>
+    <!-- CISCO-RSCN-MIB : rscnIlsRxRejectReqNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.292.1.4.0.4">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="rscnNotifyFcId" to="part" />
+            <variablename-conversion from="rscnIlsRejReasonCode" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="RSCN" />
+            <constant-conversion key="sourcedomainname" value="rscnIlsRxRejectReqNotify" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="Registered State Notification" />
+        </handle>
+    </rule>
+    <!-- CISCO-NS-MIB : fcNameServerRejectRegNotify -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.293.1.4.0.1">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="fcNameServerPortName" to="part" />
+            <variablename-conversion from="fcNameServerRejReasonCodeExp" to="fullmsg" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="FCNS" />
+            <constant-conversion key="sourcedomainname" value="fcNameServerRejectRegNotify" />
+            <constant-conversion key="severity" value="error" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="NameServer" />
+        </handle>
+    </rule>
+    <!-- CISCO-NS-MIB : fcNameServerDatabaseFull -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.293.1.4.0.2">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="notifyVsanIndex" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="FCNS" />
+            <constant-conversion key="sourcedomainname" value="fcNameServerDatabaseFull" />
+            <constant-conversion key="severity" value="error" />
+            <constant-conversion key="devtype" value="Switch" />
+            <constant-conversion key="parttype" value="VSAN" />
+        </handle>
+    </rule>
+    <!-- CISCO-NS-MIB : fcNameServerEntryAdd -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.293.1.4.0.3">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="fcNameServerPortName" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="FCNS" />
+            <constant-conversion key="sourcedomainname" value="fcNameServerEntryAdd" />
+            <constant-conversion key="severity" value="info" />
+            <constant-conversion key="devtype" value="Switch" />
+            <variablename-conversion from="fcNameServerPortType" to="parttype" />
+        </handle>
+    </rule>
+    <!-- CISCO-NS-MIB : fcNameServerEntryDelete -->
+    <rule ip-address="*" enterprise-id="*" generic-id="*" oid=".1.3.6.1.4.1.9.9.293.1.4.0.4">
+        <handle destination="data">
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="source" value="Cisco" />
+            <variablename-conversion from="fcNameServerPortName" to="part" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="sourceeventtype" value="FCNS" />
+            <constant-conversion key="sourcedomainname" value="fcNameServerEntryDelete" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="devtype" value="Switch" />
+            <variablename-conversion from="fcNameServerPortType" to="parttype" />
+        </handle>
+    </rule>
+</rules>

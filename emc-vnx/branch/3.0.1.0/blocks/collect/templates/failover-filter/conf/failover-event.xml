@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/APG/Filter/Failover config.xsd"
+	xmlns="http://www.watch4net.com/APG/Filter/Failover">
+	<availability-check period="60000" />
+	<local-queue size="10000" buffer-compensation="5000" />
+	<file-transfer buffer-size="32768" />
+	<!-- 41943040 should be about 5GB -->
+	<temporary-storage path="tmp-event" file-size="100000" max-capacity="41943040" />
+</config>

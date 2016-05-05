@@ -1,0 +1,6 @@
+source 'https://rubygems.org' 
+
+gem 'savon'
+gem 'sax-machine'
+gem 'minitest', '~>5.2'
+gem 'haml'

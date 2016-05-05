@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+	<handling-configuration id="scaleThroughput">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">source=='VNXFile-Collector' &amp; name='%Throughput'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-pah-scale-Throughput.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!-- Convert VNX File Capacity metric named "Capacity" from MB to GB for File -->
+	<handling-configuration id="VNX-FILE-CAPACITY-GB">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name='%Capacity' | name=='CheckPointSize' | name=='SpaceSaved' | name=='OriginalDataSize' | name=='UsedOnSavvol' | name='%Throughput') &amp; (parttype=='FileSystem' | parttype=='Snapshot' | parttype=='Storage Pool' | parttype=='Disk' | parttype=='Checkpoint' | parttype=='Replication') &amp; source=='VNXFile-Collector'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/pah-scale-Capacity.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!--Compute the 'NASCapacity' metric -->
+	<handling-configuration id="VNX-NAS-CAPACITY">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype=='Disk' | name=='RemoveMeZero'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/sah-vnx-naspresented.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!--Compute the 'NASUnusedCapacity' metric -->
+	<handling-configuration id="VNX-UNUSED-NAS-CAPACITY">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype=='Disk' | name=='RemoveMeZero'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/sah-vnx-unusednasdiskcapacity.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!--Compute the 'NASSystemUsedCapacity' metric -->
+	<handling-configuration id="VNX-USED-NAS-CAPACITY">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">disktype=='SystemResource' | parttype=='FileSystem' | name=='RemoveMeZero'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/sah-vnx-nasfilecapacity.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!--Compute the 'NASFSCapacity' and 'NASFSUsedCapacity' metric -->
+	<handling-configuration id="VNX-USABLEFS-NAS-CAPACITY">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype=='FileSystem' | name=='RemoveMeZero'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/sah-vnx-filesystemcapacity.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!--Compute the 'NASFSOverheadCapacity' metric -->
+	<handling-configuration id="VNX-OVERHEAD-NAS-CAPACITY">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype=='FileSystem' | name=='RemoveMeZero'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/sah-vnx-fsoverheadcapacity.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!--Compute the 'NASSavVolCapacity' metric -->
+	<handling-configuration id="VNX-SAVVOL-NAS-CAPACITY">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype=='Snapshot' | name=='RemoveMeZero'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/sah-vnx-savvolcapacity.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!--Compute the 'NASPoolCapacity' and 'NASPoolUsedCapacity' metric -->
+	<handling-configuration id="VNX-POOL-NAS-CAPACITY">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype=='Storage Pool' | name=='RemoveMeZero'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/sah-vnx-naspoolcapacity.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="Variable-Blocker-RemoveMe">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name='RemoveMe' | !(device) | !(serialnb)</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler"/>
+	</handling-configuration>
+
+        <!--Replace spaces in property 'movers' with commas. This applies to NAS Disk only-->
+    <handling-configuration id="NAS-Disk-movers-replace-spaces">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                    <parameter name="filter">parttype=='Disk' &amp; source=='VNXFile-Collector'</parameter>
+                </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+            <parameter name="property">movers</parameter>
+            <parameter name="regex"> </parameter>
+            <parameter name="replacement">,</parameter>
+        </handler>
+    </handling-configuration>
+</configuration>

@@ -1,0 +1,40 @@
+[+storage.timeseries.socketconnector]
+host = hostname
+port = port
+
+[+alert.timeseries.socketconnector]
+host = hostname
+port = port
+
+[symapi]
+path = string ?
+connect_type = string(remote, local)
+if connect_type == 'remote'
+  connect = string
+fi
+
+[vmax]
+serialnb = string
+
+[unisphere]
+host = hostname
+username = username
+password = password
+
+[emcvmax]
+unisphere +
+#not less then 15 mins, no more then 1 day.  Actually, in lab, it takes about 1.3 hour to poll everything...Default is 2hours (7200)
+perf.pollingperiod = integer[900,86400]
+
+[main]
+# use_failover is defined in storage to avoid redefining timeseries which would fail
+storage.failover = boolean
+storage.timeseries.socketconnector
+# explicit condition since we can’t use ? which would redefine timeseries and fail
+use_alert = boolean
+if use_alert
+  alert.timeseries.socketconnector
+fi
+emcvmax ?
+symapi
+vmax +

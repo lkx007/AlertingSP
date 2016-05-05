@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>RAIDGroup_</name>
+			<leaf>
+				<name>RAIDGroupName</name>
+				<group>RAIDGroup-1</group>
+			</leaf>
+			<leaf>
+				<name>RAIDType</name>
+				<group>RAIDType-1</group>
+			</leaf>
+			<leaf>
+				<name>DriveType</name>
+				<group>DriveType-1</group>
+			</leaf>
+			<node>
+				<name>LUN_</name>
+				<leaf>
+					<name>LUNName</name>
+					<group>lun-1</group>
+				</leaf>
+				<leaf>
+					<name>RemoveMe</name>
+					<group>lun-1</group>
+				</leaf>
+			</node>
+		</tree-schema>
+		<!--
+RaidGroup ID:                              5
+List of luns:                              4 5 10 8153 8155 8154 6 7 8 8156 8157 11 12 13 14 15 16 17 23 24 
+RaidGroup Type:                            r5
+Drive Type:                                SAS
+
+		-->
+		<regex-group-config group="-1">
+			<regex name="main">(?s)RaidGroup ID(.*?)(?=(RaidGroup ID|$))</regex>
+			<sub-regex group="1">
+				<regex name="RAIDGroup">(?s):\s+(\d+)\r?\n(.*)</regex>
+				<sub-regex group="2">
+					<regex name="RAIDType">(?s)RaidGroup Type:\s+([\w]+)?\r?\n</regex>
+				</sub-regex>
+				<sub-regex group="2">
+					<regex name="DriveType">(?s)Drive Type:\s+([\w ]+)?\r?\n</regex>
+				</sub-regex>
+				<sub-regex group="2">
+					<regex name="allluns">(?s)List of luns:\s+([\d\s]+?)(?=(RaidGroup Type|$))</regex>
+					<sub-regex group="1">
+						<regex name="lun">(\d+)</regex>
+					</sub-regex>
+				</sub-regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>RAIDGROUPS</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) getrg -type -drivetype -lunlist</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

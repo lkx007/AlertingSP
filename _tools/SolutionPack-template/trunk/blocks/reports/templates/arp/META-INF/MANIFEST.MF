@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Built-By: [Watch4Net, Watch4net]
+Description: This SolutionPack contains reports that were specifically
+  designed for the Cisco UCS
+Report-Pack: Cisco UCS
+Created-By: [Watch4Net, Watch4net]
+Version: 0.1
+
+Name: Cisco UCS
+Hooks: #W4N_SP
+Description: This SolutionPack contains reports that were specifically
+  designed for the Cisco UCS
+Version: 0.1
+

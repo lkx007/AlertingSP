@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			   xmlns="http://www.watch4net.com/CrossReferencingFilter"
+			   xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+    <data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<reference>
+		<condition type="filter">source=='VNXFile-Collector' &amp; datagrp=='VNXFile-FileSystemUsage-CapacityInfo-CheckpointInfo'</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>internal</get-property>
+		<get-property>type</get-property>
+		<get-property>dgstype</get-property>
+		<get-property>part</get-property>
+		<get-property>fsname</get-property>
+	</reference>
+</configuration>

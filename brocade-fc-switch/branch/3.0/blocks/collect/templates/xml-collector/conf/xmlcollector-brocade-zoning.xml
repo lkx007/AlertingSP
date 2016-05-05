@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://www.watch4net.com/XMLCollector" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/XMLCollector xmlcollector.xsd ">
+	<simultaneous-collecting>1</simultaneous-collecting>
+	<polling-interval>3600</polling-interval>
+	<collecting-group>group</collecting-group>
+	<source>Brocade-Collector</source>
+	<refresh>3600</refresh>
+	<collecting-configuration id="BROCADE_ZoneMember" max-threads="1" timeout="600" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="source part zname device parttype name">
+		<data>
+			<include-contexts>conf/context-smiproviders.xml</include-contexts>
+			<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.ChainedWebServiceRequestsExecutor</data-accessor>
+			<input>(host)</input>
+			<host>@connectionstring</host>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+			<parameter name="username">
+				<value>@username</value>
+			</parameter>
+			<parameter name="password">
+				<value>@password</value>
+			</parameter>
+			<parameter name="connect-type">
+				<value>all</value>
+			</parameter>
+			<parameter name="request-1">
+                <value>conf/BROCADE_Fabric.request</value>
+                <value>conf/ZoneSetInFabric.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: EnumerateInstances;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>
+			<parameter name="request-2">
+                <value>tmp/ZoneSetInFabric</value>
+                <value>conf/ZoneInZoneSet.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: Associators;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>
+			<parameter name="request-3">
+				<value>tmp/ZoneInZoneSet</value>
+                <value>conf/ZoneMemberInZone.xslt</value>
+				<value>strict</value>
+				<value>@connectionstring</value>
+				<value>CIMMethod: Associators;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+			</parameter>
+			<parameter name="request-4">
+                <value>tmp/ZoneMemberInZone</value>
+                <value>conf/ZoneMemberInZoneOut.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: Associators;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>
+			<parameter name="output-folder">
+				<value>tmp/ZoneMemberInZoneOut/</value>
+			</parameter>			
+			<parameter name="data-timeout">
+				<value>600</value>
+			</parameter>
+			<parameter name="connection-timeout">
+				<value>300</value>
+			</parameter>
+		</data>
+		<value name="ZoneMemberType" type="counter" unit="" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneMembershipSettingData']/PROPERTY[@NAME='ConnectivityMemberType']/VALUE">
+			<timestamp type="use-system-time" />
+            <property-set>ZoneMember_Properties</property-set>
+        </value>
+		<property-set name="ZoneMember_Properties">
+            <property name="datagrp" type="hard-coded" value="BROCADE_ZONEMEMBER" />
+            <property name="w4ncert" type="hard-coded" value="1.0" />
+			<property name="parttype" type="hard-coded" value="ZoneMember" />						
+			<property name="zmemid" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneMembershipSettingData']/PROPERTY[@NAME='ConnectivityMemberID']/VALUE" />			
+			<property name="part" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneMembershipSettingData']/PROPERTY[@NAME='InstanceID']/VALUE" />
+			<property name="pswwn" type="data" value="/MESSAGE/@FABRIC" />
+			<property name="zsetname" type="data" value="/MESSAGE/@ZONESET" />
+			<property name="zname" type="data" value="/MESSAGE/@ZONE" />
+            <property name="zmemtype" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneMembershipSettingData']/PROPERTY[@NAME='ConnectivityMemberType']/VALUE">
+				<replace value="0" by="UnKnown" />
+				<replace value="1" by="Other" />
+				<replace value="2" by="Permanent Address" />
+				<replace value="3" by="Network Address" />
+				<replace value="4" by="Switch Port ID" />
+				<replace value="5" by="Logical Port Group" />
+				<replace value="6" by="Connectivity Collection" />
+			</property>
+			<property name="devtype" type="hard-coded" value="FabricSwitch" />
+			<property name="device" type="data" value="/MESSAGE/@FABRIC" />
+        </property-set>
+	</collecting-configuration>
+	<collecting-configuration id="BROCADE_Zone" max-threads="1" timeout="600" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="source part zsetname parttype name device">
+		<data>
+			<include-contexts>conf/context-smiproviders.xml</include-contexts>
+			<data-accessor>
+				com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.ChainedWebServiceRequestsExecutor
+			</data-accessor>
+			<input>(host)</input>
+			<host>@connectionstring</host>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+			<parameter name="username">
+				<value>@username</value>
+			</parameter>
+			<parameter name="password">
+				<value>@password</value>
+			</parameter>
+			<parameter name="connect-type">
+				<value>all</value>
+			</parameter>
+			<parameter name="request-1">
+                <value>conf/BROCADE_Fabric.request</value>
+                <value>conf/ZoneSetInFabric.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: EnumerateInstances;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>
+			<parameter name="request-2">
+                <value>tmp/ZoneSetInFabric</value>
+                <value>conf/ZoneInZoneSet.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: Associators;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>
+			<parameter name="request-3">
+				<value>tmp/ZoneInZoneSet</value>
+		        <value>conf/ZoneInZoneSetOut.xslt</value>
+				<value>strict</value>
+				<value>@connectionstring</value>
+				<value>CIMMethod: Associators;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+			</parameter>
+			<parameter name="output-folder">
+				<value>tmp/ZoneInZoneSetOut/</value>
+			</parameter>
+			<parameter name="data-timeout">
+				<value>600</value>
+			</parameter>
+			<parameter name="connection-timeout">
+				<value>300</value>
+			</parameter>
+		</data>
+            <value name="ZoneType" type="counter" unit="" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_Zone']/PROPERTY[@NAME='ZoneType']/VALUE">
+				<timestamp type="use-system-time" />
+                <property-set>Zone_Properties</property-set>
+            </value>
+            <property-set name="Zone_Properties">
+				<property name="datagrp" type="hard-coded" value="BROCADE_ZONE" />
+				<property name="w4ncert" type="hard-coded" value="1.0" />	
+				<property name="parttype" type="hard-coded" value="Zone" />				
+				<property name="part" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_Zone']/PROPERTY[@NAME='InstanceID']/VALUE" />
+				<property name="pswwn" type="data" value="/MESSAGE/@FABRIC" />
+				<property name="zsetname" type="data" value="/MESSAGE/@ZONESET" />
+				<property name="zname" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_Zone']/PROPERTY[@NAME='ElementName']/VALUE" />
+				<property name="ztype" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_Zone']/PROPERTY[@NAME='ZoneType']/VALUE">
+					<replace value="0" by="UnKnown" />
+					<replace value="1" by="Other" />
+					<replace value="2" by="Default" />
+					<replace value="3" by="Protocol" />
+					<replace value="4" by="QuickLoop" />
+				</property>
+				<property name="devtype" type="hard-coded" value="FabricSwitch" />	
+				<property name="device" type="data" value="/MESSAGE/@FABRIC" />
+            </property-set>	
+	</collecting-configuration>	
+	<collecting-configuration id="BROCADE_ZoneSet" max-threads="1" timeout="600" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="source part pswwn parttype name device">
+		<data>
+			<include-contexts>conf/context-smiproviders.xml</include-contexts>
+			<data-accessor>
+				com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.ChainedWebServiceRequestsExecutor
+			</data-accessor>
+			<input>(host)</input>
+			<host>@connectionstring</host>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+			<parameter name="username">
+				<value>@username</value>
+			</parameter>
+			<parameter name="password">
+				<value>@password</value>
+			</parameter>
+			<parameter name="connect-type">
+				<value>all</value>
+			</parameter>
+			<parameter name="request-1">
+                <value>conf/BROCADE_Fabric.request</value>
+                <value>conf/ZoneSetInFabric.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: EnumerateInstances;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>
+			<parameter name="request-2">
+                <value>tmp/ZoneSetInFabric</value>
+                <value>conf/ZoneSetInFabricOut.xslt</value>
+                <value>strict</value>
+                <value>@connectionstring</value>
+                <value>CIMMethod: Associators;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+            </parameter>
+			<parameter name="output-folder">
+				<value>tmp/ZoneSetInFabricOut/</value>
+			</parameter>
+			<parameter name="data-timeout">
+				<value>600</value>
+			</parameter>
+			<parameter name="connection-timeout">
+				<value>300</value>
+			</parameter>
+		</data>
+        <value name="ZoneSetId" type="counter" unit="" value="/MESSAGE/@ZSETID">
+			<timestamp type="use-system-time" />
+            <property-set>ZoneSet_Properties</property-set>
+        </value>
+        <property-set name="ZoneSet_Properties">
+           	<property name="datagrp" type="hard-coded" value="BROCADE_ZONESET" />
+           	<property name="w4ncert" type="hard-coded" value="1.0" />
+			<property name="parttype" type="hard-coded" value="ZoneSet" />
+			<property name="part" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneSet']/PROPERTY[@NAME='InstanceID']/VALUE" />
+			<property name="pswwn" type="data" value="/MESSAGE/@FABRIC" />
+			<property name="zsetname" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneSet']/PROPERTY[@NAME='ElementName']/VALUE" />
+			<property name="devtype" type="hard-coded" value="FabricSwitch" />
+			<property name="device" type="data" value="/MESSAGE/@FABRIC" />
+        </property-set>
+	</collecting-configuration>	
+	<collecting-configuration id="BROCADE_Fabric" max-threads="1" timeout="600" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="source part parttype name device">
+		<for-each>VALUE.NAMEDINSTANCE</for-each>
+		<data>
+			<include-contexts>conf/context-smiproviders.xml</include-contexts>
+			<data-accessor>
+				com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.SOAPXmlRequestExecutor
+			</data-accessor>
+			<input>(host)</input>
+			<host>@connectionstring</host>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+			<parameter name="username">
+				<value>@username</value>
+			</parameter>
+			<parameter name="password">
+				<value>@password</value>
+			</parameter>
+			<parameter name="connect-type">
+				<value>all</value>
+			</parameter>
+			<parameter name="input-file">
+                <value>conf/BROCADE_Fabric.request</value>
+			</parameter>
+		        <parameter name="headers">
+				<value>CIMMethod: EnumerateInstance</value>
+				<value>CIMObject: root/brocade1</value>
+				<value>CIMProtocolVersion: 1.0</value>
+				<value>CIMOperation: MethodCall</value>
+			</parameter>			
+			<parameter name="data-timeout">
+				<value>600</value>
+			</parameter>
+			<parameter name="connection-timeout">
+				<value>300</value>
+			</parameter>
+		</data>
+            <value name="OperationalStatus" type="counter" unit="" value="/VALUE.NAMEDINSTANCE/INSTANCE[@CLASSNAME='Brocade_Fabric']/PROPERTY[@NAME='EnabledState']/VALUE">
+					<timestamp type="use-system-time" />
+                    <property-set>Fabric_Properties</property-set>
+            </value>
+            <property-set name="Fabric_Properties">
+				<property name="datagrp" type="hard-coded" value="BROCADE_FABRIC" />
+				<property name="w4ncert" type="hard-coded" value="1.0" />
+				<property name="parttype" type="hard-coded" value="Fabric" />
+				<property name="part" type="data" value="/VALUE.NAMEDINSTANCE/INSTANCE[@CLASSNAME='Brocade_Fabric']/PROPERTY[@NAME='Name']/VALUE" />
+				<property name="partwwn" type="data" value="/VALUE.NAMEDINSTANCE/INSTANCE[@CLASSNAME='Brocade_Fabric']/PROPERTY[@NAME='Name']/VALUE" />
+				<property name="opstat" type="data" value="/VALUE.NAMEDINSTANCE/INSTANCE[@CLASSNAME='Brocade_Fabric']/PROPERTY[@NAME='EnabledState']/VALUE">
+					<replace value="0" by="UnKnown" />
+					<replace value="1" by="Other" />
+					<replace value="2" by="Enabled" />
+					<replace value="3" by="Disabled" />
+					<replace value="4" by="Shutting Down" />
+					<replace value="5" by="Not Applicable" />
+					<replace value="6" by="Enabled but Offline" />
+					<replace value="7" by="In Test" />
+					<replace value="8" by="Deferred" />
+					<replace value="9" by="Quiesce" />
+					<replace value="10" by="Starting" />
+				</property>
+				<property name="devtype" type="hard-coded" value="FabricSwitch" />
+				<property name="device" type="data" value="/VALUE.NAMEDINSTANCE/INSTANCE[@CLASSNAME='Brocade_Fabric']/PROPERTY[@NAME='Name']/VALUE" />
+            </property-set>
+	</collecting-configuration>	
+	<collecting-configuration id="BROCADE_ZoneService" max-threads="1" timeout="3600" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="source parttype part name device">
+		<data>
+			<include-contexts>conf/context-smiproviders.xml</include-contexts>
+			<data-accessor>
+				com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.ChainedWebServiceRequestsExecutor
+			</data-accessor>
+			<input>(host)</input>
+			<host>@connectionstring</host>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+			<parameter name="username">
+				<value>@username</value>
+			</parameter>
+			<parameter name="password">
+				<value>@password</value>
+			</parameter>
+			<parameter name="connect-type">
+				<value>all</value>
+			</parameter>
+			<parameter name="request-1">
+	            <value>conf/BROCADE_Fabric.request</value>
+	            <value>conf/ZoneServiceInFabric.xslt</value>
+	            <value>strict</value>
+	            <value>@connectionstring</value>
+	            <value>CIMMethod: EnumerateInstances;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+	        </parameter>
+			<parameter name="request-2">
+	            <value>tmp/ZoneServiceInFabric</value>
+	            <value>conf/ZoneServiceInFabricOut.xslt</value>
+	            <value>strict</value>
+	            <value>@connectionstring</value>
+	            <value>CIMMethod: Associators;CIMObject: root/brocade1;CIMProtocolVersion: 1.0;CIMOperation: MethodCall</value>
+	        </parameter>
+			<parameter name="output-folder">
+				<value>tmp/ZoneServiceInFabricOut/</value>
+			</parameter>
+			<parameter name="data-timeout">
+				<value>600</value>
+			</parameter>
+			<parameter name="connection-timeout">
+				<value>300</value>
+			</parameter>
+		</data>
+        <value name="DefaultzStatus" type="counter" unit="" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneService']/PROPERTY[@NAME='DefaultZoningState']/VALUE">
+			<timestamp type="use-system-time" />
+	        <property-set>ZoneService_Properties</property-set>
+	    </value>
+	    <property-set name="ZoneService_Properties">
+	       	<property name="datagrp" type="hard-coded" value="BROCADE_FABRIC" />
+	       	<property name="w4ncert" type="hard-coded" value="1.0" />
+			<property name="parttype" type="hard-coded" value="Fabric" />
+			<property name="part" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneService']/PROPERTY[@NAME='SystemName']/VALUE"/>
+			<property name="partwwn" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneService']/PROPERTY[@NAME='SystemName']/VALUE"/>
+			<property name="defzstat" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneService']/PROPERTY[@NAME='DefaultZoningState']/VALUE">
+				<replace value="0" by="UnKnown" />
+				<replace value="2" by="Enabled" />
+				<replace value="3" by="Disabled" />								
+			</property>
+			<property name="devtype" type="hard-coded" value="FabricSwitch" />
+			<property name="device" type="data" value="/MESSAGE/INSTANCE[@CLASSNAME='Brocade_ZoneService']/PROPERTY[@NAME='SystemName']/VALUE"/>
+	    </property-set>
+	</collecting-configuration>
+</configuration>

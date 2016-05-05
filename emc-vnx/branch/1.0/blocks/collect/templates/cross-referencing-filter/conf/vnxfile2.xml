@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			   xmlns="http://www.watch4net.com/CrossReferencingFilter"
+			   xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+    <data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<reference>
+		<match-on>datagrp</match-on>
+		<match-on>deviceid</match-on>
+		<match-on>serialnb</match-on>
+		<include-properties>true</include-properties>
+		<get-property>device</get-property>
+	</reference>
+	<reference>
+		<match-on>datagrp</match-on>
+		<match-on>partid</match-on>
+		<match-on>serialnb</match-on>
+		<include-properties>true</include-properties>
+		<get-property>part</get-property>
+		<get-property>parttype</get-property>
+		<get-property>device</get-property>
+		<get-property>deviceid</get-property>
+	</reference>
+	<reference>
+		<condition property="parttype">FileSystem</condition>
+		<match-on>partid</match-on>
+		<match-on>serialnb</match-on>
+		<include-properties>true</include-properties>
+		<get-property>part</get-property>
+		<get-property>device</get-property>
+		<get-property>deviceid</get-property>
+	</reference>
+	<reference>
+		<condition property="datagrp">VNXFile-UserQuotas</condition>
+		<match-on>serialnb</match-on>
+		<match-on>userid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>username</get-property>
+	</reference>
+	<reference>
+		<match-on>serialnb</match-on>
+		<match-on>movers</match-on>
+		<match-on>moversvd</match-on>
+		<include-properties>true</include-properties>
+		<get-property>moversna</get-property>
+	</reference>
+</configuration>

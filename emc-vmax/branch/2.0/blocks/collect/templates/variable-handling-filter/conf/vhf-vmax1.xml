@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+	<handling-configuration id="ALLCAPS">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn | portwwn | nodewwn</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyStringCaseHandler">
+			<parameter name="to-upper-case">partsn portwwn nodewwn</parameter>
+			<parameter name="to-lower-case">thisisnotused</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="vmaxRemoveMe">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name=='RemoveMe' | (name=='RAIDOverHead' &amp; dgstype=='Thin')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler"/>
+	</handling-configuration>
+	<handling-configuration id="RAIDOverhead">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name=='RAIDOverHead' &amp; dgstype=='Thick' &amp; !(roc1=='')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-vmax-raidoverhead.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="SAH">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype=='Disk' | name=='RAIDOverHead' | name=='Capacity' | parttype=='Port'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/vhf-vmax-sah.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="AssociationState">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name=='LUNtoDirectorPortAssociation'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.VariableStateMonitorHandler">
+			<parameter name="state-value">value.getValue() == 0</parameter>
+			<parameter name="property-name">partstat</parameter>
+			<parameter name="property-value">if (value.getTimestamp() - state.getLastChangedAt() >= 86400 &amp;&amp; state.getCurrentValue() == true) { false; } else {true;}</parameter>
+		</handler>
+	</handling-configuration>
+</configuration>

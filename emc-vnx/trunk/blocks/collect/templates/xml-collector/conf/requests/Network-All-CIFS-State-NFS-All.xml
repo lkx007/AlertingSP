@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RequestPacket xmlns="http://www.emc.com/schemas/celerra/xml_api">
+	<Request clientHandle="Network-All">
+		<QueryStats>
+			<MoverStats statsSet="Network-All" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-All">
+		<QueryStats>
+			<MoverStats statsSet="Network-All" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-All">
+		<QueryStats>
+			<MoverStats statsSet="Network-All" mover="3"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-All">
+		<QueryStats>
+			<MoverStats statsSet="Network-All" mover="4"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-State">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-State" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-State">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-State" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-State">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-State" mover="3"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-State">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-State" mover="4"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="NFS-All">
+		<QueryStats>
+			<MoverStats statsSet="NFS-All" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="NFS-All">
+		<QueryStats>
+			<MoverStats statsSet="NFS-All" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="NFS-All">
+		<QueryStats>
+			<MoverStats statsSet="NFS-All" mover="3"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="NFS-All">
+		<QueryStats>
+			<MoverStats statsSet="NFS-All" mover="4"/>
+		</QueryStats>
+	</Request>
+</RequestPacket>

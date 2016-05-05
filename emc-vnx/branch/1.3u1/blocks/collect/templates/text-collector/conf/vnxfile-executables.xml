@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<os-command-definition xmlns="http://www.watch4net.com/OutputParsingLibrary"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary commanddefinition.xsd ">
+	<base-command>
+		<command-list>
+			<name>VNXFile collect 60 min</name>
+			<command>./collect-@id.sh 60 /tmp/w4n_data/60min cifs.user/top nfs.client/top</command>
+			<file always-overwrite="false" exec="true">conf/collect-@id.sh</file>
+			<file always-overwrite="false" exec="true">conf/parseUser.pl</file>
+			<file always-overwrite="false" exec="true">conf/server_stats</file>
+		</command-list>
+		<command-list>
+			<name>VNXFile collect 5 min</name>
+			<command>./collect-@id.sh 5 /tmp/w4n_data/5min nfs.totalCalls cifs.server</command>
+			<file always-overwrite="false" exec="true">conf/collect-@id.sh</file>
+			<file always-overwrite="false" exec="true">conf/parseUser.pl</file>
+			<file always-overwrite="false" exec="true">conf/server_stats</file>
+		</command-list>
+	</base-command>
+</os-command-definition>

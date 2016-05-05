@@ -1,0 +1,5 @@
+symapi.connect_type.default=remote
+unisphere.username.default=smc
+unisphere.password.default=smc
+emcvmax.want.default=true
+emcvmax.perf.pollingperiod.default=7200

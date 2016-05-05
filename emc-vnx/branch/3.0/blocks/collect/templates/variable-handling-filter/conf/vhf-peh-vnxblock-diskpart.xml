@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler ./property-extraction-handler.xsd">
+  <properties>
+    <!-- IN:  part=Bus 2 Enclosure 0  Disk 4 -->
+    <!-- OUT: part=Bus 2 Enclosure 0 Disk 4 -->
+    <regex-property name="part" keep="true">
+	<regex>^(Bus.*\d+)\s+(Disk.*)$</regex>
+	<part name="part" value="${1} ${2}" />
+    </regex-property>
+  </properties>
+</config>

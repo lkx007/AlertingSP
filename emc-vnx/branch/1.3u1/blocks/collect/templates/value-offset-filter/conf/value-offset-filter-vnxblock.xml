@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:value-offset-filter-config xmlns:xs="http://www.watch4net.com/value-offset-filter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/value-offset-filter value-offset-filter.xsd ">
+	<xs:offset-sourceless>
+		<xs:stand-alone-offset name="Latency">
+			<xs:simple-operation>
+				<xs:operator>r</xs:operator>
+				<xs:property>disklate</xs:property>
+			</xs:simple-operation>
+		</xs:stand-alone-offset>
+	</xs:offset-sourceless>
+</xs:value-offset-filter-config>

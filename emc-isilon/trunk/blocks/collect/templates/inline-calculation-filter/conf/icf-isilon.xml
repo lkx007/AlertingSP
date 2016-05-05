@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<config xmlns="http://www.watch4net.com/Collecting/InlineCalculationFilter1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.watch4net.com/Collecting/InlineCalculationFilter1 inline-calculation-filter.xsd">
+	<!-- Compute 'HDDUsed/Fred/Total' at node level-->
+	<result name="HDDCapacity" unit="GB" time-window="120s" variable-name-pattern="{serialnb}{device}{node}{parttype}{name}">
+		<input>Capacity</input>
+		<input>SSDCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>node</group-by>
+		<filter><![CDATA[(name=='Capacity' & parttype=='FileSystem' & part=='/ifs') | (name=='SSDCapacity' & parttype=='Disk' & !part)]]></filter>
+		<jexl-formula><![CDATA[Capacity - SSDCapacity]]></jexl-formula>
+	</result>
+	<result name="HDDFreeCapacity" unit="GB" time-window="120s" variable-name-pattern="{serialnb}{device}{node}{parttype}{name}">
+		<input>FreeCapacity</input>
+		<input>SSDFreeCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>node</group-by>
+		<filter><![CDATA[(name=='FreeCapacity' & parttype=='FileSystem' & part=='/ifs') | (name=='SSDFreeCapacity' & parttype=='Disk' & !part)]]></filter>
+		<jexl-formula><![CDATA[FreeCapacity - SSDFreeCapacity]]></jexl-formula>
+	</result>
+	<result name="HDDUsedCapacity" unit="GB" time-window="120s" variable-name-pattern="{serialnb}{device}{node}{parttype}{name}">
+		<input>UsedCapacity</input>
+		<input>SSDUsedCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>node</group-by>
+		<filter><![CDATA[(name=='UsedCapacity' & parttype=='FileSystem' & part=='/ifs') | (name=='SSDUsedCapacity' & parttype=='Disk' & !part)]]></filter>
+		<jexl-formula><![CDATA[UsedCapacity - SSDUsedCapacity]]></jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="120s" variable-name-pattern="{serialnb}{device}{node}{parttype}{part}{name}">
+		<input>UsedCapacity</input>
+		<input>Capacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>node</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter><![CDATA[(name=='UsedCapacity' & parttype=='FileSystem' & part=='/ifs') | (name=='Capacity' & parttype=='FileSystem' & part=='/ifs')]]></filter>
+		<jexl-formula><![CDATA[UsedCapacity / Capacity * 100]]></jexl-formula>
+	</result>
+	<!-- Compute 'HDDUsed/Fred/Total' at cluster level-->
+	<result name="HDDCapacity" unit="GB" time-window="120s" variable-name-pattern="{serialnb}{device}{node}{parttype}{name}">
+		<input>Capacity</input>
+		<input>SSDCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<filter><![CDATA[(name=='Capacity' & parttype=='FileSystem' & part=='/ifs' & !node) | (name=='SSDCapacity' & parttype=='Disk' & !part & !node)]]></filter>
+		<jexl-formula><![CDATA[Capacity - SSDCapacity]]></jexl-formula>
+	</result>
+	<result name="HDDFreeCapacity" unit="GB" time-window="120s" variable-name-pattern="{serialnb}{device}{node}{parttype}{name}">
+		<input>FreeCapacity</input>
+		<input>SSDFreeCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<filter><![CDATA[(name=='FreeCapacity' & parttype=='FileSystem' & part=='/ifs' & !node) | (name=='SSDFreeCapacity' & parttype=='Disk' & !part & !node)]]></filter>
+		<jexl-formula><![CDATA[FreeCapacity - SSDFreeCapacity]]></jexl-formula>
+	</result>
+	<result name="HDDUsedCapacity" unit="GB" time-window="120s" variable-name-pattern="{serialnb}{device}{node}{parttype}{name}">
+		<input>UsedCapacity</input>
+		<input>SSDUsedCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<filter><![CDATA[(name=='UsedCapacity' & parttype=='FileSystem' & part=='/ifs' & !node) | (name=='SSDUsedCapacity' & parttype=='Disk' & !part & !node)]]></filter>
+		<jexl-formula><![CDATA[UsedCapacity - SSDUsedCapacity]]></jexl-formula>
+	</result>
+	<!-- quota -->
+	<result name="HardQuotaCurrentUtilization" unit="%" time-window="120s" variable-name-pattern="{serialnb}{device}{node}{parttype}{part}{name}">
+		<input>LogicalCapacity</input>
+		<input>HardThresholdCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter><![CDATA[(name=='LogicalCapacity' & parttype=='Quota') | (name=='HardThresholdCapacity' & parttype=='Quota')]]></filter>
+		<jexl-formula><![CDATA[LogicalCapacity / HardThresholdCapacity * 100]]></jexl-formula>
+	</result>
+	<result name="SoftQuotaCurrentUtilization" unit="%" time-window="120s" variable-name-pattern="{serialnb}{device}{node}{parttype}{part}{name}">
+		<input>LogicalCapacity</input>
+		<input>SoftThresholdCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter><![CDATA[(name=='LogicalCapacity' & parttype=='Quota') | (name=='SoftThresholdCapacity' & parttype=='Quota')]]></filter>
+		<jexl-formula><![CDATA[LogicalCapacity / SoftThresholdCapacity * 100]]></jexl-formula>
+	</result>
+</config>

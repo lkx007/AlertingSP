@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:snmp-capability-discovery-actions-config capability-name="CISCO-FLASH" load-factor="2" xmlns:tns="http://www.watch4net.com/capability-discovery-action" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/capability-discovery-action ../snmp-capability-discovery-actions.xsd ">
+	<tns:discovery-pass>
+		<tns:capability-condition-group>
+			<tns:TableColumnExistsSnmpCondition oid=".1.3.6.1.4.1.9.9.10.1.1.4.1.1.13"/>
+		</tns:capability-condition-group>
+	</tns:discovery-pass>
+</tns:snmp-capability-discovery-actions-config>

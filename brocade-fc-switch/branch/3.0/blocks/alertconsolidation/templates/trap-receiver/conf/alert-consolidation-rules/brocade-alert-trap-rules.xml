@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules xmlns="http://www.watch4net.com/Events/TrapReceiver"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema">
+    <!--swFCPortScn -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.3" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swFCPortName" to="device"/>
+            <variablename-conversion from="swFCPortWwn" to="part" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swFCPortScn" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!--swEventTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.4" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swEventLevel" to="severity" />
+            <variablename-conversion from="swEventDescr" to="fullmsg" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swEventTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Application" />
+        </handle>
+    </rule>
+    <!--swFabricWatchTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.5" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swFwName" to="part" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swFabricWatchTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="FabricWatch" />
+        </handle>
+    </rule>
+    <!-- swTrackChangesTrap-->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.6" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swVfId" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swTrackChangesTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- swPmgrEventTrap-->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.8" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from=".1.3.6.1.4.1.1588.2.1.1.1.2.14.0" to="fullmsg" />
+            <variablename-conversion from="swVfId" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swPmgrEventTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- swFabricSegmentTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.10" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swFCPortName" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swFabricSegmentTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="FabricSegment" />
+        </handle>
+    </rule>
+    <!-- swStateChangeTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.12" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swVfId" to="part" />
+            <constant-conversion key="severity" value="critical" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swStateChangeTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- swPortMoveTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.13" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swVfId" to="part" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swPortMoveTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!-- swIPv6ChangeTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.7" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swIPv6Address" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swIPv6ChangeTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- swFabricReconfigTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.9" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swDomainID" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Configuration" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swFabricReconfigTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Fabric" />
+        </handle>
+    </rule>
+    <!-- swBrcdGenericTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.1.0.14" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swBrcdTrapBitMask" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="swBrcdGenericTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- End of Rules for SW TRAP -->
+    <!-- Rules for HA TRAP -->
+    <!--fruStatusChanged -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.2.2.0.1" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="entPhysicalName" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="High Availability" />
+            <constant-conversion key="sourcedomainname" value="fruStatusChanged" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="FRU" />
+        </handle>
+    </rule>
+    <!-- cpStatusChanged -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.2.2.0.2" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="swID" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="High Availability" />
+            <constant-conversion key="sourcedomainname" value="cpStatusChanged" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="ControlProcessor" />
+        </handle>
+    </rule>
+    <!-- fruHistoryTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.2.2.0.2" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="fruHistoryObjectNum" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="High Availability" />
+            <constant-conversion key="sourcedomainname" value="fruHistoryTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="FRU" />
+        </handle>
+    </rule>
+    <!--End of High Availbality MIB  -->
+    <!-- Rules for Ficon Mib -->
+    <!--linkRNIDDeviceRegistration -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.50.21.0.1" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="nodeRNIDIncidentPortWWN" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Fiber Connection" />
+            <constant-conversion key="sourcedomainname" value="linkRNIDDeviceRegistration" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Ficon" />
+        </handle>
+    </rule>
+	<!--linkRNIDDeviceDeRegistration -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.50.21.0.2" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="nodeRNIDIncidentPortWWN" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Fiber Connection" />
+            <constant-conversion key="sourcedomainname" value="linkRNIDDeviceDeRegistration" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Ficon" />
+        </handle>
+    </rule>
+    <!--linkLIRRListenerAdded -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.50.21.0.3" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="lIRRListenerPortWWN" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Fiber Connection" />
+            <constant-conversion key="sourcedomainname" value="linkLIRRListenerAdded" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Ficon" />
+        </handle>
+    </rule>
+    <!--linkLIRRListenerRemoved -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.50.21.0.4" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="lIRRListenerPortWWN" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Fiber Connection" />
+            <constant-conversion key="sourcedomainname" value="linkLIRRListenerRemoved" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Ficon" />
+        </handle>
+    </rule>
+    <!--linkRLIRFailureIncident -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.50.21.0.5" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="rLIRIncidentPortWwn" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Fiber Connection" />
+            <constant-conversion key="sourcedomainname" value="linkRLIRFailureIncident" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Ficon" />
+        </handle>
+    </rule>
+    <!-- End Rules for Ficon Mib -->
+    <!--Rules BD Trap -->
+    <!-- bdTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.51.0.1" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="nBdType" to="part" />
+            <constant-conversion key="attributename" value="swVfId" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="category" value="Performance" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Brocade Bottleneck Detection" />
+            <constant-conversion key="sourcedomainname" value="bdTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!-- bdClearTrap -->
+    <rule ip-address="*" oid=".1.3.6.1.4.1.1588.2.1.1.51.0.1" specific-id="*" generic-id="*" enterprise-id="*">
+        <handle destination="data">
+            <variablename-conversion from="nBdType" to="part" />
+            <constant-conversion key="attributename" value="swVfId" />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="category" value="Performance" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Brocade Bottleneck Detection" />
+            <constant-conversion key="sourcedomainname" value="bdClearTrap" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!-- End of Rules for BD Trap -->
+    <!-- Rules for IF Mib -->
+    <!-- LINKUP -->
+    <rule ip-address="*" oid=".1.3.6.1.6.3.1.1.5.4" enterprise-id=".1.3.6.1.4.1.1588.2.1.1.118" generic-id="*">
+        <handle destination="data">
+            <variablename-conversion from="ifIndex" to="part" />
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Network Interface" />
+            <constant-conversion key="sourcedomainname" value="linkup" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!-- LINKDOWN -->
+     <rule ip-address="*" oid=".1.3.6.1.6.3.1.1.5.3" enterprise-id=".1.3.6.1.4.1.1588.2.1.1.118" generic-id="*" >
+        <handle destination="data">
+            <variablename-conversion from="ifIndex" to="part" />
+            <constant-conversion key="severity" value="critical" />
+            <constant-conversion key="category" value="Availability" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="Network Interface" />
+            <constant-conversion key="sourcedomainname" value="linkdown" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Port" />
+        </handle>
+    </rule>
+    <!-- End of Rules for IF MIB-->
+    <!-- SNMP Authetication Trap -->
+    <rule ip-address="*" oid=".1.3.6.1.6.3.1.1.5.5" enterprise-id=".1.3.6.1.4.1.1588.2.1.1.118" generic-id="*" >
+        <handle destination="data">
+            <constant-conversion key="fullmsg" value="SNMP Authentication failed." />
+            <constant-conversion key="severity" value="warning" />
+            <constant-conversion key="category" value="Operational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="sourceeventtype" value="snmp" />
+            <constant-conversion key="sourcedomainname" value="authenticationfailure" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" />
+            <constant-conversion key="parttype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- ColdRestart Trap -->
+    <rule ip-address="*" oid=".1.3.6.1.6.3.1.1.5.1" enterprise-id=".1.3.6.1.4.1.1588.2.1.1.118" generic-id="*" >
+        <handle destination="data">
+            <constant-conversion key="severity" value="informational" />
+            <constant-conversion key="source" value="Brocade" />
+            <constant-conversion key="category" value="Availability" />
+			<constant-conversion key="sourceeventtype" value="Switch" />
+            <constant-conversion key="sourcedomainname" value="coldstart" />
+            <constant-conversion key="eventstate" value="ACTIVE" />
+            <constant-conversion key="devtype" value="FabricSwitch" /> 
+            <constant-conversion key="parttype" value="Switch" />
+        </handle>
+    </rule>
+    <!-- WarmRestart Trap -->
+    <rule ip-address="*" oid=".1.3.6.1.6.3.1.1.5.2" enterprise-id=".1.3.6.1.4.1.1588.2.1.1.118" generic-id="*" >
+        <handle destination="data">
+           <constant-conversion key="severity" value="informational" />
+           <constant-conversion key="source" value="Brocade" />
+           <constant-conversion key="category" value="Availability" />
+		   <constant-conversion key="sourceeventtype" value="Switch" />
+           <constant-conversion key="sourcedomainname" value="warmstart" />
+           <constant-conversion key="eventstate" value="ACTIVE" />
+           <constant-conversion key="devtype" value="FabricSwitch" />
+           <constant-conversion key="parttype" value="Switch" />
+        </handle>
+    </rule>
+</rules>

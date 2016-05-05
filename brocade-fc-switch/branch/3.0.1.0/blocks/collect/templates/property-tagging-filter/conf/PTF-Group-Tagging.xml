@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<property-tagging-filter-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter" xsi:schemaLocation="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter  property-tagging-filter-config.xsd">
+        <refresh unit="minutes">0</refresh>
+        <files>
+		<!--To group the devices based on their type-->
+		<text-file path="conf/user-defined-groups.csv" encoding="UTF-8">
+			<field-separator>,</field-separator>
+			<field-quoting>"</field-quoting>
+
+			<default-symbol>**</default-symbol>
+
+			<null-symbol>@@</null-symbol>
+
+			<property-insertion start="${" end="}" />
+			
+			<key-properties>
+				<key-property delete-after-use="false" string-type="regex">devtype</key-property>
+				<key-property delete-after-use="false" string-type="regex">device</key-property>
+			</key-properties>
+			<!-- new nodegrp property -->
+			<new-properties>
+				<new-property>nodegrp</new-property>
+			</new-properties>
+		</text-file>
+		
+        </files>
+</property-tagging-filter-config>

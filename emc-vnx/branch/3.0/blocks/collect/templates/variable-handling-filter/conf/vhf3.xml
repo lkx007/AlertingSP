@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+
+    <!--Compute the FileUsedCapacity/BlockUsedCapacity metrics -->
+    <handling-configuration id="VNX-USED-FILE-BLOCK">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">(devtype=='Array' &amp; name=='UsedCapacity' &amp; parttype=='LUN') | name=='RemoveMeZero'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-UsedForBlockFile.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Compute the 'PoolFreeCapacity' metric at the array level-->
+    <handling-configuration id="VNX-POOL-FREE-CAPACITY">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='RAID Group' | parttype=='Storage Pool' | name=='RemoveMeZero'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-PoolFreeCapacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Compute the 'PoolUsableCapacity' metric at the array level-->
+    <handling-configuration id="VNX-POOLUSABLECAPACITY">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='Storage Pool' | parttype=='RAID Group' | name=='RemoveMeZero'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-PoolUsableCapacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Compute the 'PoolSubscribedCapacity' metric at the array level-->
+    <handling-configuration id="VNX-POOLSUBSCRIBEDCAPACITY">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">(parttype=='Storage Pool' &amp; name=='SubscribedCapacity') | name=='RemoveMeZero'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-PoolSubscribedCapacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Compute the 'FreeCapacity' metric at the array level-->
+    <handling-configuration id="VNX-ARRAY-FREE-CAPACITY">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='LUN' | name=='RemoveMeZero'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-ArrayFreeCapacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+</configuration>

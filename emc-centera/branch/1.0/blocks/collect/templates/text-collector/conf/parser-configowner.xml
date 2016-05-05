@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>CLUSTER_</name>
+			<leaf>
+				<name>Name</name>
+				<group>owner-1</group>
+			</leaf>
+			<leaf>
+				<name>SerialNumber</name>
+				<group>serialnb-1</group>
+			</leaf>
+			<leaf>
+				<name>RemoveMe</name>
+				<group>removeme-1</group>
+			</leaf>
+			<leaf>
+				<name>notused</name>
+				<group>main-1</group>
+			</leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Cluster Name(.*?)(?=(Cluster Name|$))</regex>
+			<sub-regex group="1">
+				<regex name="serialnb">(?s)[\r\n]Cluster Serial Number\s+(.*?)[\r\n].*</regex>
+			</sub-regex>
+			<sub-regex group="1">
+				<regex name="installationlocation">(?s)[\r\n]Installation Location\s+(.*?)[\r\n].*</regex>
+			</sub-regex>
+			<sub-regex group="1">
+				<regex name="datelastmaintenance">(?s)[\r\n]Date of last maintenance\s+(.*?)[\r\n].*</regex>
+			</sub-regex>
+			<sub-regex group="1">
+				<regex name="adminitrativecontact">(?s)[\r\n]Administrative contact\s+(.*?)[\r\n].*</regex>
+			</sub-regex>
+			<sub-regex group="1">
+				<regex name="adminemail">(?s)[\r\n]Admin email\s+(.*?)[\r\n].*</regex>
+			</sub-regex>
+			<sub-regex group="1">
+				<regex name="adminphone">(?s)[\r\n]Admin phone\s+(.*?)[\r\n].*</regex>
+			</sub-regex>
+			<sub-regex group="1">
+				<regex name="removeme">(?s)[\r\n]Cluster Serial Number(\s)(\s+)(.*?)[\r\n].*</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-centera.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Group</group-name>
+				<host-config>
+					<host-list>@host</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>"@clipath\\..\\_jvm\\bin\\java" -cp "@clipath\\CenteraViewer.jar" com.filepool.remote.cli.CLI -u @username -p @password -ip (host) -script conf/showowner_script.cli</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

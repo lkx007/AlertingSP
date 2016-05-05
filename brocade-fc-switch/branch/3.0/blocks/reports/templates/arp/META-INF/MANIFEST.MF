@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Built-By: EMC Corporation
+Description: This SolutionPack contains reports that are specifically 
+ designed for the Brocade Fabric Switch devices
+Report-Pack: Brocade Fabric Switch
+Created-By: EMC Corporation
+Version: 3.0
+
+Name: Brocade Fabric Switch
+Hooks: #W4N_SP
+Description: This SolutionPack contains reports that are specifically 
+ designed for the Brocade Fabric Switch devices
+Version: 3.0
+

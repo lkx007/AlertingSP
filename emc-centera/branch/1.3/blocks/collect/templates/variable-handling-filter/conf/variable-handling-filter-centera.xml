@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter"
+ 			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 			   xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+	<handling-configuration id="compute_avail_from_tb_gb_unit">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((name=='SystemBuffer' &amp; sysbufu='T%')|(name=='RegenerationBuffer' &amp; regenbu='T%')|(name=='AvailableCapacity' &amp; availcapu='T%')|(name=='TotalRawCapacity' &amp; trawcapu='T%')|(name=='UsedRawCapacity' &amp; urawcapu='T%')|(name=='FreeRawCapacity' &amp; frawcapu='T%') |(name=='SystemResources' &amp; sysresu='T%') |(name=='OfflineCapacity' &amp; offcapu='T%') |(name=='SpareCapacity' &amp; spcapu='T%') |(name=='UsedCapacity' &amp; usdcapu='T%') | (name=='AuditAndMetadata' &amp; usdcapu='T%') | (name=='ProtectedUserData' &amp; prusrdtu='T%'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-tb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_avail_from_m_gb_unit">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((name=='SystemBuffer' &amp; sysbufu='M%')|(name=='RegenerationBuffer' &amp; regenbu='M%')|(name=='AvailableCapacity' &amp; availcapu='M%')|(name=='TotalRawCapacity' &amp; trawcapu='M%')|(name=='UsedRawCapacity' &amp; urawcapu='M%')|(name=='FreeRawCapacity' &amp; frawcapu='M%') |(name=='SystemResources' &amp; sysresu='M%') |(name=='OfflineCapacity' &amp; offcapu='M%') |(name=='SpareCapacity' &amp; spcapu='M%') |(name=='UsedCapacity' &amp; usdcapu='M%') | (name=='AuditAndMetadata' &amp; usdcapu='M%') | (name=='ProtectedUserData' &amp; prusrdtu='M%'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-mb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_avail_from_kb_gb_unit">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((name=='SystemBuffer' &amp; sysbufu='K%')|(name=='RegenerationBuffer' &amp; regenbu='K%')|(name=='AvailableCapacity' &amp; availcapu='K%') |(name=='TotalRawCapacity' &amp; trawcapu='K%')|(name=='UsedRawCapacity' &amp; urawcapu='K%')|(name=='FreeRawCapacity' &amp; frawcapu='K%')|(name=='SystemResources' &amp; sysresu='K%') |(name=='OfflineCapacity' &amp; offcapu='K%') |(name=='SpareCapacity' &amp; spcapu='K%') |(name=='UsedCapacity' &amp; usdcapu='K%') | (name=='AuditAndMetadata' &amp; usdcapu='K%') | (name=='ProtectedUserData' &amp; prusrdtu='K%'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-kb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_avail_from_pb_gb_unit">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((name=='SystemBuffer' &amp; sysbufu='P%')|(name=='RegenerationBuffer' &amp; regenbu='P%')|(name=='AvailableCapacity' &amp; availcapu='P%')|(name=='TotalRawCapacity' &amp; trawcapu='P%')|(name=='UsedRawCapacity' &amp; urawcapu='P%')|(name=='FreeRawCapacity' &amp; frawcapu='P%')|(name=='SystemResources' &amp; sysresu='P%') |(name=='OfflineCapacity' &amp; offcapu='P%') |(name=='SpareCapacity' &amp; spcapu='P%')|(name=='UsedCapacity' &amp; usdcapu='P%') | (name=='AuditAndMetadata' &amp; usdcapu='P%') | (name=='ProtectedUserData' &amp; prusrdtu='P%'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-pb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_pool_from_tb_gb_unit">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((parttype=='Storage Pool') &amp; ((name=='AlertQuotaCapacity' &amp; paqcapu='T%')|(name=='HardStopCapacity' &amp; phscapu='T%')|(name=='UsedCapacity' &amp; pusdcapu='T%')))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-tb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_pool_from_m_gb_unit">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((parttype=='Storage Pool') &amp; ((name=='AlertQuotaCapacity' &amp; paqcapu='M%')|(name=='HardStopCapacity' &amp; phscapu='M%')|(name=='UsedCapacity' &amp; pusdcapu='M%')))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-mb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_pool_from_kb_gb_unit">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((parttype=='Storage Pool') &amp; ((name=='AlertQuotaCapacity' &amp; paqcapu='K%')|(name=='HardStopCapacity' &amp; phscapu='K%')|(name=='UsedCapacity' &amp; pusdcapu='K%')))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-kb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_pool_from_pb_gb_unit">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((parttype=='Storage Pool') &amp; ((name=='AlertQuotaCapacity' &amp; paqcapu='P%')|(name=='HardStopCapacity' &amp; phscapu='P%')|(name=='UsedCapacity' &amp; pusdcapu='P%')))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-pb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_node_from_tb_gb_unit">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((parttype=='Node') &amp; ( name=='TotalCapacity' &amp; ntcapu='T%')|(name=='UsedCapacity' &amp; nucapu='T%')|(name=='FreeCapacity' &amp; nfcapu='T%') |(name=='FaultedCapacity' &amp; nfacapu='T%'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-tb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+		<handling-configuration id="compute_node_from_m_gb_">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((parttype=='Node') &amp; ( name=='TotalCapacity' &amp; ntcapu='M%')|(name=='UsedCapacity' &amp; nucapu='M%')|(name=='FreeCapacity' &amp; nfcapu='M%') |(name=='FaultedCapacity' &amp; nfacapu='M%'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-mb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_node_from_kb_gb_">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((parttype=='Node') &amp; ( name=='TotalCapacity' &amp; ntcapu='K%')|(name=='UsedCapacity' &amp; nucapu='K%')|(name=='FreeCapacity' &amp; nfcapu='K%') |(name=='FaultedCapacity' &amp; nfacapu='K%'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-kb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="compute_node_from_pb_gb_">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((parttype=='Node') &amp; ( name=='TotalCapacity' &amp; ntcapu='P%')|(name=='UsedCapacity' &amp; nucapu='P%')|(name=='FreeCapacity' &amp; nfcapu='P%') |(name=='FaultedCapacity' &amp; nfacapu='P%'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-pb-to-gb.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="convert_objects_to_k">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((name=='TotalObjectCount' &amp; totobju=='K')|(name=='UsedObjectCount' &amp; usedobju=='K')|(name=='FreeObjectCount' &amp; freeobju=='K') |(name=='UserObjectCount' &amp; userobju=='K'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-to-k.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="convert_objects_to_m">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((name=='TotalObjectCount' &amp; totobju=='M')|(name=='UsedObjectCount' &amp; usedobju=='M')|(name=='FreeObjectCount' &amp; freeobju=='M') |(name=='UserObjectCount' &amp; userobju=='M'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-to-m.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="convert_objects_to_g">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((name=='TotalObjectCount' &amp; totobju=='G')|(name=='UsedObjectCount' &amp; usedobju=='G')|(name=='FreeObjectCount' &amp; freeobju=='G') |(name=='UserObjectCount' &amp; userobju=='G'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-to-g.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="convert_objects_to_t">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">((name=='TotalObjectCount' &amp; totobju=='T')|(name=='UsedObjectCount' &amp; usedobju=='T')|(name=='FreeObjectCount' &amp; freeobju=='T') |(name=='UserObjectCount' &amp; userobju=='T'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler"> 
+			<parameter name="file" type="file">conf/vhf-centera-to-t.xml</parameter> 
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="remove-unit-properties">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+				<parameter name="filter">sysbufu|regenbu|availcapu|totobjbu|usedobjbu|freeobjbu|urawcapu|frawcapu|sysresu|offcap|spcapu|uspcapu|amcapu|prusrdtu|userobju|ntcapu|nucapu|nfcapu|nfacapu|paqcapu|phscapu|pusdcapu</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-peh-centera-remove.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="remove-removeme">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">removeme</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-peh-centera-removeme.xml</parameter>
+		</handler>
+	</handling-configuration>
+</configuration>

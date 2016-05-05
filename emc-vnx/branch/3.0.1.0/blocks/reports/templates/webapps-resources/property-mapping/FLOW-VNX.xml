@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties key-separator="-">
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.NumericValue" key="true">
+		<name class="string">ConnectionID</name>
+		<table class="string">${table}</table>
+		<display-name class="string">identifier</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.TimestampSec" timestamp="true">
+		<name class="string">Timestamp</name>
+		<table class="string">${table}</table>
+		<display-name class="string">timestamp</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.FormattedTimestamp">
+		<name class="string">Timestamp</name>
+		<table class="string">${table}</table>
+		<display-name class="string">date</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.GraphableValue" default="true">
+		<name class="string">TotalCalls</name>
+		<table class="string">${table}</table>
+		<display-name class="string">totalcalls</display-name>
+		<unit class="string">calls</unit>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.GraphableValue">
+		<name class="string">WriteCalls</name>
+		<table class="string">${table}</table>
+		<display-name class="string">writecalls</display-name>
+		<unit class="string">calls</unit>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.GraphableValue">
+		<name class="string">ReadCalls</name>
+		<table class="string">${table}</table>
+		<display-name class="string">readcalls</display-name>
+		<unit class="string">calls</unit>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.GraphableValue">
+		<name class="string">SuspectCalls</name>
+		<table class="string">${table}</table>
+		<display-name class="string">suspectcalls</display-name>
+		<unit class="string">calls</unit>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.GraphableValue">
+		<name class="string">TotalBytes</name>
+		<table class="string">${table}</table>
+		<display-name class="string">totalbytes</display-name>
+		<unit class="string">bytes</unit>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.GraphableValue">
+		<name class="string">WriteBytes</name>
+		<table class="string">${table}</table>
+		<display-name class="string">writebytes</display-name>
+		<unit class="string">bytes</unit>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.GraphableValue">
+		<name class="string">ReadBytes</name>
+		<table class="string">${table}</table>
+		<display-name class="string">readbytes</display-name>
+		<unit class="string">bytes</unit>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.GraphableValue">
+		<name class="string">AverageTime</name>
+		<table class="string">${table}</table>
+		<display-name class="string">avgtime</display-name>
+		<unit class="string">s</unit>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.TopNProperty">
+		<display-name class="string">topN</display-name>
+		<default-aggr class="string">sum</default-aggr>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.ValueSelection">
+		<display-name class="string">name</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.Unit">
+		<display-name class="string">unit</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.StringValue">
+		<name class="string">Container</name>
+		<table class="string">${table}</table>
+		<display-name class="string">container</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.StringValue">
+		<name class="string">Client</name>
+		<table class="string">${table}</table>
+		<display-name class="string">client</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.StringValue">
+		<name class="string">User</name>
+		<table class="string">${table}</table>
+		<display-name class="string">user</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.StringValue">
+		<name class="string">Server</name>
+		<table class="string">${table}</table>
+		<display-name class="string">server</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.StringValue">
+		<name class="string">Protocol</name>
+		<table class="string">${table}</table>
+		<display-name class="string">service</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.StaticProperty">
+		<display-name class="string">datagrp</display-name>
+		<value class="string">VNXFile-TopN</value>
+	</property>
+	<!-- to get the current time, then do math diff againts CP date-time -->
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.StaticProperty">
+		<display-name class="string">source</display-name>
+		<value class="string">VNXFile-Collector</value>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.CurrentTimestamp">
+		<display-name class="string">now</display-name>
+	</property>
+	<property name="com.watch4net.apg.v2.modules.database.GenericFlow.properties.StringValue">
+		<name class="string">serialnb</name>
+		<table class="string">${table}</table>
+		<display-name class="string">serialnb</display-name>
+	</property>
+</properties>

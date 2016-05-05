@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	
+	<!-- The number of threads who will run in parallel to run the collection -->
+	<max-threads>1</max-threads>
+	<!-- FROM THIS POINT... -->	
+    	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		
+		<!-- The type of the tree build, single-line-tree, table-like-tree or regex-group-tree -->
+		<tree-type>single-line-tree</tree-type>
+		
+		
+		<!-- See documentation for tree schema creation -->
+		<tree-schema>
+			<name>name</name>
+			<leaf>
+				<name>name</name>
+			</leaf>
+		</tree-schema>
+	</parser-config>
+	
+        <data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+        <data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+
+	<!-- ...TO THIS POINT ; is just fake cfg -->	
+	<include-contexts>conf/context-file.xml</include-contexts>
+	
+	<data-config>
+	 <data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.cli.RemoteCLICommandExecutor</data-accessor>
+	  
+	  <!-- True if the commands must be executed only on the first host answering -->
+	  <stop-on-first-result>false</stop-on-first-result>
+	  
+	  <host-group-config>
+	    
+	    <!-- Creation of a custom group -->
+	    <custom-group>
+	    
+	      <!-- The group name -->
+	      <group-name>VNXFile-group</group-name>
+	      
+	      <host-config>
+	        <!-- The connection type if (Only used for the RemoteCLICommandExecutor) -->
+	        <connection-type>ssh</connection-type>
+	        
+	        <!-- The list of host IPs or names -->
+	        <host-list>@csprimary</host-list>
+	        
+	        <!-- See documentation for available parameters -->
+	        <parameter name="auth-method"><value>password</value></parameter>
+	        <parameter name="username"><value>@fileusername</value></parameter>
+	        <parameter name="password"><value>@filepassword</value></parameter>
+	        <!-- Override OS check and use the name of the xml conf --> 
+	        <parameter name="hardcoded-os"><value>vnxfile-executables</value></parameter>
+	      </host-config>
+	    </custom-group>
+	  </host-group-config>
+	  <command-configuration>
+	    <group-name>VNXFile-group</group-name>
+	    <command-list>
+	      <command type="defined">VNXFile collect 60 min</command>
+	        
+	      <!-- The arguments of the command -->
+	      <result-must-be-parsed>false</result-must-be-parsed>
+	    </command-list>
+	  </command-configuration>
+	  
+	  <!-- See documentation for accessor specific parameters -->
+	  <parameter name="command-definition-directory"><value>./conf</value></parameter>
+	</data-config>
+</configuration>

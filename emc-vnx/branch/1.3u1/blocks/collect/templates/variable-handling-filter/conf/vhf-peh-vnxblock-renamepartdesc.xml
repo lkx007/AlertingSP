@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler ./property-extraction-handler.xsd"
+        xmlns="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler">
+    <properties>
+        <regex-property name="partdesc" keep="true">
+            <regex>(Bus \d Enclosure \d Disk \d)* (Bus \d Enclosure \d Disk \d)* (Bus \d Enclosure \d Disk \d)* (Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)* *(Bus \d Enclosure \d Disk \d)*</regex>
+            <part name="partdesc" value="${1},${2},${3},${4},${5},${6},${7},${8},${9},${10},${11},${12},${13},${14},${15},${16},${17},${18}" />
+        </regex-property>
+    </properties>
+</config>

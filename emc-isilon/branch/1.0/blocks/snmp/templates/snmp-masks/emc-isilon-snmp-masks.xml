@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<snmp-masks>
+  <snmp-mask name="ISILON_CLUSTER_RESOURCES" version="611">
+    <snmp-properties>
+      <snmp-property id="accessTimeEnabled" name="acctime" oid=".1.3.6.1.4.1.12124.1.3.10.0"/>
+      <snmp-property id="clusterState" name="devstate" oid=".1.3.6.1.4.1.12124.1.1.2.0"/>
+      <snmp-property id="datagrp" name="datagrp" value="EMC-ISILON-CLUSTER"/>
+
+      <snmp-property id="ename" name="ename" oid=".1.3.6.1.4.1.12124.1.1.1.0"/>
+      <snmp-property id="etype" name="etype" value="Cluster"/>
+      <snmp-property id="deviceid" name="deviceid" oid=".1.3.6.1.4.1.12124.1.1.3.0"/>
+
+
+    </snmp-properties>
+    <snmp-oids>
+
+
+
+      <snmp-oid id="accessTimeGracePeriod" name="AccessTimeGracePeriod" oid=".1.3.6.1.4.1.12124.1.3.11.0" unit="ms" part="All IFS" partType="FileSystem"/>
+      <snmp-oid id="clusterCPUIdle" name="CpuIdle" oid=".1.3.6.1.4.1.12124.1.2.3.5.0" unit="%" part="All" partType="Processor"/>
+      <snmp-oid id="clusterCPUInterupt" name="CpuInterupt" oid=".1.3.6.1.4.1.12124.1.2.3.4.0" unit="%" part="All" partType="Processor"/>
+      <snmp-oid id="clusterCPUNice" name="CpuNice" oid=".1.3.6.1.4.1.12124.1.2.3.2.0" unit="%" part="All" partType="Processor"/>
+      <snmp-oid id="clusterCPUSystem" name="CpuSystem" oid=".1.3.6.1.4.1.12124.1.2.3.3.0" unit="%" part="All" partType="Processor"/>
+
+
+
+
+      <snmp-oid id="clusterCPUUser" name="CpuUser" oid=".1.3.6.1.4.1.12124.1.2.3.1.0" unit="%" part="All" partType="Processor"/>
+      <snmp-oid id="clusterHealth" name="Availability" oid=".1.3.6.1.4.1.12124.1.1.2.0" unit="%"/>
+      <snmp-oid id="clusterIfsInBytes" name="InOctets" oid=".1.3.6.1.4.1.12124.1.2.1.1.0" as="RATEP" unit="Octest/s" part="All IFS" partType="FileSystem"/>
+      <snmp-oid id="clusterIfsOutBytes" name="OutOctets" oid=".1.3.6.1.4.1.12124.1.2.1.3.0" as="RATEP" unit="Octest/s" part="All IFS" partType="FileSystem"/>
+
+
+
+      <snmp-oid id="clusterNetworkInBytes" name="InOctets" oid=".1.3.6.1.4.1.12124.1.2.2.1.0" as="RATEP" unit="Octest/s" part="All" partType="Interface"/>
+      <snmp-oid id="clusterNetworkOutBytes" name="OutOctets" oid=".1.3.6.1.4.1.12124.1.2.2.3.0" as="RATEP" unit="Octest/s" part="All" partType="Interface"/>
+      <snmp-oid id="ifsAvailableBytes" name="AvailableSpace" oid=".1.3.6.1.4.1.12124.1.3.3.0" unit="Bytes" part="All IFS" partType="FileSystem"/>
+      <snmp-oid id="ifsTotalBytes" name="StorageSize" oid=".1.3.6.1.4.1.12124.1.3.1.0" unit="Bytes" part="All IFS" partType="FileSystem"/>
+      <snmp-oid id="ifsUsedBytes" name="UsedSpace" oid=".1.3.6.1.4.1.12124.1.3.2.0" unit="Bytes" part="All IFS" partType="FileSystem"/>
+
+
+      <snmp-oid id="nodeCount" name="NodeCount" oid=".1.3.6.1.4.1.12124.1.1.4.0"/>
+    </snmp-oids>
+    <snmp-tables>
+      <snmp-table id="licenseTable" name="licenseTable" oid=".1.3.6.1.4.1.12124.1.5.1" tableIndex=".1.100" tableColNameOid=".1.12" partType="License" nextRefTableColIdxOid=".1.100" cacheAllSnmpReferenceTables="true" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="licenseStatus" referenceTableOid=".1.3.6.1.4.1.12124.1.5.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" propertyName="partstat" propertyValueAppendOid=".1.3" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+          <snmp-column name="ExpirationDate" appendOid=".1.5" unit="epoch" refreshOnPropertyChange="false"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table id="quotaTable" name="quotaTable" oid=".1.3.6.1.4.1.12124.1.12.1" tableIndex=".1.100" tableColNameOid=".1.5" partType="Quota" nextRefTableColIdxOid=".1.100" cacheAllSnmpReferenceTables="true" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="quotaType" referenceTableOid=".1.3.6.1.4.1.12124.1.12.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" propertyName="partform" propertyValueAppendOid=".1.2" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="quotaIncludesSnapshotUsage" referenceTableOid=".1.3.6.1.4.1.12124.1.12.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" propertyName="qtasnap" propertyValueAppendOid=".1.4" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="quotaHardThreshold" referenceTableOid=".1.3.6.1.4.1.12124.1.12.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" propertyName="qtahard" propertyValueAppendOid=".1.7" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="quotaSoftThreshold" referenceTableOid=".1.3.6.1.4.1.12124.1.12.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" propertyName="qtasoft" propertyValueAppendOid=".1.9" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+          <snmp-column name="Usage" appendOid=".1.13" unit="Bytes" refreshOnPropertyChange="false"/>
+          <snmp-column name="UsageWithOverhead" appendOid=".1.14" unit="Bytes" refreshOnPropertyChange="false"/>
+          <snmp-column name="NumberOfFiles" appendOid=".1.15" refreshOnPropertyChange="false"/>
+        </columns-and-filters>
+      </snmp-table>
+    </snmp-tables>
+    <mib-files>
+      <mib-file-name>ISILON-MIB.txt</mib-file-name>
+    </mib-files>
+  </snmp-mask>
+  <snmp-mask name="ISILON_NODE_RESOURCES" version="611">
+    <snmp-properties>
+      <snmp-property id="clusterName" name="memberof" oid=".1.3.6.1.4.1.12124.1.1.1.0"/>
+      <snmp-property id="datagrp" name="datagrp" value="EMC-ISILON-NODE"/>
+
+      <snmp-property id="nodeName" name="device" oid=".1.3.6.1.4.1.12124.2.1.1.0"/>
+      <snmp-property id="nodeHealth" name="devstate" oid=".1.3.6.1.4.1.12124.2.1.2.0"/>
+      <snmp-property id="devtype" name="devtype" value="Array"/>
+      <snmp-property id="nodeType" name="devclass" oid=".1.3.6.1.4.1.12124.2.1.3.0"/>
+
+    </snmp-properties>
+    <snmp-oids>
+      <snmp-oid id="clusterHealth2" name="Status" oid=".1.3.6.1.4.1.12124.2.1.2.0" unit="%"/>
+
+      <snmp-oid id="nodeCPUIdle" name="CpuIdle" oid=".1.3.6.1.4.1.12124.2.2.3.5.0" unit="%" part="All" partType="Processor"/>
+      <snmp-oid id="nodeCPUInterupt" name="CpuInterupt" oid=".1.3.6.1.4.1.12124.2.2.3.4.0" unit="%" part="All" partType="Processor"/>
+      <snmp-oid id="nodeCPUNice" name="CpuNice" oid=".1.3.6.1.4.1.12124.2.2.3.2.0" unit="%" part="All" partType="Processor"/>
+      <snmp-oid id="nodeCPUSystem" name="CpuSystem" oid=".1.3.6.1.4.1.12124.2.2.3.3.0" unit="%" part="All" partType="Processor"/>
+
+
+
+
+
+
+      <snmp-oid id="nodeCPUUser" name="CpuUser" oid=".1.3.6.1.4.1.12124.2.2.3.1.0" unit="%" part="All" partType="Processor"/>
+      <snmp-oid id="nodeIfsInBytes" name="InOctets" oid=".1.3.6.1.4.1.12124.2.2.1.1.0" as="RATEP" unit="Octest/s" part="All IFS" partType="FileSystem"/>
+      <snmp-oid id="nodeIfsOutBytes" name="OutOctets" oid=".1.3.6.1.4.1.12124.2.2.1.3.0" as="RATEP" unit="Octest/s" part="All IFS" partType="FileSystem"/>
+      <snmp-oid id="nodeNetworkInBytes" name="InOctets" oid=".1.3.6.1.4.1.12124.2.2.2.1.0" as="RATEP" unit="Octest/s" part="All" partType="Interface"/>
+      <snmp-oid id="nodeNetworkOutBytes" name="OutOctets" oid=".1.3.6.1.4.1.12124.2.2.2.3.0" as="RATEP" unit="Octest/s" part="All" partType="Interface"/>
+    </snmp-oids>
+    <snmp-tables>
+
+
+
+
+
+
+
+
+
+
+
+      <snmp-table id="diskPerfTable" name="diskPerfTable" oid=".1.3.6.1.4.1.12124.2.2.52" tableIndex=".1.1" partType="Disk" nextRefTableColIdxOid=".1.1" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="diskPerfBay" referenceTableOid=".1.3.6.1.4.1.12124.2.2.52" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="diskbay" propertyValueAppendOid=".1.2" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="diskLogicalNumber" referenceTableOid=".1.3.6.1.4.1.12124.2.52" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partid" propertyValueAppendOid=".1.2" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="diskDeviceName" referenceTableOid=".1.3.6.1.4.1.12124.2.52" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="part" propertyValueAppendOid=".1.4" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="diskStatus" referenceTableOid=".1.3.6.1.4.1.12124.2.52" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partstat" propertyValueAppendOid=".1.5" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="diskModel" referenceTableOid=".1.3.6.1.4.1.12124.2.52" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partmdl" propertyValueAppendOid=".1.6" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="diskSerialNumber" referenceTableOid=".1.3.6.1.4.1.12124.2.52" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partsn" propertyValueAppendOid=".1.7" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="diskFirmwareVersion" referenceTableOid=".1.3.6.1.4.1.12124.2.52" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partvrs" propertyValueAppendOid=".1.8" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="diskFirmwareVersion" referenceTableOid=".1.3.6.1.4.1.12124.2.52" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="disksize" propertyValueAppendOid=".1.9" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+          <snmp-column name="IOPS" appendOid=".1.3" unit="IO/S" refreshOnPropertyChange="false"/>
+          <snmp-column name="WriteThroughput" appendOid=".1.4" unit="bps" refreshOnPropertyChange="false"/>
+          <snmp-column name="ReadThroughput" appendOid=".1.5" unit="bps" refreshOnPropertyChange="false"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table id="fanTable" name="fanTable" oid=".1.3.6.1.4.1.12124.2.53" tableIndex=".1.1" tableColNameOid=".1.2" partType="Fan" nextRefTableColIdxOid=".1.1" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="fanNumber" referenceTableOid=".1.3.6.1.4.1.12124.2.53" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partid" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="fanDescription" referenceTableOid=".1.3.6.1.4.1.12124.2.53" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partdesc" propertyValueAppendOid=".1.3" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+          <snmp-column name="Speed" appendOid=".1.4" unit="rpm" refreshOnPropertyChange="false"/>
+        </columns-and-filters>
+      </snmp-table>
+
+
+
+      <snmp-table id="hrStorageTable" name="hrStorageTable" oid=".1.3.6.1.2.1.25.2.3" tableIndex=".1.100 .1.3" tableColNameOid=".1.3" indexEntryMask="oid._._.100" partType="FileSystem" nextRefTableColIdxOid=".1.100" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="hrStorageTable.hrStorageType" referenceTableOid=".1.3.6.1.2.1.25.2.3" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="stortype" propertyValueAppendOid=".1.2" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="hrStorageTable.hrStorageUnitSize" referenceTableOid=".1.3.6.1.2.1.25.2.3" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="storunit" propertyValueAppendOid=".1.4" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="hrStorageTable.hrStorageUnitSize" referenceTableOid=".1.3.6.1.2.1.25.2.3" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="StUnitSz" propertyValueAppendOid=".1.4" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+
+          <snmp-column name="StorageSize" appendOid=".1.5" unit="Bytes" varNameGenOidSequence=".1.3" refreshOnPropertyChange="false"/>
+          <snmp-column name="StorageUsed" appendOid=".1.6" unit="Bytes" varNameGenOidSequence=".1.3" refreshOnPropertyChange="false"/>
+        </columns-and-filters>
+      </snmp-table>
+
+      <snmp-table id="nodeProtocolPerfTable" name="nodeProtocolPerfTable" oid=".1.3.6.1.4.1.12124.2.2.10" tableIndex=".1.1" tableColNameOid=".1.1" partType="Protocol" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <columns-and-filters>
+          <snmp-column name="IOPS" appendOid=".1.3" unit="IO/S" refreshOnPropertyChange="false"/>
+          <snmp-column name="InOctets" appendOid=".1.6" unit="Octets" refreshOnPropertyChange="false"/>
+          <snmp-column name="OutOctets" appendOid=".1.11" unit="Octets" refreshOnPropertyChange="false"/>
+          <snmp-column name="Latency" appendOid=".1.16" unit="ms" refreshOnPropertyChange="false"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table id="powerSensorTable" name="powerSensorTable" oid=".1.3.6.1.4.1.12124.2.55" tableIndex=".1.1" tableColNameOid=".1.2" partType="Sensor" nextRefTableColIdxOid=".1.1" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="powerSensorNumber" referenceTableOid=".1.3.6.1.4.1.12124.2.55" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partid" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="powerSensorDescription" referenceTableOid=".1.3.6.1.4.1.12124.2.55" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partdesc" propertyValueAppendOid=".1.3" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+          <snmp-column name="SensorValue" appendOid=".1.4" refreshOnPropertyChange="false"/>
+        </columns-and-filters>
+      </snmp-table>
+
+
+
+
+      <snmp-table id="tempSensorTable" name="tempSensorTable" oid=".1.3.6.1.4.1.12124.2.54" tableIndex=".1.1" tableColNameOid=".1.2" partType="Sensor" nextRefTableColIdxOid=".1.1" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="tempSensorNumber" referenceTableOid=".1.3.6.1.4.1.12124.2.54" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partid" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="tempSensorDescription" referenceTableOid=".1.3.6.1.4.1.12124.2.54" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.1" propertyName="partdesc" propertyValueAppendOid=".1.3" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+
+
+          <snmp-column name="Temperature" appendOid=".1.4" unit="Celsius" refreshOnPropertyChange="false"/>
+        </columns-and-filters>
+      </snmp-table>
+    </snmp-tables>
+    <mib-files>
+      <mib-file-name>ISILON-MIB.txt</mib-file-name>
+    </mib-files>
+  </snmp-mask>
+  <snmp-mask name="ISILON_GENERIC_INTERFACES" doNotEdit="true" version="611">
+    <snmp-properties>
+      <snmp-property id="datagrp" name="datagrp" value="EMC-ISILON-GENERIC-INTERFACES"/>
+    </snmp-properties>
+    <snmp-oids>
+      <snmp-oid id="ipForwDatagrams" name="ipForwDatagrams" oid=".1.3.6.1.2.1.4.6.0" as="RATEP"/>
+      <snmp-oid id="ipForwarding" name="ipForwarding" oid=".1.3.6.1.2.1.4.1.0"/>
+    </snmp-oids>
+    <snmp-tables>
+      <snmp-table id="stdIfT1" name="stdIfTable1" oid=".1.3.6.1.2.1.2.2" tableIndex=".1.100" tableColNameOid=".1.2" indexEntryMask="oid._._.100" partType="Interface" nextRefTableColIdxOid=".1.100" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="ifTable.ifDescr" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="part" propertyValueAppendOid=".1.2" usePropertyValueInVariableName="true" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifType" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="iftype" propertyValueAppendOid=".1.3" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifSpeed" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="maxspeed" propertyValueAppendOid=".1.5" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifPhysAddress" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifacemac" propertyValueAppendOid=".1.6" usePropertyValueInVariableName="false" hexValue="true" longLifeCaching="false"/>
+        <snmp-reference-table name="ipAddrTable.ipAdEntAddr" referenceTableOid=".1.3.6.1.2.1.4.20" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.2" propertyName="ifaceip" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifName" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifname" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifAlias" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifalias" propertyValueAppendOid=".1.18" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifHighSpeed" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="mxhspeed" propertyValueAppendOid=".1.15" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+          <snmp-column name="ifAdminStatus" appendOid=".1.7" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOperStatus" appendOid=".1.8" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table id="stdIfT2" name="stdIfTable2" oid=".1.3.6.1.2.1.2.2" tableIndex=".1.100" tableColNameOid=".1.2" indexEntryMask="oid._._.100" partType="Interface" nextRefTableColIdxOid=".1.100" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="ifTable.ifDescr" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="part" propertyValueAppendOid=".1.2" usePropertyValueInVariableName="true" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifType" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="iftype" propertyValueAppendOid=".1.3" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifSpeed" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="maxspeed" propertyValueAppendOid=".1.5" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifPhysAddress" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifacemac" propertyValueAppendOid=".1.6" usePropertyValueInVariableName="false" hexValue="true" longLifeCaching="false"/>
+        <snmp-reference-table name="ipAddrTable.ipAdEntAddr" referenceTableOid=".1.3.6.1.2.1.4.20" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.2" propertyName="ifaceip" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifName" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifname" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifAlias" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifalias" propertyValueAppendOid=".1.18" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifHighSpeed" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="mxhspeed" propertyValueAppendOid=".1.15" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+          <snmp-column name="ifInDiscards" appendOid=".1.13" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInErrors" appendOid=".1.14" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInUnknownProtos" appendOid=".1.15" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutDiscards" appendOid=".1.19" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutErrors" appendOid=".1.20" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-filter appendOid=".1.7" valueEquals="up" invertMatch="false"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table id="stdIfT3" name="stdIfTable3" oid=".1.3.6.1.2.1.2.2" tableIndex=".1.100" indexEntryMask="oid._._.100" partType="Interface" nextRefTableColIdxOid=".1.100" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="ifTable.ifDescr" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="part" propertyValueAppendOid=".1.2" usePropertyValueInVariableName="true" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifType" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="iftype" propertyValueAppendOid=".1.3" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifSpeed" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="maxspeed" propertyValueAppendOid=".1.5" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifPhysAddress" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifacemac" propertyValueAppendOid=".1.6" usePropertyValueInVariableName="false" hexValue="true" longLifeCaching="false"/>
+        <snmp-reference-table name="ipAddrTable.ipAdEntAddr" referenceTableOid=".1.3.6.1.2.1.4.20" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.2" propertyName="ifaceip" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifName" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifname" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifAlias" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifalias" propertyValueAppendOid=".1.18" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifHighSpeed" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="mxhspeed" propertyValueAppendOid=".1.15" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <columns-and-filters>
+          <snmp-column name="ifSpeed" appendOid=".1.5" unit="1" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInOctets" appendOid=".1.10" as="RATEP" unit="Octets/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutOctets" appendOid=".1.16" as="RATEP" unit="Octets/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInUcastPkts" appendOid=".1.11" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInNUcastPkts" appendOid=".1.12" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutUcastPkts" appendOid=".1.17" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutNUcastPkts" appendOid=".1.18" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-filter appendOid=".1.7" valueEquals="up" invertMatch="false">
+            <snmp-filter appendOid=".1.5" valueEquals="100000000|[0-9]{1,8}" invertMatch="false"/>
+          </snmp-filter>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table id="stdIfXT3" name="stdIfXTable3" oid=".1.3.6.1.2.1.31.1.1" tableIndex=".1.100" indexEntryMask="oid._._.100" partType="Interface" nextRefTableColIdxOid=".1.100" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="ifTable.ifDescr" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="part" propertyValueAppendOid=".1.2" usePropertyValueInVariableName="true" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifType" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="iftype" propertyValueAppendOid=".1.3" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifSpeed" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="maxspeed" propertyValueAppendOid=".1.5" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifPhysAddress" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifacemac" propertyValueAppendOid=".1.6" usePropertyValueInVariableName="false" hexValue="true" longLifeCaching="false"/>
+        <snmp-reference-table name="ipAddrTable.ipAdEntAddr" referenceTableOid=".1.3.6.1.2.1.4.20" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.2" propertyName="ifaceip" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifName" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifname" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifAlias" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifalias" propertyValueAppendOid=".1.18" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifHighSpeed" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="mxhspeed" propertyValueAppendOid=".1.15" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <inner-join-on name="ifIndex" appendOid=".1.100"/>
+        <columns-and-filters>
+          <snmp-column name="ifSpeed" appendOid=".1.15" unit="1000000" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInOctets" appendOid=".1.6" as="RATEP" unit="Octets/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutOctets" appendOid=".1.10" as="RATEP" unit="Octets/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInUcastPkts" appendOid=".1.7" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInMulticastPkts" appendOid=".1.8" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInBroadcastPkts" appendOid=".1.9" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutUcastPkts" appendOid=".1.11" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutMulticastPkts" appendOid=".1.12" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutBroadcastPkts" appendOid=".1.13" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-filter appendOid=".1.15" valueEquals="[0-9]{4,}|[2-9][0-9]{2}|1[1-9][0-9]|10[1-9]" invertMatch="false">
+            <snmp-filter name="ifTable.ifAdminStatusFilter" onTableName="ifTable.ifAdminStatusFilter" onTableOid=".1.3.6.1.2.1.2.2" onTableColumnName="ifAdminStatus" appendOid=".1.7" valueEquals="up" indexEntryMask="oid._._.100" invertMatch="false">
+              <outer-join-on name="ifIndex" appendOid=".1.100"/>
+            </snmp-filter>
+          </snmp-filter>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table id="stdIfXT4a" name="stdIfXTable4a" oid=".1.3.6.1.2.1.31.1.1" tableIndex=".1.100" indexEntryMask="oid._._.100" partType="Interface" nextRefTableColIdxOid=".1.100" cacheAllSnmpReferenceTables="false" sortOnOid="false" matchNFirstOidSuffixOnly="0">
+        <snmp-reference-table name="ifTable.ifDescr" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="part" propertyValueAppendOid=".1.2" usePropertyValueInVariableName="true" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifType" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="iftype" propertyValueAppendOid=".1.3" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifSpeed" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="maxspeed" propertyValueAppendOid=".1.5" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifTable.ifPhysAddress" referenceTableOid=".1.3.6.1.2.1.2.2" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifacemac" propertyValueAppendOid=".1.6" usePropertyValueInVariableName="false" hexValue="true" longLifeCaching="false"/>
+        <snmp-reference-table name="ipAddrTable.ipAdEntAddr" referenceTableOid=".1.3.6.1.2.1.4.20" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.2" propertyName="ifaceip" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifName" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifname" propertyValueAppendOid=".1.1" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifAlias" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="ifalias" propertyValueAppendOid=".1.18" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <snmp-reference-table name="ifXTable.ifHighSpeed" referenceTableOid=".1.3.6.1.2.1.31.1.1" parentTablecolIdxOidPositions="1" refTableColIdxOid=".1.100" indexEntryMask="oid._._.100" propertyName="mxhspeed" propertyValueAppendOid=".1.15" usePropertyValueInVariableName="false" hexValue="false" longLifeCaching="false"/>
+        <inner-join-on name="ifIndex" appendOid=".1.100"/>
+        <columns-and-filters>
+          <snmp-column name="ifInMulticastPkts" appendOid=".1.2" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifInBroadcastPkts" appendOid=".1.3" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutMulticastPkts" appendOid=".1.4" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-column name="ifOutBroadcastPkts" appendOid=".1.5" as="RATEP" unit="Pkts/s" propertyName="ifindex" propertyValueAppendOid=".1.100" refreshOnPropertyChange="false"/>
+          <snmp-filter name="ifTable.ifAdminStatusSpeedFilter" onTableName="ifTable.ifAdminStatusSpeedFilter" onTableOid=".1.3.6.1.2.1.2.2" onTableColumnName="ifAdminStatus" appendOid=".1.7" valueEquals="up" indexEntryMask="oid._._.100" invertMatch="false">
+            <outer-join-on name="ifIndex" appendOid=".1.100"/>
+            <snmp-filter appendOid=".1.5" valueEquals="100000000|[0-9]{1,8}" invertMatch="false"/>
+          </snmp-filter>
+        </columns-and-filters>
+      </snmp-table>
+    </snmp-tables>
+    <mib-files>
+      <mib-file-name>IANAifType-MIB.mib</mib-file-name>
+      <mib-file-name>IF-MIB.my</mib-file-name>
+      <mib-file-name>IP-MIB.mib</mib-file-name>
+      <mib-file-name>RFC1213-MIB.mib</mib-file-name>
+      <mib-file-name>SNMPv2-CONF.mib</mib-file-name>
+      <mib-file-name>SNMPv2-MIB.my</mib-file-name>
+      <mib-file-name>SNMPv2-SMI.mib</mib-file-name>
+      <mib-file-name>SNMPv2-TC.mib</mib-file-name>
+    </mib-files>
+  </snmp-mask>
+</snmp-masks>

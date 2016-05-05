@@ -1,0 +1,535 @@
+<!-- VMAX Topology mappings -->
+<topology-mapping>
+
+   <idpatterns>
+      <idpattern type="StorageArray">
+         <key index="1">serialNumber</key>
+      </idpattern>
+      <idpattern type="StorageFrontEndAdapter">
+         <key index="1">serialNumber</key>
+         <key index="2">displayName</key>
+      </idpattern>
+      <idpattern type="StorageFrontEndPort">
+         <key index="1">serialNumber</key>
+         <key index="2">adapterName</key>
+         <key index="3">portNumber</key>
+      </idpattern>
+      <idpattern type="ProtocolEndpoint">
+         <key index="1">wwn</key>
+      </idpattern>
+      <idpattern type="StorageVolume">
+         <key index="1">serialNumber</key>
+         <key index="2">displayName</key>
+      </idpattern>
+      <idpattern type="StorageVolumeGroup">
+         <key index="1">serialNumber</key>
+         <key index="2">displayName</key>
+      </idpattern>
+      <idpattern type="InitiatorPortGroup">
+         <key index="1">serialNumber</key>
+         <key index="2">displayName</key>
+      </idpattern>
+      <idpattern type="TargetPortGroup">
+         <key index="1">serialNumber</key>
+         <key index="2">displayName</key>
+      </idpattern>
+      <idpattern type="MaskingView">
+         <key index="1">serialNumber</key>
+         <key index="2">viewName</key>
+      </idpattern>
+      <idpattern type="IOPath">
+         <key index="1">initiatorwwn</key>
+         <key index="2">targetwwn</key>
+         <key index="3">lunNumber</key>
+      </idpattern>
+   </idpatterns>
+
+   <!-- Gets Storage Array Properties -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="TotalMemory"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="datagrp" value="VMAX-ARRAYS"/>
+      </conditions>
+      <object type="StorageArray">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="displayName" expression="{device}" type="xsd:string"/>
+            <attribute name="model" expression="{model}" type="xsd:string"/>
+            <attribute name="softwareVersion" expression="{devdesc}" type="xsd:string"/>
+         </attributes>
+      </object>
+   </mapping>
+
+   <!-- Gets Storage Adapter and its relationship to Array -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="Availability"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="Controller"/>
+         <condition property="partgrp" value="Front-End"/>
+         <condition property="datagrp" value="VMAX-DIRECTORS"/>
+      </conditions>
+      <object type="StorageFrontEndAdapter">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{part}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="displayName" expression="{part}" type="xsd:string"/>
+         </attributes>
+         <relations>
+            <relation type="StorageArray" name="residesOnStorageArray" inverseOf="containsStorageFrontEndAdapter">
+               <id key="serialNumber" expression="{device}"/>
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+
+<!-- Gets Storage Front End Port, ProtoclEndPoint objects with its relationships -->
+
+   <mapping>
+      <conditions>
+         <condition property="name" value="Availability"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="Port"/>
+         <condition property="partgrp" value="Front-End"/>
+         <condition property="datagrp" value="VMAX-PORTS"/>
+      </conditions>
+      <object type="StorageFrontEndPort">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="adapterName" expression="{director}"/>
+            <id key="portNumber" expression="{part}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="displayName" expression="{part}" type="xsd:string"/>
+            <attribute name="type" expression="{porttype}" type="xsd:string"/>
+            <attribute name="status" expression="{partstat}" type="xsd:string"/>
+         </attributes>
+         <relations>
+            <relation type="StorageFrontEndAdapter" name="residesOnStorageFrontEndAdapter" inverseOf="containsStorageFrontEndPort">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="displayName" expression="{director}"/>
+            </relation>
+            <relation type="ProtocolEndpoint" name="containsProtocolEndpoint" inverseOf="residesOnStorageFrontEndPort">
+               <id key="wwn" expression="{portwwn}"/>
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+
+   <!-- Sets the 'wwn' property of ProtocolEndpoint -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="Availability"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="Port"/>
+         <condition property="partgrp" value="Front-End"/>
+         <condition property="datagrp" value="VMAX-PORTS"/>
+      </conditions>
+      <object type="ProtocolEndpoint">
+         <idmapping>
+            <id key="wwn" expression="{portwwn}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="wwn" expression="{portwwn}" type="xsd:string"/>
+         </attributes>
+      </object>
+   </mapping>
+
+   <!-- Get Storage Volume information and its relationships -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="Availability"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="LUN"/>
+         <condition property="datagrp" value="VMAX-DEVICES"/>
+      </conditions>
+      <object type="StorageVolume">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{part}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="displayName" expression="{part}" type="xsd:string"/>
+            <attribute name="volumeID" expression="{part}" type="xsd:string"/>
+            <attribute name="volumeWWN" expression="{partsn}" type="xsd:string"/>
+            <attribute name="raid" expression="{devconf}" type="xsd:string"/>
+         </attributes>
+         <relations>
+            <relation type="StorageArray" name="residesOnStorageArray" inverseOf="containsStorageVolume">
+               <id key="serialNumber" expression="{device}"/>
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+
+   <!-- Get luntagid for Storage Volume -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="Capacity"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="LUN"/>
+         <condition property="datagrp" value="VMAX-DEVICES"/>
+      </conditions>
+      <object type="StorageVolume">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{part}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="displayName" expression="{part}" type="xsd:string"/>
+            <attribute name="lunTagId" expression="{luntagid}" type="xsd:string"/>
+         </attributes>
+         <relations>
+            <relation type="StorageArray" name="residesOnStorageArray" inverseOf="containsStorageVolume">
+               <id key="serialNumber" expression="{device}"/>
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+
+   <!-- Get Masking Views and relations to Storage Groups, Initiator Groups (masking view to parent group, parent group to child groups), Target Groups, StorageVolumes and needed ProtocolEndPoints -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="Capacity"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="Access"/>
+         <condition property="datagrp" value="VMAX-ACCESS"/>
+      </conditions>
+      <object type="StorageVolumeGroup">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{sgname}"/>
+         </idmapping>
+         <relations>
+            <relation type="StorageVolume" name="containsStorageVolume" inverseOf="residesOnStorageVolumeGroup">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="displayName" expression="{devices}" delimiter="," />           <!-- Note that it is comma separated list of device names -->
+            </relation>
+            <relation type="StorageArray" name="residesOnStorageArray" inverseOf="containsStorageVolumeGroup">
+               <id key="serialNumber" expression="{device}"/>
+            </relation>
+            <relation type="MaskingView" name="maskedTo" inverseOf="maskedToStorageVolumeGroup">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="viewName" expression="{part}"/>
+            </relation>
+         </relations>
+      </object>
+      <object type="InitiatorPortGroup">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{initgrp}"/>
+         </idmapping>
+         <relations>
+            <relation type="MaskingView" name="maskedTo" inverseOf="maskedToInitiatorPortGroup">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="viewName" expression="{part}"/>
+            </relation>
+         </relations>
+      </object>
+      <object type="TargetPortGroup">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{portgrp}"/>
+         </idmapping>
+         <relations>
+            <relation type="StorageFrontEndPort" name="containsStorageFrontEndPort" inverseOf="residesOnTargetPortGroup">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="adapterName" expression="{director}" delimiter="," />
+               <id key="portNumber" expression="{port}" delimiter="," />
+            </relation>
+            <relation type="MaskingView" name="maskedTo" inverseOf="maskedToTargetPortGroup">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="viewName" expression="{part}"/>
+            </relation>
+         </relations>
+      </object>
+      <object type="MaskingView">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="viewName" expression="{part}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="isMapped" expression="{mapped}" type="xsd:boolean" />
+         </attributes>
+         <relations>            
+            <relation type="StorageFrontEndPort" name="maskedToTarget" inverseOf="maskedTo">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="adapterName" expression="{director}" delimiter="," />  <!-- Note that it is comma separated list of adapter names -->
+               <id key="portNumber" expression="{port}" delimiter="," />  <!-- Note that it is comma separated list of port numbers -->
+            </relation>
+            <relation type="StorageVolume" name="maskedToDisk" inverseOf="maskedTo">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="displayName" expression="{devices}" delimiter="," />  <!-- Note that it is comma separated list of LUN device names -->
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+
+   <!-- Relation from parent initiator group to child initiator group -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="Capacity"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="Access"/>
+         <condition property="datagrp" value="VMAX-ACCESS"/>
+         <!-- parent initiator group may have non-empty partsngr property -->
+         <condition property="partsngr" op="not" value=""/>
+      </conditions>
+
+      <object type="InitiatorPortGroup">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{initgrp}"/>
+         </idmapping>
+         <relations>
+            <!-- Note that it is comma separated list of initiator group names, will it generate error on mapping service -->
+            <relation type="InitiatorPortGroup" name="containsInitiatorPortGroup" inverseOf="residesOnInitiatorPortGroup">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="displayName" expression="{partsngr}" delimiter="," />
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+
+   <!-- Relation from PARENT initiator group to initiator wwn, this would include a single initiator group to wwn -->
+   <!-- Also establishes the relationship between MaskingView and Initiator wwns -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="Capacity"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="Access"/>
+         <condition property="partsn" op="not" value=""/>
+         <!-- parent initiator group has datagrp=VMAX-ACCESS -->
+         <condition property="datagrp" value="VMAX-ACCESS"/>
+      </conditions>
+
+      <object type="InitiatorPortGroup">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{initgrp}"/>
+         </idmapping>
+         <relations>
+            <relation type="ProtocolEndpoint" name="containsProtocolEndpoint" inverseOf="residesOnInitiatorPortGroup">
+               <id key="wwn" expression="{partsn}" delimiter="," />     <!-- Note that it is comma separated list of initiator wwns -->
+            </relation>
+         </relations>
+      </object>
+      <object type="MaskingView">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="viewName" expression="{part}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="isMapped" expression="{mapped}" type="xsd:boolean" />
+         </attributes>
+         <relations>
+            <relation type="ProtocolEndpoint" name="maskedToInitiator" inverseOf="maskedTo">
+               <id key="wwn" expression="{partsn}" delimiter="," />     <!-- Note that it is comma separated list of initiator wwns -->
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+   
+   <!-- Relation from CHILD initiator group to initiator wwn -->
+   <!-- Also establishes the relationship between MaskingView and Initiator wwns -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="Capacity"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="Access"/>
+         <condition property="partsn" op="not" value=""/>
+         <!-- child initiator group has datagrp=VMAX-ACCESS-CHILD -->
+         <condition property="datagrp" value="VMAX-ACCESS-CHILD"/>
+      </conditions>
+
+      <object type="InitiatorPortGroup">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{initgrp}"/>
+         </idmapping>
+         <relations>
+            <relation type="ProtocolEndpoint" name="containsProtocolEndpoint" inverseOf="residesOnInitiatorPortGroup">
+               <id key="wwn" expression="{partsn}" delimiter="," />     <!-- Note that it is comma separated list of initiator wwns -->
+            </relation>
+         </relations>
+      </object>
+      <object type="MaskingView">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="viewName" expression="{part}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="isMapped" expression="{mapped}" type="xsd:boolean" />
+         </attributes>
+         <relations>
+            <relation type="ProtocolEndpoint" name="maskedToInitiator" inverseOf="maskedTo">
+               <id key="wwn" expression="{partsn}" delimiter="," />     <!-- Note that it is comma separated list of initiator wwns -->
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+
+ <!-- Get DMX masking/mapping information  and create MaskingView object-->
+   <mapping>
+      <conditions>
+         <condition property="name" value="DMXMasking"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="LUN"/>
+         <condition property="datagrp" value="DMX-MASK"/>
+      </conditions>
+
+      <object type="MaskingView">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="viewName" expression="{maskid}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="isMapped" expression="{mapped}" type="xsd:boolean"/>
+         </attributes>
+         <relations>
+            <relation type="StorageFrontEndPort" name="maskedToTarget" inverseOf="maskedTo">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="adapterName" expression="{director}" />
+               <id key="portNumber" expression="{port}" />
+            </relation>
+            <relation type="StorageVolume" name="maskedToDisk" inverseOf="maskedTo">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="displayName" expression="{part}" />
+            </relation>
+            <relation type="ProtocolEndpoint" name="maskedToInitiator" inverseOf="maskedTo">
+               <id key="wwn" expression="{initwwn}"/>
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+
+
+    <!-- Get Mapping data definition and create IOPath object to correlate with HostDevice path information -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="MappingData"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="LUN"/>
+         <condition property="datagrp" value="VMAX-MAPPING"/>
+         <condition property="hostlun" op="not" value=""/>
+      </conditions>
+      <expansion>
+            <expand expression="{initwwn}" delimiter="," variable="initiatorWWN" />
+      </expansion>
+      <object type="IOPath">
+         <idmapping>
+            <id key="initiatorwwn" expression="{initiatorWWN}"/>
+            <id key="targetwwn" expression="{portwwn}"/>
+            <id key="lunNumber" expression="{hostlun}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="logicalUnitNumber" expression="{hostlun}" type="xsd:short"/>
+            <attribute name="isMasked" expression="{masked}" type="xsd:boolean"/>
+            <attribute name="isMapped" expression="{mapped}" type="xsd:boolean"/>
+         </attributes>
+
+         <relations>
+            <relation type="ProtocolEndpoint" name="pathToInitiator" inverseOf="pathTo">
+               <id key="wwn" expression="{initiatorWWN}"/>
+            </relation>
+            <relation type="ProtocolEndpoint" name="pathToTarget" inverseOf="pathTo">
+               <id key="wwn" expression="{portwwn}"/>
+            </relation>
+            <relation type="StorageVolume" name="pathToVolume" inverseOf="pathTo">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="displayName" expression="{part}"/>
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+
+   <!-- Get DMX masking/mapping information  and create IOPath object-->
+   <mapping>
+      <conditions>
+         <condition property="name" value="DMXMasking"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="LUN"/>
+         <condition property="datagrp" value="DMX-MASK"/>
+         <condition property="hostlun" op="not" value=""/>
+      </conditions>
+      <object type="IOPath">
+         <idmapping>
+            <id key="initiatorwwn" expression="{initwwn}"/>
+            <id key="targetwwn" expression="{portwwn}"/>
+            <id key="lunNumber" expression="{hostlun}"/>
+         </idmapping>
+         <attributes>
+            <attribute name="logicalUnitNumber" expression="{hostlun}" type="xsd:short"/>
+            <attribute name="isMasked" expression="{masked}" type="xsd:boolean"/>
+            <attribute name="isMapped" expression="{mapped}" type="xsd:boolean"/>
+         </attributes>
+
+         <relations>
+            <relation type="ProtocolEndpoint" name="pathToInitiator" inverseOf="pathTo">
+               <id key="wwn" expression="{initwwn}"/>
+            </relation>
+            <relation type="ProtocolEndpoint" name="pathToTarget" inverseOf="pathTo">
+               <id key="wwn" expression="{portwwn}"/>
+            </relation>
+            <relation type="StorageVolume" name="pathToVolume" inverseOf="pathTo">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="displayName" expression="{part}"/>
+            </relation>
+         </relations>
+      </object>
+   </mapping>
+   
+   <!-- Get replication relations for LUNs -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="StateOfReplica"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="LUN"/>
+         <condition property="arraytyp" value="Symmetrix"/>
+         <condition property="srclun" op="not" value="N/A"/>
+         <condition property="srcarray" op="not" value=""/>
+      </conditions>
+      <object type="StorageVolume">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{part}"/>
+         </idmapping>
+         <relations>
+            <relation type="StorageVolume" name="replicatedFrom" inverseOf="replicatedTo">
+               <id key="serialNumber" expression="{srcarray}"/>
+               <id key="displayName" expression="{srclun}"/>
+            </relation>
+             <relation type="StorageArray" name="residesOnStorageArray" inverseOf="containsStorageVolume">
+                <id key="serialNumber" expression="{device}"/>
+            </relation>
+        </relations>
+      </object>
+   </mapping>
+
+   <!-- Get 'isused' property for LUNs -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="UsedCapacity"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="LUN"/>
+         <condition property="source" value="VMAX-Collector"/>
+      </conditions>
+      <object type="StorageVolume">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{part}"/>
+         </idmapping>
+         <attributes>
+            <!-- Declared as short instead of boolean because topology service needs this as 'true/false' for boolean but the rawvalue comes as '1/0'
+                 This is queried from SPARQL for a PTF used by VMAX SP which requires it to be again '1/0'. -->
+            <attribute name="isUsed" expression="{isused}" type="xsd:short"/>
+         </attributes>
+      </object>
+   </mapping>
+
+</topology-mapping>

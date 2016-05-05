@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+        <max-threads>2</max-threads>
+        <parser-config>
+                <parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+                <tree-type>regex-group-tree</tree-type>
+                <tree-schema>
+
+                        <name>AGENT2_</name>
+                        <leaf>
+				<name>FanName</name>             
+				<group>agent-1</group>
+			</leaf>
+                        <leaf>
+				<name>FanState</name>                 
+				<group>agent-2</group>
+			</leaf>
+
+                </tree-schema>
+                <regex-group-config group="-1">
+                        <regex name="main">(?s)D(.*?)(?=(D|$))</regex>
+                        <sub-regex group="1">
+                                <regex name="encname">(?s)(\w+\s+Bus\s+\d+\s+Enclosure\s+\d+)(.*)</regex>
+                        	<sub-regex group="2">
+                                	<regex name="agent">(?s)(Bus\s+\d+\s+Enclosure\s+\d+\s+Fan\s+\w+\s+.*?)(?=Bus\s+\d+\s+Enclosure\s+\d+\s+Fan\s+\w+\s+|State:\s+(\w+))</regex>
+                        	</sub-regex>
+                        </sub-regex>
+                </regex-group-config>
+        </parser-config>
+
+ 
+        <data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+        <data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+        <include-contexts>conf/context-block.xml</include-contexts>
+        <data-config>
+                <data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+                <stop-on-first-result>false</stop-on-first-result>
+                <host-group-config>
+                        <custom-group>
+                                <group-name>Storage Processors</group-name>
+                                <host-config>
+                                        <host-list>@spa</host-list>					                                 
+                                </host-config>
+                        </custom-group>
+                </host-group-config>
+                <command-configuration>
+                        <command-list>
+                                <command>@command -h (host) getcrus -fana -fanb</command>
+                        </command-list>
+                </command-configuration>
+        </data-config>
+</configuration>
+
+<!-- 
+
+DPE9 Bus 0 Enclosure 0
+Bus 0 Enclosure 0 Fan A0 State: Present
+Bus 0 Enclosure 0 Fan A1 State: Present
+Bus 0 Enclosure 0 Fan B0 State: Present
+Bus 0 Enclosure 0 Fan B1 State: Present
+
+DAE6S Bus 1 Enclosure 3
+
+DAE6S Bus 1 Enclosure 4
+
+DAE7S Bus 0 Enclosure 1
+Bus 0 Enclosure 1 Fan 0 State: Present
+Bus 0 Enclosure 1 Fan 1 State: Present
+
+DAE6S Bus 1 Enclosure 5
+
+DAE7S Bus 0 Enclosure 2
+Bus 0 Enclosure 2 Fan 0 State: Present
+Bus 0 Enclosure 2 Fan 1 State: Present
+
+DAE5S Bus 1 Enclosure 0
+
+DAE6S Bus 1 Enclosure 1
+
+DAE6S Bus 1 Enclosure 2
+
+
+TEST HOST
+        ENCNAME2_0
+                FanName: Bus 0 Enclosure 0 Fan A0
+                LccAName: Present
+        ENCNAME2_1
+                FanName: Bus 0 Enclosure 0 Fan A1
+                LccAName: Present
+        ENCNAME2_2
+                FanName: Bus 0 Enclosure 0 Fan B0
+                LccAName: Present
+        ENCNAME2_3
+                FanName: Bus 0 Enclosure 0 Fan B1
+                LccAName: Present
+        ENCNAME2_4
+                FanName: Bus 0 Enclosure 1 Fan 0
+                LccAName: Present
+        ENCNAME2_5
+                FanName: Bus 0 Enclosure 1 Fan 1
+                LccAName: Present
+        ENCNAME2_6
+                FanName: Bus 0 Enclosure 2 Fan 0
+                LccAName: Present
+        ENCNAME2_7
+                FanName: Bus 0 Enclosure 2 Fan 1
+-->

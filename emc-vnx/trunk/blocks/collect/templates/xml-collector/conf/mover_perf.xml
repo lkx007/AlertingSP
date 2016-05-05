@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RequestPacket xmlns="http://www.emc.com/schemas/celerra/xml_api">
+	<Request clientHandle="ResourceUsage">
+		<QueryStats>
+			<MoverStats statsSet="ResourceUsage" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="ResourceUsage">
+		<QueryStats>
+			<MoverStats statsSet="ResourceUsage" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-IP">
+		<QueryStats>
+			<MoverStats statsSet="Network-IP" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-IP">
+		<QueryStats>
+			<MoverStats statsSet="Network-IP" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-TCP">
+		<QueryStats>
+			<MoverStats statsSet="Network-TCP" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-TCP">
+		<QueryStats>
+			<MoverStats statsSet="Network-TCP" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-UDP">
+		<QueryStats>
+			<MoverStats statsSet="Network-UDP" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-UDP">
+		<QueryStats>
+			<MoverStats statsSet="Network-UDP" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-Devices">
+		<QueryStats>
+			<MoverStats statsSet="Network-Devices" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-Devices">
+		<QueryStats>
+			<MoverStats statsSet="Network-Devices" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-All">
+		<QueryStats>
+			<MoverStats statsSet="Network-All" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="Network-All">
+		<QueryStats>
+			<MoverStats statsSet="Network-All" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-SMB-Procs">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-SMB-Procs" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-SMB-Procs">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-SMB-Procs" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-Trans2-Procs">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-Trans2-Procs" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-Trans2-Procs">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-Trans2-Procs" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-NT-Procs">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-NT-Procs" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-NT-Procs">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-NT-Procs" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-State">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-State" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="CIFS-State">
+		<QueryStats>
+			<MoverStats statsSet="CIFS-State" mover="2"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="NFS-All">
+		<QueryStats>
+			<MoverStats statsSet="NFS-All" mover="1"/>
+		</QueryStats>
+	</Request>
+	<Request clientHandle="NFS-All">
+		<QueryStats>
+			<MoverStats statsSet="NFS-All" mover="2"/>
+		</QueryStats>
+	</Request>
+</RequestPacket>

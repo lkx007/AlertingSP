@@ -1,0 +1,23 @@
+EMC Isilon
+==========
+
+Version 1.3.1.0 (reports 1.3, snmp 1.3.1.0)
+ * snmp: Fixed problem with Quota (CQ610578)
+ * snmp: Fixed problem with snapshot and License masks
+
+Version 1.3 (reports 1.3, snmp 1.3)
+ * snmp: Fixed problem with OID (Cluster health was pointing to node health)
+ * reports: Change report type from list to graph for sensors report
+ * reports: Fixed problem with All Clusters Filesystem Throughput report. Values were shown in MB/s and not Mbps (CQ649941)
+ * reports: Fixed problem with Fixed Throughput per node. Values were shown in MB/s and not Mbps (CQ650021)
+
+Version 1.2 (reports 1.2, snmp 1.1)
+ * reports: Reorganized some of the graphs. Added description for some reports.
+ 
+Version 1.1 (reports 1.1, snmp 1.1)
+ * reports: Added 5 new reports ( License, Network, Quota and SnapShot ). Reorganized the reports. Fixed problem with CPU usage, interface usage and IOPS
+ * snmp: Fixed problems with the SNMP mask.
+ * block: Modified VHF for Isilon and added SNAP_SHOT_ACTIVE section to remove snapshots with no data from reports.
+
+Version 1.0 (reports 1.0, snmp 1.0)
+ * Initial release, from ReportPack for Isilon

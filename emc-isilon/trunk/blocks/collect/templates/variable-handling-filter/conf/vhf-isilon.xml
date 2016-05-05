@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+	<handling-configuration id="ISILON-FIX-QUOTAS">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">source=='Isilon-Collector' &amp; parttype=='Quota' &amp; (name=='HardThresholdCapacity' | name=='SoftThresholdCapacity')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-isilon-fixquota.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="ISILON-CAPACITY-GB">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">source=='Isilon-Collector' &amp; name='%Capacity'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-isilon-pah1.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="ISILON-scale-Throughput">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">source=='Isilon-Collector' &amp; name='%Throughput'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-isilon-pah2.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="ISILON-scale-CPU">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">source=='Isilon-Collector' &amp; parttype=='Processor'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-isilon-pah3.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="ISILON-scale-CurrentUtilization">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">source=='Isilon-Collector' &amp; parttype=='Processor' &amp; name=='CurrentUtilization'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-isilon-pah4.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!-- not needed for now
+	<handling-configuration id="SAH1">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">*</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/vhf-isilon-sah1.xml</parameter>
+		</handler>
+	</handling-configuration>
+	-->
+	<handling-configuration id="Variable-Blocker-RemoveMe">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name=='RemoveMe' | !serialnb | module=='-1'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler"/>
+	</handling-configuration>
+</configuration>

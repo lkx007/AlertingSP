@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-611 -->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>single-line-tree</tree-type>
+		<sub-delimiter>
+			<delimiter>:</delimiter>
+		</sub-delimiter>
+		<sub-delimiter>
+			<delimiter>=</delimiter>
+		</sub-delimiter>
+		<tree-schema>
+			<name>Bus .*</name>
+			<leaf><name>Vendor Id(\s*)|Product Id(\s*)|Product Revision(\s*)|State(\s*)|Serial Number(\s*)|Capacity(\s*)|Raid Group ID(\s*)|Drive Type(\s*)|Maximum Speed(\s*)</name></leaf>
+			<leaf><name>Read Requests(\s*)|Write Requests(\s*)|Kbytes Read(\s*)|Kbytes Written(\s*)|Hard Read Errors(\s*)|Hard Write Errors(\s*)</name></leaf>
+			<leaf><name>Soft Read Errors(\s*)|Soft Write Errors(\s*)|User Capacity(\s*)</name></leaf>
+			<leaf><name>Number of Writes(\s*)|Number of Reads(\s*)|Idle Ticks(\s*)|Busy Ticks(\s*)</name></leaf>
+		</tree-schema>
+	</parser-config>
+
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Disks</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+
+				<command>@navisecclipath -h (host) -user @blockusername -password @blockpassword -scope @userscope getdisk</command>
+
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

@@ -1,0 +1,143 @@
+.\"  -*- nroff -*-
+.\"
+.\" Copyright (c) EMC Watch4net.  All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+.\" IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+.\" OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+.\" IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+.\" INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+.\" NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+.\" DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+.\" THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+.\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+.\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+.\"
+.\" $Id$
+.Dd $Mdocdate: September 10 2013 $
+.Dt POC-ENABLER 1
+.Os
+.Sh NAME
+.Nm poc-enabler
+.Nd updates Solution Packs to fast-start Proof-of-Concepts
+.Sh SYNOPSIS
+.Nm poc-enabler
+.Op Fl lruv
+.Op Fl f Ar file
+.Op Fl sp Ar solution_pack
+.Oo Fl C\\&
+.Sm off
+.Oo Ar solution_pack Oc
+.Sm on
+.Oc
+.Ek
+.Sh DESCRIPTION
+.Nm
+poc-enabler provides a simple command-line tool for updating SolutionPacks
+with answers taken from a master answer file. Tipically this would be used on
+Proof-of-Concept (PoC) scenarios, speeding up activities related to
+configuring and sanitizing each individual configuration.
+.Pp
+.Nm
+will look for the file
+.Ar w4n_poc.csv
+and parse it's content, generating 
+.Ar .answers
+files inside of the
+.Ar conf
+directory. It is also possible to specify another file (see bellow).
+.Pp
+The options are as follows:
+.Bl -tag -width Ds
+.It Fl f Ar file
+Forces
+.Nm
+to use the specified file instead of
+.Ar w4n_poc.csv
+.It Fl l 
+List all of the installed Solution Packs.
+.It Fl r Ar solution_pack .
+Removes the selected SolutionPack
+.It Fl sp Ar solution_pack .
+Updates the specified
+.Ar solution_pack .
+It is also possible to update several SolutionPacks by reusing this flag
+followed by the SolutionPack name (e.g: -sp 
+.Pa solution_pack1 
+-sp 
+.Pa solution_pack2
+and so on).
+For all of the SolutionPacks being updated, a connectivity test
+will be done prior to the update.
+.It Fl u
+Starts the update mode. This will loop and prompt through all of the Solution
+Packs found on the input configuration file (by default
+.Pa w4n_poc.csv
+).
+It is possible to upgrade each individual SolutionPack Each Solution Pack 
+.It Fl v
+Verbose mode. This will cause to print extra debugging information about its 
+progress including the raw output from the connectivity tests.
+.It Fl C
+Performs a connectivity test for an individual 
+.Ar SolutionPack
+or for all of the SolutionPacks specified in the input configuration file. For
+the former, the use of the keyword
+.Ar all
+is required.
+.Sh CONNECTIVITY CHECKS
+Before conducting an update,
+.Nm
+conducts a few connectivity tests as well as some sanity checks on the
+information provided by the master input file
+.Pq Ar w4n_poc.csv .
+These tests are SolutionPack specific and will range from connectivity
+checks (ICMP based, HTTP, Telnet and SSHv2), IPv4 address sanitizing and the 
+validation of authentication parameters.
+.Sh ENVIRONMENT
+.Nm
+will depend on the following environment to work properly:
+.Bl -tag -width "APG_HOME"
+.It Ev USER
+.Nm
+need the same 
+.Ev USER
+used to install and operate the 
+.Ar Watch4net 
+solution as the update commands 
+.Pq Ar manage-modules.sh
+required some privileges. By default this user is
+.Ar apg
+but this may be different on your environment, please refer to your
+install notes.
+.It Ev APG_HOME
+The path of 
+.Ar Watch4net
+install. By default it is set to 
+.Ar /opt/APG/ .
+.El
+.Sh FILES
+.Bl -tag -width Ds -compact .It /opt/APG/PoC/conf/*.answers
+This directory is the default location for all SolutionPacks specific answers
+files used during the update process.
+.Pp
+.It /opt/APG/PoC/conf/w4n_poc.csv
+This is the master file used to extract answers for all of the individual 
+SolutionPacks.
+.Pp
+.It /opt/APG/PoC/conf/logs/*.log
+This directory is the default location for all log files. These files are
+divided into individual SolutioPacks.
+.Sh AUTHOR
+.Nm
+initial work by Diego Casati with many contributions from Florian
+Coulombel and Blaise Grizard.

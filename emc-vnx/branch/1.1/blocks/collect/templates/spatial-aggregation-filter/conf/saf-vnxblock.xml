@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:spatial-aggregation-filter-config xmlns:tns="http://www.example.org/spatial-aggregation-filter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/spatial-aggregation-filter ../../spatial-aggregation-filter/src/conf/spatial-aggregation-filter.xsd ">
+	<tns:spatial-aggregation aggregate-name="Disks" aggregation="sum" name="DiskFlag" forward-all-properties-from-all-rawvalues="false" send-all-original-raw-values="false" >
+		<tns:group-by>serialnb</tns:group-by>
+		<tns:group-by>ip</tns:group-by>
+		<tns:group-by>parttype</tns:group-by>
+		<tns:remove-property>part</tns:remove-property>
+		<tns:remove-property>raidgrp</tns:remove-property>
+		<tns:remove-property>partsn</tns:remove-property>
+		<tns:remove-property>disktype</tns:remove-property>
+		<tns:remove-property>partstat</tns:remove-property>
+		<tns:remove-property>partdesc</tns:remove-property>
+		<tns:remove-property>partmdl</tns:remove-property>
+		<tns:remove-property>maxspeed</tns:remove-property>
+		<tns:remove-property>partvrs</tns:remove-property>
+	</tns:spatial-aggregation>
+</tns:spatial-aggregation-filter-config>

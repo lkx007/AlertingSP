@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns="http://www.watch4net.com/APG/Web/XmlTree1" name="VNX File - Performance Details" singleNodeId="34" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <property xsi:type="NodeFilter" filterExpression="source=='VNXFile-Collector'"/>
+  <property xsi:type="ReportPreferences" defaultMode="imx"/>
+  <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+  <report-rendering>
+    <charts mode="dynamic"/>
+  </report-rendering>
+  <link singleNodeId="b62b4e09" linkID="*:#W4N-EMC-VNXFILE-FILESYSTEMS"/>
+  <link singleNodeId="5b4235e9" linkID="*:#W4N-EMC-VNXFILE-REQUESTS"/>
+  <link singleNodeId="f3b43337" linkID="*:#W4N-EMC-VNXFILE-THROUGHPUT"/>
+</node>

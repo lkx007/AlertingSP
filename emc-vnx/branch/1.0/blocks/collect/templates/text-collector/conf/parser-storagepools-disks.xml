@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>POOL_</name>
+			<leaf>
+				<name>PoolName</name>
+				<group>pool-1</group>
+			</leaf>
+			<leaf>
+				<name>RAIDType</name>
+				<group>raid-1</group>
+			</leaf>
+			<node>
+				<name>DISK_</name>
+				<leaf>
+					<name>DiskName</name>
+					<group>disk-1</group>
+				</leaf>
+				<leaf>
+					<name>RemoveMe</name>
+					<group>disk-2</group>
+				</leaf>
+			</node>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Pool Name(.*?)(?=(Pool Name|$))</regex>
+			<sub-regex group="1">
+				<regex name="pool">(?s):\s+(\p{Print}+)\r?\nPool ID(.*)</regex>
+				<sub-regex group="2">
+					<regex name="raid">(?s)Raid Type:\s+(.*?)(?=(Percent|$))</regex>
+				</sub-regex>
+				<sub-regex group="2">
+					<regex name="bus">(?s)(Bus.*?)(?=(Bus|$|LUNs))</regex>
+					<sub-regex group="1">
+						<regex name="disk">(Bus\s\d+\sEnclosure\s\d+\sDisk(\s)\w+)</regex>
+					</sub-regex>
+				</sub-regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Group</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@navisecclipath -h (host) -user @blockusername -password @blockpassword -scope @userscope storagepool -list</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+Pool Name:  Scott IV
+Pool ID:  2
+Raid Type:  r_10
+Percent Full Threshold:  70
+Description:  
+Disk Type:  Mixed
+State:  Ready
+Status:  OK(0x0)
+Current Operation:  None
+Current Operation State:  N/A
+Current Operation Status:  N/A
+Current Operation Percent Completed:  0
+Raw Capacity (Blocks):  17639221256
+Raw Capacity (GBs):  8411.036
+User Capacity (Blocks):  8795824128
+User Capacity (GBs):  4194.176
+Consumed Capacity (Blocks):  29417472
+Consumed Capacity (GBs):  14.027
+Available Capacity (Blocks):  8766406656
+Available Capacity (GBs):  4180.148
+Percent Full:  0.334
+Total Subscribed Capacity (Blocks):  2178994176
+Total Subscribed Capacity (GBs):  1039.025
+Percent Subscribed:  24.773
+Oversubscribed by (Blocks):  0
+Oversubscribed by (GBs):  0.000
+Disks:  
+Bus 0 Enclosure 0 Disk 13
+Bus 2 Enclosure 0 Disk 2
+Bus 2 Enclosure 0 Disk 1
+Bus 3 Enclosure 0 Disk 18
+Bus 2 Enclosure 0 Disk 0
+Bus 2 Enclosure 0 Disk 3
+LUNs:  397, 396
+-->

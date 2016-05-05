@@ -1,0 +1,42 @@
+[+storage.timeseries.socketconnector]
+host = hostname
+port = port
+
+
+#[+credentials]  -- Commented it out as Block installation has issues / TODO: Will take a look at it post sprint 6
+#username = username
+#password = password
+#[credentials]
+#username = username
+#password = password
+
+[smiprovider]
+host = hostname
+username = username
+password = password
+usesecure = boolean
+port = port ?
+
+[passive_discovery]
+brocade_zones = boolean
+
+[+gateway]
+host = hostname
+port = port
+username = string
+password = password
+
+[+topologyservice]
+host = hostname
+gateway
+
+[main]
+# use_failover is defined in storage to avoid redefining timeseries which would fail
+storage.failover = boolean
+storage.timeseries.socketconnector
+use_topo = boolean
+if use_topo
+  topologyservice
+fi
+smiprovider *
+passive_discovery

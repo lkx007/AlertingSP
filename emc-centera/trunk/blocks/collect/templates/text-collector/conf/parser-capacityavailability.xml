@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>CLUSTER_</name>
+			<leaf>
+				<name>SystemBuffer</name>
+				<group>clusteravailability-1</group>
+			</leaf>
+			<leaf>
+				<name>SystemBufferUnit</name>
+				<group>clusteravailability-2</group>
+			</leaf>
+			<leaf>
+				<name>RegenerationBuffer</name>
+				<group>clusteravailability-3</group>
+			</leaf>
+			<leaf>
+				<name>RegenerationBufferUnit</name>
+				<group>clusteravailability-4</group>
+			</leaf>
+			<leaf>
+				<name>AvailableCapacity</name>
+				<group>clusteravailability-5</group>
+			</leaf>
+			<leaf>
+				<name>AvailableCapacityUnit</name>
+				<group>clusteravailability-6</group>
+			</leaf>
+			<leaf>
+				<name>TotalObjectCount</name>
+				<group>clusteravailability-7</group>
+			</leaf>
+			<leaf>
+				<name>TotalObjectCountUnit</name>
+				<group>clusteravailability-8</group>
+			</leaf>
+			<leaf>
+				<name>UsedObjectCount</name>
+				<group>clusteravailability-9</group>
+			</leaf>
+			<leaf>
+				<name>UsedObjectCountUnit</name>
+				<group>clusteravailability-10</group>
+			</leaf>
+			<leaf>
+				<name>FreeObjectCount</name>
+				<group>clusteravailability-11</group>
+			</leaf>
+			<leaf>
+				<name>FreeObjectCountUnit</name>
+				<group>clusteravailability-12</group>
+			</leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)System Buffer:(.*?)(?=(System Buffer:|$))</regex>
+			<sub-regex group="1">
+				<regex name="clusteravailability">(?s)\s*([\d\.\,]+)\s*(.B|K|M).*Regeneration Buffer:\s+([\d\.\,]+)\s*(.B|K|M).*Available Capacity:\s+([\d\.\,]+)\s*(.B|K|M).*Total Object Count:\s+([\d\.\,]+)\s*(.B|K|M).*Used Object Count:\s+([\d\.\,]+)\s*(.B|K|M).*Free Object Count:\s+([\d\.\,]+)\s*(.B|K|M).*</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-centera.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Group</group-name>
+				<host-config>
+					<host-list>@host</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>"@clipath\\..\\_jvm\\bin\\java" -cp "@clipath\\CenteraViewer.jar" com.filepool.remote.cli.CLI -u @username -p @password -ip (host) -script conf/showcapacityavailability_script.cli</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

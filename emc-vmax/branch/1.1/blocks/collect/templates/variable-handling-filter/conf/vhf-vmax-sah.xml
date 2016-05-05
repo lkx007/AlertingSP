@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.watch4net.com/spatial-aggregation-handler" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/spatial-aggregation-handler spatial-aggregation-handler.xsd">
+	<aggregation id="VMAX-Collector-UnconfiguredCapacity" forward-input="true">
+		<filter>parttype=='Disk' &amp; name=='FreeCapacity'</filter>
+		<group-by>device</group-by>
+		<compute spatial="sum">
+			<output-timestamp use="first" rounding="ceiling" rounding-base="1" />
+			<output-group>group</output-group>
+			<inventory period="900" removal-timeout="900" />
+		</compute>
+		<properties>
+			<add name="source">VMAX-Collector</add>
+			<add name="datagrp">VMAX-SAF</add>
+			<add name="devtype">Array</add>
+			<add name="name">UnconfiguredCapacity</add>
+			<add name="unit">GB</add>
+			<remove name="prop" />
+			<remove name="part" />
+			<remove name="diskgrp" />
+			<remove name="raidgrp" />
+			<remove name="dgname" />
+			<remove name="partvend" />
+			<remove name="director" />
+			<remove name="partver" />
+			<remove name="partmode" />
+			<remove name="disktype" />
+			<remove name="diskrpm" />
+			<remove name="hypers" />
+		</properties>
+	</aggregation>
+	<aggregation id="VMAX-Collector-HotSparesCapacity" forward-input="true">
+		<filter>parttype=='Disk' &amp; partmode=='Hot spare' &amp; name=='Capacity'</filter>
+		<group-by>device</group-by>
+		<compute spatial="sum">
+			<output-timestamp use="first" rounding="ceiling" rounding-base="1" />
+			<output-group>group</output-group>
+			<inventory period="900" removal-timeout="900" />
+		</compute>
+		<properties>
+			<add name="source">VMAX-Collector</add>
+			<add name="datagrp">VMAX-SAF</add>
+			<add name="devtype">Array</add>
+			<add name="name">HotSparesCapacity</add>
+			<add name="unit">GB</add>
+			<remove name="prop" />
+			<remove name="part" />
+			<remove name="diskgrp" />
+			<remove name="raidgrp" />
+			<remove name="dgname" />
+			<remove name="partvend" />
+			<remove name="director" />
+			<remove name="partver" />
+			<remove name="partmode" />
+			<remove name="disktype" />
+			<remove name="diskrpm" />
+			<remove name="hypers" />
+		</properties>
+	</aggregation>
+	<aggregation id="VMAX-Collector-RAIDOverHeadCapacity" forward-input="true">
+		<filter>name=='RAIDOverHead' &amp; (parttype=='LUN' | parttype=='METALUN') &amp; !(roc1=='') &amp; !(devconf='%DEV%')</filter>
+		<group-by>device</group-by>
+		<compute spatial="sum">
+			<output-timestamp use="first" rounding="ceiling" rounding-base="1" />
+			<output-group>group</output-group>
+			<inventory period="900" removal-timeout="900" />
+		</compute>
+		<properties>
+			<add name="source">VMAX-Collector</add>
+			<add name="datagrp">VMAX-SAF</add>
+			<add name="devtype">Array</add>
+			<add name="name">RAIDOverHead</add>
+			<add name="unit">GB</add>
+			<remove name="prop" />
+			<remove name="part" />
+			<remove name="diskgrp" />
+			<remove name="raidgrp" />
+			<remove name="dgname" />
+			<remove name="partvend" />
+			<remove name="director" />
+			<remove name="partver" />
+			<remove name="partmode" />
+			<remove name="disktype" />
+			<remove name="diskrpm" />
+			<remove name="hypers" />
+			<remove name="roc1" />
+			<remove name="roc2" />
+			<remove name="partsn" />
+			<remove name="pdname" />
+			<remove name="poolname" />
+			<remove name="partconf" />
+			<remove name="parttype" />
+			<remove name="config" />
+			<remove name="hypercnt" />
+		</properties>
+	</aggregation>
+	<aggregation id="VMAX-Collector-ConfiguredUsable" forward-input="true">
+		<filter>name=='Capacity' &amp; (parttype=='LUN' | parttype=='METALUN') &amp; !(devconf='%DEV%')</filter>
+		<group-by>device</group-by>
+		<compute spatial="sum">
+			<output-timestamp use="first" rounding="ceiling" rounding-base="1" />
+			<output-group>group</output-group>
+			<inventory period="900" removal-timeout="900" />
+		</compute>
+		<properties>
+			<add name="source">VMAX-Collector</add>
+			<add name="datagrp">VMAX-SAF</add>
+			<add name="devtype">Array</add>
+			<add name="name">ConfiguredUsable</add>
+			<add name="unit">GB</add>
+			<remove name="prop" />
+			<remove name="part" />
+			<remove name="diskgrp" />
+			<remove name="raidgrp" />
+			<remove name="dgname" />
+			<remove name="partvend" />
+			<remove name="director" />
+			<remove name="partver" />
+			<remove name="partmode" />
+			<remove name="disktype" />
+			<remove name="diskrpm" />
+			<remove name="hypers" />
+			<remove name="roc1" />
+			<remove name="roc2" />
+			<remove name="partsn" />
+			<remove name="pdname" />
+			<remove name="poolname" />
+			<remove name="partconf" />
+			<remove name="parttype" />
+			<remove name="config" />
+			<remove name="hypercnt" />
+		</properties>
+	</aggregation>
+	<aggregation id="VMAX-Collector-RawCapacity" forward-input="true">
+		<filter>(name=='Capacity' &amp; parttype=='Disk')</filter>
+		<group-by>device</group-by>
+		<compute spatial="sum">
+			<output-timestamp use="first" rounding="ceiling" rounding-base="1" />
+			<output-group>group</output-group>
+			<inventory period="900" removal-timeout="900" />
+		</compute>
+		<properties>
+			<add name="source">VMAX-Collector</add>
+			<add name="datagrp">VMAX-SAF</add>
+			<add name="devtype">Array</add>
+			<add name="name">RawCapacity</add>
+			<add name="unit">GB</add>
+			<remove name="part" />
+			<remove name="diskgrp" />
+			<remove name="raidgrp" />
+			<remove name="dgname" />
+			<remove name="partvend" />
+			<remove name="director" />
+			<remove name="partver" />
+			<remove name="partmode" />
+			<remove name="disktype" />
+			<remove name="diskrpm" />
+			<remove name="hypers" />
+		</properties>
+	</aggregation>
+	<aggregation id="VMAX-Collector-IOPSbyArray" forward-input="true">
+		<filter>(name=='IOPS' &amp; parttype=='Port')</filter>
+		<group-by>device</group-by>
+		<compute spatial="sum">
+			<output-timestamp use="first" rounding="ceiling" rounding-base="1" />
+			<output-group>group</output-group>
+			<inventory period="900" removal-timeout="900" />
+		</compute>
+		<properties>
+			<add name="source">VMAX-Collector</add>
+			<add name="datagrp">VMAX-SAF</add>
+			<add name="devtype">Array</add>
+			<add name="name">IOPSbyArray</add>
+			<remove name="part" />
+			<remove name="parttype" />
+			<remove name="director" />
+		</properties>
+	</aggregation>
+	<aggregation id="VMAX-Collector-TotalThroughput" forward-input="true">
+		<filter>(name=='TotalThroughput' &amp; parttype=='Port')</filter>
+		<group-by>device</group-by>
+		<compute spatial="sum">
+			<output-timestamp use="first" rounding="ceiling" rounding-base="1" />
+			<output-group>group</output-group>
+			<inventory period="900" removal-timeout="900" />
+		</compute>
+		<properties>
+			<add name="source">VMAX-Collector</add>
+			<add name="datagrp">VMAX-SAF</add>
+			<add name="devtype">Array</add>
+			<add name="name">TotalThroughputbyArray</add>
+			<remove name="part" />
+			<remove name="parttype" />
+			<remove name="director" />
+		</properties>
+	</aggregation>
+</config>

@@ -1,0 +1,67 @@
+#EXPORT .vnx AS device(friendlyname)
+
+[+storage.timeseries.socketconnector]
+host = hostname
+port = port
+
+[+alert.timeseries.socketconnector]
+host = hostname
+port = port
+
+[block]
+spa = hostname
+spb = hostname
+use_secfile = boolean
+if use_secfile
+  secfilepath = string ?
+else
+  userscope = string(global,local,LDAP)
+  username = username
+  password = password
+fi
+
+[file]
+csprimary = hostname
+cssecondary = hostname ?
+username = username
+password = password
+
+[unity]
+management = hostname
+username = username
+password = password
+
+
+[vnx]
+type = string(unified,block,file,unity)
+friendlyname = string
+if type == 'unified'
+  block
+  file
+elif type == 'block'
+  block
+elif type == 'file'
+  file
+elif type == 'unity'
+  unity
+fi
+
+[main]
+# use_failover is defined in storage to avoid redefining timeseries which would fail
+storage.failover = boolean
+storage.timeseries.socketconnector
+
+# explicit condition since we can't use ? which would redefine timeseries and fail
+use_alert = boolean
+if use_alert
+  alert.timeseries.socketconnector
+fi
+
+naviseccli.path =string ?
+vnx *
+use_advancedsettings = boolean
+if use_advancedsettings
+  topology.pollingperiod = integer[300,1800]
+  nopoll = boolean
+fi
+

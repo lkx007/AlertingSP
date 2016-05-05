@@ -1,0 +1,10 @@
+vnx.type.default=unified
+vnx.block.userscope.default=global
+vnx.block.username.default=sysadmin
+vnx.block.password.default=sysadmin
+vnx.file.username.default=nasadmin
+vnx.file.password.default=nasadmin
+vnx.unity.username.default=admin
+topology.pollingperiod.default=600
+nopoll.default=false
+use_alert.default=false

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules xmlns="http://www.watch4net.com/Events/EventLogProcessor" on-failure="continue">
+    <!-- File Parsing will be skipped if this rule does not match: -->
+    <regex field="source" pattern="VMAX"/>
+    <!-- trap enterprise-id=".1.3.6.1.3.94" will not be processed -->
+    <rules on-failure="continue" on-success="failure">
+        <regex field="enterprise" pattern=".1.3.6.1.3.94"/>
+        <log name="These traps will not be persisted since enough information is not available." />
+    </rules>
+    <!-- trap enterprise-id=".1.3.6.1.4.1.1139.3" fields -->
+    <rules on-failure="continue">
+        <regex field="enterprise" pattern=".1.3.6.1.4.1.1139.3"/>
+        <copy field="connUnitName" to="device"/>
+        <rules on-failure="continue">
+            <regex field="specific" pattern="1"/>
+            <format name="Array status change trap" pattern="Symmetrix {0}: Array state has changed to {1}" to="fullmsg" type="message">
+                <field name="device" type="STRING"/>
+                <field name="connUnitState" type="STRING"/>
+            </format>
+            <copy field="connUnitStatus" to="severity"/>
+            <set to="category" value="Availability"/>
+            <set to="eventname" value="StatusChange"/>
+        </rules>
+
+        <rules on-failure="continue">
+            <regex field="specific" pattern="3"/>
+            <format name="Array delete trap" pattern="Symmetrix {0}: Array has been deleted from agent {1}." to="fullmsg" type="message">
+                <field name="device" type="STRING"/>
+                <field name="sourceip" type="STRING"/>
+            </format>
+            <set to="severity" value="warning"/>
+            <set to="category" value="Configuration"/>
+            <set to="eventname" value="Delete"/>
+        </rules>
+
+        <rules on-failure="continue">
+            <copy field="connUnitEventDescr" to="fullmsg"/>
+            <copy field="connUnitEventType" to="sourceeventtype"/>
+            <copy field="emcAsyncEventComponentType" to="parttype"/>
+            <copy field="emcAsyncEventComponentName" to="part"/>
+            <copy field="connUnitEventSeverity" to="severity"/>
+            <!-- copy emcAsyncEventCode to category so PTF can set category from name -->
+            <rules on-failure="continue">
+                <copy field="emcAsyncEventCode" to="category"/>
+                <copy field="emcAsyncEventCode" to="eventname"/>
+            </rules>
+
+            <rules on-failure="continue">
+                <switch name="Adjust Part type" field="parttype">
+                    <case value="1024" type="STRING">
+                        <set to="parttype" value="Symmetrix"/>
+                    </case>
+                    <case value="1025" type="STRING">
+                        <set to="parttype" value="Service Processor"/>
+                    </case>
+                    <case value="1026" type="STRING">
+                        <set to="parttype" value="Device"/>
+                    </case>
+                    <case value="1027" type="STRING">
+                        <set to="parttype" value="Physical Disk"/>
+                    </case>
+                    <case value="1028" type="STRING">
+                        <set to="parttype" value="Director"/>
+                    </case>
+                    <case value="1029" type="STRING">
+                        <set to="parttype" value="Port"/>
+                    </case>
+                    <case value="1030" type="STRING">
+                        <set to="parttype" value="SRDF sub-system"/>
+                    </case>
+                    <case value="1031" type="STRING">
+                        <set to="parttype" value="SRDF group"/>
+                    </case>
+                    <case value="1032" type="STRING">
+                        <set to="parttype" value="Snap Save Device Pool"/>
+                    </case>
+                    <case value="1033" type="STRING">
+                        <set to="parttype" value="Cache / Memory"/>
+                    </case>
+                    <case value="1034" type="STRING">
+                        <set to="parttype" value="Power or Battery subsystem"/>
+                    </case>
+                    <case value="1035" type="STRING">
+                        <set to="parttype" value="Environmental (e.g.: Temperature, Smoke)"/>
+                    </case>
+                    <case value="1036" type="STRING">
+                        <set to="parttype" value="Diagnostics"/>
+                    </case>
+                    <case value="1037" type="STRING">
+                        <set to="parttype" value="Communications sub-system"/>
+                    </case>
+                    <case value="1038" type="STRING">
+                        <set to="parttype" value="External Lock"/>
+                    </case>
+                    <case value="1039" type="STRING">
+                        <set to="parttype" value="Fan"/>
+                    </case>
+                    <case value="1040" type="STRING">
+                        <set to="parttype" value="Link Controller Card"/>
+                    </case>
+                    <case value="1041" type="STRING">
+                        <set to="parttype" value="Enclosure, Enclosure-Slot or MIBE"/>
+                    </case>
+                    <case value="1042" type="STRING">
+                        <set to="parttype" value="SRDF/A DSE Device Pool"/>
+                    </case>
+                    <case value="1043" type="STRING">
+                        <set to="parttype" value="Thin Device Data Pool"/>
+                    </case>
+                    <case value="1044" type="STRING">
+                        <set to="parttype" value="Solutions Enabler DG group"/>
+                    </case>
+                    <case value="1045" type="STRING">
+                        <set to="parttype" value="Solutions Enabler CG group"/>
+                    </case>
+                    <case value="1046" type="STRING">
+                        <set to="parttype" value="Management Module"/>
+                    </case>
+                    <case value="1047" type="STRING">
+                        <set to="parttype" value="IO Module Carrier"/>
+                    </case>
+                    <case value="1048" type="STRING">
+                        <set to="parttype" value="Director - Environmental"/>
+                    </case>
+                    <case value="1049" type="STRING">
+                        <set to="parttype" value="Storage Group"/>
+                    </case>
+                    <case value="1050" type="STRING">
+                        <set to="parttype" value="Migration Session"/>
+                    </case>
+                    <case value="1051" type="STRING">
+                        <set to="parttype" value="Symmetrix Disk Group"/>
+                    </case>
+                    <default>
+                        <set to="parttype" value=""/>
+                    </default>
+                </switch>
+            </rules>
+
+        </rules>
+
+        <!-- event name key -->
+        <rules on-failure="continue">
+            <format name="Unique key attributes" pattern="{0}_{1}_{2}" to="name" type="message">
+                <field name="sourceip" type="STRING"/>
+                <field name="device" type="STRING"/>
+                <field name="eventname" type="STRING"/>
+            </format>
+        </rules>
+        <rules on-failure="continue">
+            <exists name="Check part is null" field="part" allow-null="false" />
+            <not-equals name="Check part field is not empty" field="part" value="" type="STRING" />
+            <format name="Name with part" pattern="{0}_{1}" to="name" type="message">
+                <field name="name" type="STRING" />
+                <field name="part" type="STRING" />
+            </format>
+        </rules>
+    </rules>
+    <!-- constants -->
+    <set to="eventstate" value="ACTIVE"/>
+    <set to="devtype" value="Array"/>
+    <!-- Mapping parttype based on SE install guide -->
+    <!-- Unique Finalizer - Allow fixup things sending to Writer -->
+    <include name="Call Finalizer Rule" includes="99-Finalizer.xml"/>
+</rules>

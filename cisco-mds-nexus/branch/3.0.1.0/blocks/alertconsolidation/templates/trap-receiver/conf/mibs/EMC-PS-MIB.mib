@@ -1,0 +1,363 @@
+----------------------------------------------------------------------------
+--Copyright (c) 2011 All rights reserved by
+--
+--EMC Corporation
+--Hopkinton, MA 01748 USA
+--
+--This software is furnished under a license and may be used and copied
+--inclusion of the above copyright notice. This software or any other
+--only in accordance with the terms of such license and with the
+--copies thereof may not be provided or otherwise made available to any
+--other person. No title to and ownership of the software is hereby
+--transferred.
+--
+--The information in this software is subject to change without notice
+--and should not be construed as a commitment by EMC Corporation.
+--
+--EMC Corporation assumes no responsibility for the use or reliability
+--of this software.
+--
+------------------------------------------------------------------------------
+--
+--ProSphere (SRM) mib
+--
+------------------------------------------------------------------------------
+--
+--EMC Technical Contact
+--
+--http://support.emc.com
+--
+------------------------------------------------------------------------------
+--
+
+EMC-PS-MIB DEFINITIONS ::= BEGIN
+    IMPORTS
+    OBJECT-TYPE, MODULE-IDENTITY, enterprises, NOTIFICATION-TYPE
+        FROM SNMPv2-SMI
+    OBJECT-GROUP, NOTIFICATION-GROUP
+        FROM SNMPv2-CONF;
+
+    emcPsMIB MODULE-IDENTITY
+        LAST-UPDATED        "201112082134Z"
+        ORGANIZATION        "EMC Corporation"
+		CONTACT-INFO         
+		"https://support.emc.com/"
+        DESCRIPTION         "Describes the notification(s) sent by the Prosphere"
+		REVISION	 		"201112082134Z"
+    	DESCRIPTION			"Describes the notification(s) sent by the Prosphere v2.0.0.0"
+        ::= { prosphere 2 }
+
+    emc OBJECT IDENTIFIER ::= { enterprises 1139 }
+
+    prosphere OBJECT IDENTIFIER ::= { emc 25 }
+
+    alert OBJECT IDENTIFIER ::= { prosphere 1 }
+
+    alertModelTable OBJECT-TYPE
+        SYNTAX              SEQUENCE OF AlertModelEntry
+        MAX-ACCESS          not-accessible
+        STATUS              current
+        DESCRIPTION         "Table that contains information about the properties of the Alert."
+        ::= { alert 1 }
+
+    alertModelEntry OBJECT-TYPE
+        SYNTAX              AlertModelEntry
+        MAX-ACCESS          not-accessible
+        STATUS              current
+        DESCRIPTION         "Alert Entry that defines the properties that will be forwarded."
+        INDEX               {
+                                alertIdentifier
+                            }
+        ::= { alertModelTable 1 }
+
+    AlertModelEntry ::= SEQUENCE {
+        alertIdentifier
+            OCTET STRING,
+        alertURI
+            OCTET STRING,
+        alertName
+            OCTET STRING,
+        alertState
+            INTEGER,
+        alertSeverity
+            INTEGER,
+        alertSource
+            OCTET STRING,
+        alertCIName
+            OCTET STRING,
+        alertCIType
+            OCTET STRING,
+        alertMessage
+            OCTET STRING,
+        alertOccurrenceCount
+            Integer32,
+        alertIsAcknowledged
+            INTEGER,
+        alertAcknowledgementTime
+            OCTET STRING,
+        alertAcknowledgedBy
+            OCTET STRING,
+        alertOwnerName
+            OCTET STRING,
+        alertCreationTime
+            OCTET STRING,
+        alertModificationTime
+            OCTET STRING,
+        alertCategory
+            INTEGER,
+        alertTopLevelObjectURI
+            OCTET STRING,
+        alertActualValue
+            OCTET STRING,
+        alertPolicyURI
+            OCTET STRING,
+        alertLastOccurredTime
+            OCTET STRING,
+        alertResourceAttribute
+            OCTET STRING
+    }
+
+    alertIdentifier OBJECT-TYPE
+        SYNTAX              OCTET STRING (SIZE(0..255))
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Unique Identifier of the Alert. i.e., UUID value of the Alert URI."
+        ::= { alertModelEntry 1 }
+
+    alertURI OBJECT-TYPE
+        SYNTAX              OCTET STRING (SIZE(0..255))
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "URI to uniquely identify the Alert."
+        ::= { alertModelEntry 2 }
+
+    alertName OBJECT-TYPE
+        SYNTAX              OCTET STRING
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "A short mnemonic indication of the alert content"
+        ::= { alertModelEntry 3 }
+
+    alertState OBJECT-TYPE
+        SYNTAX              INTEGER {
+                                ACTIVE( 0 ),
+                                CLOSED( 1 )
+                            }
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "State of the Alert"
+        ::= { alertModelEntry 4 }
+
+    alertSeverity OBJECT-TYPE
+        SYNTAX              INTEGER {
+                                CRITICAL( 0 ),
+                                ERROR( 1 ),
+                                WARNING( 2 ),
+                                INFORMATIONAL( 3 )
+                            }
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Severity of the Alert"
+        ::= { alertModelEntry 5 }
+
+    alertSource OBJECT-TYPE
+        SYNTAX              OCTET STRING
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Source of the Alert"
+        ::= { alertModelEntry 6 }
+
+    alertCIName OBJECT-TYPE
+        SYNTAX              OCTET STRING (SIZE(0..255))
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Name of the Component for which the alert is generated."
+        ::= { alertModelEntry 7 }
+
+    alertCIType OBJECT-TYPE
+        SYNTAX              OCTET STRING (SIZE(0..255))
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Type of the Component for which the alert is generated."
+        ::= { alertModelEntry 8 }
+
+    alertMessage OBJECT-TYPE
+        SYNTAX              OCTET STRING
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Alert message."
+        ::= { alertModelEntry 9 }
+
+    alertOccurrenceCount OBJECT-TYPE
+        SYNTAX              Integer32
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Number of times the Alert occurred."
+        ::= { alertModelEntry 10 }
+
+    alertIsAcknowledged OBJECT-TYPE
+        SYNTAX              INTEGER {
+                                true( 0 ),
+                                false( 1 )
+                            }
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Defines if the Alert has been acknowledged or not. True if acknowledged."
+        ::= { alertModelEntry 11 }
+
+    alertAcknowledgementTime OBJECT-TYPE
+        SYNTAX              OCTET STRING (SIZE(0|29))
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Date and time (YYYY-MM-DDThh:mm:ss.nnn+ZZ:zz) at which the Alert has been acknowledged."
+        ::= { alertModelEntry 12 }
+
+    alertAcknowledgedBy OBJECT-TYPE
+        SYNTAX              OCTET STRING
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Name of the User who acknowledged the alert."
+        ::= { alertModelEntry 13 }
+
+    alertOwnerName OBJECT-TYPE
+        SYNTAX              OCTET STRING (SIZE(0..255))
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Name of the person who owns the alert."
+        ::= { alertModelEntry 14 }
+
+    alertCreationTime OBJECT-TYPE
+        SYNTAX              OCTET STRING (SIZE(0|29))
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Date and time (YYYY-MM-DDThh:mm:ss.nnn+ZZ:zz) at which the Alert is created."
+        ::= { alertModelEntry 15 }
+
+    alertModificationTime OBJECT-TYPE
+        SYNTAX              OCTET STRING (SIZE(0|29))
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Date and time (YYYY-MM-DDThh:mm:ss.nnn+ZZ:zz) at which the alert is last modified."
+        ::= { alertModelEntry 16 }
+
+    alertCategory OBJECT-TYPE
+        SYNTAX              INTEGER {
+                                other( 1 ),
+                                performance ( 2 ),
+								health( 3 )
+                            }
+        MAX-ACCESS          read-only
+        STATUS              current
+        DESCRIPTION         "Category of the alert."
+        ::= { alertModelEntry 17 }
+        
+    alertTopLevelObjectURI OBJECT-TYPE
+            SYNTAX              OCTET STRING (SIZE(0..255))
+            MAX-ACCESS          read-only
+            STATUS              current
+            DESCRIPTION         "Affected Object URI."
+        ::= { alertModelEntry 18 }
+        
+    alertActualValue OBJECT-TYPE
+			SYNTAX              OCTET STRING (SIZE(0..255))
+			MAX-ACCESS          read-only
+			STATUS              current
+			DESCRIPTION         "Actual Value for specified criteria attribute."
+		::= { alertModelEntry 19 }
+        
+    alertPolicyURI OBJECT-TYPE
+			SYNTAX              OCTET STRING (SIZE(0..255))
+			MAX-ACCESS          read-only
+			STATUS              current
+			DESCRIPTION         "URI of the Policy associated with the alert."
+        ::= { alertModelEntry 20 }
+        
+    alertLastOccurredTime OBJECT-TYPE
+			SYNTAX              OCTET STRING (SIZE(0|29))
+			MAX-ACCESS          read-only
+			STATUS              current
+			DESCRIPTION         "Date and time (YYYY-MM-DDThh:mm:ss.nnn+ZZ:zz) at which the alert last occurred."
+        ::= { alertModelEntry 21 }
+
+    alertResourceAttribute OBJECT-TYPE
+			SYNTAX              OCTET STRING (SIZE(0..255))
+			MAX-ACCESS          read-only
+			STATUS              current
+			DESCRIPTION         "Name of the resource attribute for which alert is created."
+        ::= { alertModelEntry 22 }
+
+    notifications OBJECT IDENTIFIER ::= { alert 2 }
+
+    psEventTrap NOTIFICATION-TYPE
+        OBJECTS	{           
+			alertIdentifier,
+			alertURI,
+			alertName,
+			alertState,
+			alertSeverity,
+			alertSource,
+			alertCIName,
+			alertCIType,
+			alertMessage,
+			alertOccurrenceCount,
+			alertIsAcknowledged,
+			alertAcknowledgementTime,
+			alertAcknowledgedBy,
+			alertOwnerName,
+			alertCreationTime,
+			alertModificationTime,
+			alertCategory,
+			alertTopLevelObjectURI,
+			alertActualValue,
+			alertPolicyURI,
+			alertLastOccurredTime,
+			alertResourceAttribute
+        }
+        STATUS              current
+        DESCRIPTION         "Notifies about a specific event that has occurred
+                            in ProSphere"
+        ::= { notifications 1 }
+
+    emcPsMIBConformance OBJECT IDENTIFIER ::= { emcPsMIB 1 }
+
+    emcPsMIBGroups OBJECT IDENTIFIER ::= { emcPsMIBConformance 1 }
+
+    emcPsMibAllObjects OBJECT-GROUP
+        OBJECTS {           
+			alertIdentifier,
+			alertURI,
+			alertName,
+			alertState,
+			alertSeverity,
+			alertSource,
+			alertCIName,
+			alertCIType,
+			alertMessage,
+			alertOccurrenceCount,
+			alertIsAcknowledged,
+			alertAcknowledgementTime,
+			alertAcknowledgedBy,
+			alertOwnerName,
+			alertCreationTime,
+			alertModificationTime,
+			alertCategory,
+			alertTopLevelObjectURI,
+			alertActualValue,
+			alertPolicyURI,
+			alertLastOccurredTime,
+			alertResourceAttribute
+        }
+        STATUS              current
+        DESCRIPTION         "Information about the properties of the alert that will be forwarded."
+        ::= { emcPsMIBGroups 1 }
+
+    emcPsMibAllNotifications NOTIFICATION-GROUP
+        NOTIFICATIONS       {
+                                psEventTrap
+                            }
+        STATUS              current
+        DESCRIPTION         "Information about the notifications that will be forwarded by ProSphere."
+        ::= { emcPsMIBGroups 2 }
+
+END
+

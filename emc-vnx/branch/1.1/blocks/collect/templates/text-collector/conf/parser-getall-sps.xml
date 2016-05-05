@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>single-line-tree</tree-type>
+		<sub-delimiter>
+			<delimiter>:</delimiter>
+		</sub-delimiter>
+		<tree-schema>
+			<name>Server IP Address</name>
+			<leaf><name>Storage Processor(\s*)|Storage Processor Network Name(\s*)|Storage Processor IP Address(\s*)|Total Reads(\s*)|Total Writes(\s*)|Prct Busy(\s*)|Read_requests(\s*)|Write_requests(\s*)|Blocks_read(\s*)|Blocks_written(\s*)|Sum_queue_lengths_by_arrivals(\s*)|Arrivals_to_non_zero_queue(\s*)|Hw_flush_on(\s*)|Idle_flush_on(\s*)|Lw_flush_off(\s*)|Write_cache_flushes(\s*)</name></leaf>
+			<leaf><name>Controller busy ticks(\s*)|Controller idle ticks(\s*)</name></leaf>
+		</tree-schema>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>false</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Group</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@navisecclipath -h (host) -user @blockusername -password @blockpassword -scope @userscope getall -sp</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

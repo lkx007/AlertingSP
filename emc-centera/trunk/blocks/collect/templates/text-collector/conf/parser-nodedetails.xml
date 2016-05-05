@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<incremental-parser>false</incremental-parser>
+		<master-delimiter>\n</master-delimiter>
+		<tree-schema>
+			<name>NODE_</name>
+			<leaf>
+				<name>NodeName</name>
+				<group>main-1</group>
+			</leaf>
+			<leaf>
+				<name>NodeSerialNumber</name>
+				<group>serialnumber-1</group>
+			</leaf>
+			<leaf>
+				<name>Status</name>
+				<group>status-1</group>
+			</leaf>
+			<leaf>
+				<name>Roles</name>
+				<group>roles-1</group>
+			</leaf>
+			<leaf>
+				<name>TimeInAccessRole</name>
+				<group>timeinaccessrole-1</group>
+			</leaf>
+			<leaf>
+				<name>TimeInReplicationRole</name>
+				<group>timeinreplicationrole-1</group>
+			</leaf>
+			<leaf>
+				<name>TimeInManagementRole</name>
+				<group>timeinmanagementrole-1</group>
+			</leaf>
+			<leaf>
+				<name>TimeInStorageRole</name>
+				<group>timeinstoragerole-1</group>
+			</leaf>
+			<leaf>
+				<name>Model</name>
+				<group>model-1</group>
+			</leaf>
+			<leaf>
+				<name>SoftwareVersion</name>
+				<group>softwareversion-1</group>
+			</leaf>
+			<leaf>
+				<name>ModemPresent</name>
+				<group>modempresent-1</group>
+			</leaf>
+			<leaf>
+				<name>ExternalIP</name>
+				<group>externalip-1</group>
+			</leaf>
+			<leaf>
+				<name>InternalIP</name>
+				<group>internalip-1</group>
+			</leaf>
+			<leaf>
+				<name>TotalCapacity</name>
+				<group>totalcapacity-1</group>
+			</leaf>
+			<leaf>
+				<name>TotalCapacityUnit</name>
+				<group>totalcapacity-2</group>
+			</leaf>
+			<leaf>
+				<name>UsedCapacity</name>
+				<group>usedcapacity-1</group>
+			</leaf>
+			<leaf>
+				<name>UsedCapacityUnit</name>
+				<group>usedcapacity-2</group>
+			</leaf>
+			<leaf>
+				<name>FreeCapacity</name>
+				<group>freecapacity-1</group>
+			</leaf>
+			<leaf>
+				<name>FreeCapacityUnit</name>
+				<group>freecapacity-2</group>
+			</leaf>
+			<leaf>
+				<name>FaultedCapacity</name>
+				<group>faultedcapacity-1</group>
+			</leaf>
+			<leaf>
+				<name>FaultedCapacityUnit</name>
+				<group>faultedcapacity-2</group>
+			</leaf>
+			<leaf>
+				<name>TotalObjectsStored</name>
+				<group>totalobjectsstored-1</group>
+			</leaf>
+			<leaf>
+				<name>HardwareExceptionsFailures</name>
+				<group>hardwarefailuresexceptions-1</group>
+			</leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Node\s*(\S+)(.*?)(?=(Node|$))</regex>
+			<sub-regex group="2">
+				<regex name="serialnumber">\s*Serial Number:\s+(\S+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="status">\s*Status:\s+(\S+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="roles">\s*Roles:\s+(\S+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="timeinaccessrole">\s*Time in access role:\s+([^\n]*)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="timeinreplicationrole">\s*Time in replication role:\s+([^\n]*)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="timeinmanagementrole">\s*Time in management role:\s+([^\n]*)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="timeinstoragerole">\s*Time in storage role:\s+([^\n]*)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="model">\s*Model:\s+(.+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="rail">\s*Rail:\s+(.+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="softwareversion">\s*Centrastar Software Version:\s+(.+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="modempresent">\s*Modem present:\s+(.+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="externalip">\s*External IP:\s+(.+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="internalip">\s*Internal IP:\s+(.+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="totalcapacity">\s*Total Capacity:\s+([\d.,]+)\s+(\S+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="usedcapacity">\s*Used Capacity:\s+([\d.,]+)\s+(\S+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="freecapacity">\s*Free Capacity:\s+([\d.,]+)\s+(\S+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="faultedcapacity">\s*Faulted Capacity:\s+([\d.,]+)\s+(\S+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="totalobjectsstored">\s*Total number of objects stored:\s+(\S+)</regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="hardwarefailuresexceptions">\s*Hardware Failures/Exceptions:\s+(\S+)</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-centera.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Group</group-name>
+				<host-config>
+					<host-list>@host</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>"@clipath\\..\\_jvm\\bin\\java" -cp "@clipath\\CenteraViewer.jar" com.filepool.remote.cli.CLI -u @username -p @password -ip (host) -script conf/shownodedetail_script.cli</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

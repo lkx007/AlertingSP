@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<snmp-masks>
+  <snmp-mask doNotEdit="false" name="BROCADE_FCSWITCH_SYSTEM" version="1.1">
+    <snmp-properties>
+      <snmp-property id="datagrp" name="datagrp" value="BROCADE_FCSWITCH_SYSTEM"/>
+      <snmp-property id="swFirmwareVersion" name="firmware" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.6.0"/>
+      <snmp-property id="swAdmStatus" name="devstat" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.8.0"/>
+      <snmp-property id="swSsn" name="devicesn" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.10.0"/>
+      <snmp-property id="swFCPortCapacity" name="maxport" oid=".1.3.6.1.4.1.1588.2.1.1.1.6.1.0"/>
+      <snmp-property id="swDomainID" name="domainid" oid=".1.3.6.1.4.1.1588.2.1.1.1.2.1.0"/>
+      <snmp-property id="swBootDate" name="bootdate" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.2.0"/>
+    </snmp-properties>
+    <snmp-oids>
+      <snmp-oid id="swOperStatus" name="OperStatus" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.7.0" unit="%"/>
+      <snmp-oid id="swCpuUsage" name="CurrentUtilization" oid=".1.3.6.1.4.1.1588.2.1.1.1.26.1.0" part="System" partType="Processor" unit="%"/>
+      <snmp-oid id="swMemUsage" name="CurrentUtilization" oid=".1.3.6.1.4.1.1588.2.1.1.1.26.6.0" part="System" partType="Memory" unit="%"/>
+    </snmp-oids>
+    <snmp-tables>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="swSensorTable" indexEntryMask="oid._._.1" matchNFirstOidSuffixOnly="0" name="swSensorTable" nextRefTableColIdxOid=".1.1" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.22" partType="Sensor" sortOnOid="false" tableColNameOid=".1.5" tableIndex=".1.1">
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swSensorTable.swSensorType" parentTablecolIdxOidPositions="1" propertyName="partform" propertyValueAppendOid=".1.2" refTableColIdxOid=".1.1" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.1.22" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1+" longLifeCaching="false" name="connUnitSensorTable.connUnitSensorStatus" parentTablecolIdxOidPositions="1" propertyName="partstat" propertyValueAppendOid=".1.4" refTableColIdxOid=".1.2" referenceTableOid=".1.3.6.1.3.94.1.8" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1+" longLifeCaching="false" name="connUnitSensorTable.connUnitSensorInfo" parentTablecolIdxOidPositions="1" propertyName="partsn" propertyValueAppendOid=".1.5" refTableColIdxOid=".1.2" referenceTableOid=".1.3.6.1.3.94.1.8" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.4" name="Value"/>
+          <snmp-filter appendOid=".1.3" invertMatch="false" valueEquals="nominal(\s)+"/>
+        </columns-and-filters>
+      </snmp-table>
+    </snmp-tables>
+    <mib-files>
+      <mib-file-name>BROCADE-SW.mib</mib-file-name>
+    </mib-files>
+  </snmp-mask>
+  <snmp-mask doNotEdit="false" name="BROCADE_FCSWITCH_PORT" version="1.1">
+    <snmp-properties>
+      <snmp-property id="datagrp" name="datagrp" value="BROCADE_FCSWITCH_PORT"/>
+      <snmp-property id="swFirmwareVersion" name="firmware" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.6.0"/>
+      <snmp-property id="swAdmStatus" name="devstat" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.8.0"/>
+      <snmp-property id="swSsn" name="devicesn" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.10.0"/>
+      <snmp-property id="swFCPortCapacity" name="maxport" oid=".1.3.6.1.4.1.1588.2.1.1.1.6.1.0"/>
+      <snmp-property id="swDomainID" name="domainid" oid=".1.3.6.1.4.1.1588.2.1.1.1.2.1.0"/>
+      <snmp-property id="swBootDate" name="bootdate" oid=".1.3.6.1.4.1.1588.2.1.1.1.1.2.0"/>
+    </snmp-properties>
+    <snmp-tables>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="swFCPortTable" indexEntryMask="oid._._.1" matchNFirstOidSuffixOnly="0" name="swFCPortTable" nextRefTableColIdxOid=".1.1 .1.34" oid=".1.3.6.1.4.1.1588.2.1.1.1.6.2" partType="Port" sortOnOid="false" tableColNameOid=".1.37" tableIndex=".1.1">
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swFCPortTable.swFCPortSpecifier" parentTablecolIdxOidPositions="1" propertyName="ifname" propertyValueAppendOid=".1.37" refTableColIdxOid=".1.1" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.6.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swFCPortTable.swFCPortLinkState" parentTablecolIdxOidPositions="1" propertyName="linkstat" propertyValueAppendOid=".1.6" refTableColIdxOid=".1.1" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.6.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swFCPortTable.swFCPortPhyState" parentTablecolIdxOidPositions="1" propertyName="partphys" propertyValueAppendOid=".1.3" refTableColIdxOid=".1.1" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.6.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swFCPortTable.swFCPortOpStatus" parentTablecolIdxOidPositions="1" propertyName="partstat" propertyValueAppendOid=".1.4" refTableColIdxOid=".1.1" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.6.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swFCPortTable.swFCPortName" parentTablecolIdxOidPositions="1" propertyName="partname" propertyValueAppendOid=".1.36" refTableColIdxOid=".1.1" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.6.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swFCPortTable.swFCPortWwn" parentTablecolIdxOidPositions="1" propertyName="partwwn" propertyValueAppendOid=".1.34" refTableColIdxOid=".1.1" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.6.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swFCPortTable.swFCPortSpeed" parentTablecolIdxOidPositions="1" propertyName="partmax" propertyValueAppendOid=".1.35" refTableColIdxOid=".1.1" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.6.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swFCPortTable.swFCPortBrcdType" parentTablecolIdxOidPositions="1" propertyName="porttype" propertyValueAppendOid=".1.39" refTableColIdxOid=".1.1" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.6.2" usePropertyValueInVariableName="false"/>
+        <!-- Maxspeed -->
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.100+" longLifeCaching="false" name="connUnitPortTable.connUnitPortSpeed" parentTablecolIdxOidPositions="1" propertyName="maxspeed" propertyValueAppendOid=".1.15" refTableColIdxOid=".1.2" referenceTableOid=".1.3.6.1.3.94.1.10" usePropertyValueInVariableName="false"/>
+        <!-- NameServer Info -->
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.1" longLifeCaching="false" name="swNsLocalTable.swNsPortID" parentTablecolIdxOidPositions="2" propertyName="portid" propertyValueAppendOid=".1.2" refTableColIdxOid=".1.13" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.7.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swNsLocalTable.swNsPortName" parentTablecolIdxOidPositions="2" propertyName="portwwn" propertyValueAppendOid=".1.4" refTableColIdxOid=".1.13" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.7.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swNsLocalTable.swNsPortSymb" parentTablecolIdxOidPositions="2" propertyName="portname" propertyValueAppendOid=".1.5" refTableColIdxOid=".1.13" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.7.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swNsLocalTable.swNsNodeName" parentTablecolIdxOidPositions="2" propertyName="nodewwn" propertyValueAppendOid=".1.6" refTableColIdxOid=".1.13" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.7.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swNsLocalTable.swNsNodeSymb" parentTablecolIdxOidPositions="2" propertyName="nodename" propertyValueAppendOid=".1.7" refTableColIdxOid=".1.13" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.7.2" usePropertyValueInVariableName="false"/>
+        <snmp-reference-table hexValue="false" indexEntryMask="oid._._.1" longLifeCaching="false" name="swNsLocalTable.swNsCos" parentTablecolIdxOidPositions="2" propertyName="portqos" propertyValueAppendOid=".1.10" refTableColIdxOid=".1.13" referenceTableOid=".1.3.6.1.4.1.1588.2.1.1.1.7.2" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.13" as="RATEP" name="OutFrames" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.14" as="RATEP" name="InFrames" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.15" as="RATEP" name="C2InFrames" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.16" as="RATEP" name="C3InFrames" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.17" as="RATEP" name="InFramesLinkControl" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.18" as="RATEP" name="InFramesMulticasts" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.19" as="RATEP" name="TooManyRDY" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.20" as="RATEP" name="CreditLost" propertyName="partid" propertyValueAppendOid=".1.1" unit="Nb/s"/>
+          <snmp-column appendOid=".1.21" as="RATEP" name="InFramesEncodingErrors" propertyName="partid" propertyValueAppendOid=".1.1" unit="Nb/s"/>
+          <snmp-column appendOid=".1.22" as="RATEP" name="InCrcs" propertyName="partid" propertyValueAppendOid=".1.1" unit="Nb/s"/>
+          <snmp-column appendOid=".1.23" as="RATEP" name="InFramesTruncated" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.24" as="RATEP" name="InFramesTooLongs" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.25" as="RATEP" name="InFramesBadEofs" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.26" as="RATEP" name="OutFramesEncodingErrors" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.27" as="RATEP" name="InBadOs" propertyName="partid" propertyValueAppendOid=".1.1" unit="Nb/s"/>
+          <snmp-column appendOid=".1.28" as="RATEP" name="C3Discards" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.29" as="RATEP" name="MulticastFramesTimedOuts" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.30" as="RATEP" name="OutMulticastFrames" propertyName="partid" propertyValueAppendOid=".1.1" unit="Frames/s"/>
+          <snmp-column appendOid=".1.31" as="RATEP" name="LipIns" propertyName="partid" propertyValueAppendOid=".1.1" unit="Nb/s"/>
+          <snmp-column appendOid=".1.32" as="RATEP" name="LipOuts" propertyName="partid" propertyValueAppendOid=".1.1" unit="Nb/s"/>
+          <snmp-column appendOid=".1.33" as="RATEP" name="LipLastAlpa" propertyName="partid" propertyValueAppendOid=".1.1" unit="Nb/s"/>
+        </columns-and-filters>
+      </snmp-table>
+      <!-- Performances / Errors metrics by ports -->
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_InOctets" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_InOctets" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_7" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.7" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="InOctets" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_OutOctets" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_OutOctets" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_6" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.6" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="OutOctets" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_InvalidTxWords" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_InvalidTxWords" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_41" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.41" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="InvalidTxWords" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_LinkFailures" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_LinkFailures" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_39" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.39" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="LinkFailures" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_SyncLosses" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_SyncLosses" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_44" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.44" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="SyncLosses" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_SigLosses" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_SigLosses" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_43" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.43" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="SigLosses" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_ProtoErrors" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_ProtoErrors" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_42" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.42" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="ProtoErrors" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_AddressIdErrors" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_AddressIdErrors" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_48" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.48" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="AddressIdErrors" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_LinkResetIns" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_LinkResetIns" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_33" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.33" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="LinkResetIns" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+      <snmp-table cacheAllSnmpReferenceTables="false" id="connPST_LinkResetOuts" indexEntryMask="oid._._.100+.101" matchNFirstOidSuffixOnly="0" name="connPST_LinkResetOuts" nextRefTableColIdxOid=".1.100 .1.101" oid=".1.3.6.1.3.94.4.5" partType="Port" sortOnOid="false" tableIndex=".1.100 .1.101">
+        <snmp-reference-table hexValue="true" indexEntryMask="oid._._.100+.101" longLifeCaching="false" name="connUnitPortTable_34" parentTablecolIdxOidPositions="1 2" propertyName="valcount" propertyValueAppendOid=".1.34" refTableColIdxOid=".1.100 .1.101" referenceTableOid=".1.3.6.1.3.94.4.5" usePropertyValueInVariableName="false"/>
+        <columns-and-filters>
+          <snmp-column appendOid=".1.2" name="LinkResetOuts" propertyName="partid" propertyValueAppendOid=".1.101"/>
+        </columns-and-filters>
+      </snmp-table>
+    </snmp-tables>
+    <mib-files>
+      <mib-file-name>BROCADE-SW.mib</mib-file-name>
+    </mib-files>
+  </snmp-mask>
+</snmp-masks>

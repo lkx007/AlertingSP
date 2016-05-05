@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  xmlns="http://www.watch4net.com/TextOutputCollector"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://www.watch4net.com/TextOutputCollector textoutputcollector.xsd ">
+	<simultaneous-collecting>1</simultaneous-collecting>
+	<!-- 12 hours -->
+	<polling-interval>43200</polling-interval>
+	<collecting-group>group</collecting-group>
+	<source>VNXFile-Collector</source>
+	<collecting-configuration name="SECMAP" timeout="43200">
+		<parsing-configuration-file>./conf/textparsing-secmap.xml</parsing-configuration-file>
+		<raw-value-group-list delete-after-group="true" master-node="UID_[\d]+" variable-id="serialnb datagrp userid name">
+			<property-list name="devtype"><hardcoded>Array</hardcoded></property-list>
+			<property-list name="serialnb"><hardcoded>@fileserial</hardcoded></property-list>
+			<property-list name="userid"><position>./uid</position></property-list>
+			<property-list name="username"><position>./name</position></property-list>
+			<property-list name="datagrp"><hardcoded>VNXFile-UserQuotas</hardcoded></property-list>
+			<value-list leaf="./uid" unit="" name="RemoveMe"/>
+		</raw-value-group-list>
+	</collecting-configuration>
+</configuration>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>FASTCACHE_</name>
+			<leaf>
+				<name>RAIDType</name>
+				<group>fastcache-3</group>
+			</leaf>
+			<node>
+				<name>DISK_</name>
+				<leaf>
+					<name>DiskName</name>
+					<group>disk-1</group>
+				</leaf>
+				<leaf>
+					<name>RemoveMe</name>
+					<group>disk-2</group>
+				</leaf>
+			</node>
+		</tree-schema>
+		<!--
+Disks:  
+Bus 0 Enclosure 0 Disk 6
+Bus 0 Enclosure 0 Disk 5
+Mode:  Read/Write
+Raid Type:  r_1
+Size (GB):  91
+State:  Enabled
+Current Operation:  N/A
+Current Operation Status:  N/A
+Current Operation Percent Completed:  N/A
+Percentage Dirty SPA:  0
+MBs Flushed SPA:  0
+Percentage Dirty SPB:  0
+MBs Flushed SPB:  0
+		-->
+		<regex-group-config group="-1">
+			<regex name="fastcache">(?s)Disks:\s+(.*)Mode:\s+([\w|\/]+)\s+Raid Type:\s+([\w|_|\d]+)\s+Size \(GB\):\s+(\d+)\s+State:\s+(\w+)\s+Current Operation:\s+(.*)\s+Current Operation Status:\s+(.*)\s+Current Operation Percent Completed:\s+(.*)\s+Percentage Dirty SPA:\s+(.*)Percentage Dirty SPB:\s+(.*)</regex>
+			<sub-regex group="1">
+				<regex name="disk">(Bus\s\d+\sEnclosure\s\d+\sDisk(\s)\d+)</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Arrays</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) cache -fast -info</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

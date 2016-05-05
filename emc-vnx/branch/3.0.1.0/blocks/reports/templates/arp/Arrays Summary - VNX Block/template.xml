@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns="http://www.watch4net.com/APG/Web/XmlTree1" name="VNX Block - Performance Details" singleNodeId="b" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <property xsi:type="NodeFilter" filterExpression="source=='VNXBlock-Collector'"/>
+  <property xsi:type="ReportPreferences" defaultMode="imx"/>
+  <property xsi:type="DisplayPreferences" displayPolicy="hideIfLeafOrEmpty"/>
+  <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+  <link singleNodeId="54b21176" linkID="*:#W4N-EMC-VNX-REQUESTS"/>
+  <link singleNodeId="73cff135" linkID="*:#W4N-EMC-VNX-STORAGEPROCESSOR"/>
+  <link singleNodeId="fa5cd8c8" linkID="*:#W4N-EMC-VNX-THROUGHPUT"/>
+</node>

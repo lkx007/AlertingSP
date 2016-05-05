@@ -1,0 +1,73 @@
+https://10.247.96.201:8080/platform/1/statistics/keys/node.disk.iosched.queue.avg
+
+
+{
+"keys" : 
+[
+
+{
+"aggregation_type" : "avg",
+"base_name" : "node.disk.perfs",
+"default_cache_time" : 0,
+"description" : "Avg iosched queue length for all disks",
+"key" : "node.disk.iosched.queue.avg",
+"policies" : 
+[
+
+{
+"interval" : 5,
+"persistent" : false,
+"retention" : 4200
+},
+
+{
+"interval" : 120,
+"persistent" : true,
+"retention" : 1209600
+}
+],
+"policy_cache_time" : 7,
+"real_name" : null,
+"scope" : "node",
+"type" : "int32",
+"units" : "cents"
+}
+]
+}
+
+
+https://10.247.96.201:8080/platform/1/statistics/current?key=node.disk.iosched.queue.avg&devid=all
+
+
+{
+"stats" : 
+[
+
+{
+"devid" : 1,
+"error" : null,
+"error_code" : null,
+"key" : "node.disk.iosched.queue.avg",
+"time" : 1393261155,
+"value" : 0
+},
+
+{
+"devid" : 2,
+"error" : null,
+"error_code" : null,
+"key" : "node.disk.iosched.queue.avg",
+"time" : 1393261152,
+"value" : 0
+},
+
+{
+"devid" : 3,
+"error" : null,
+"error_code" : null,
+"key" : "node.disk.iosched.queue.avg",
+"time" : 1393261155,
+"value" : 0
+}
+]
+}

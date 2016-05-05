@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>METALUN_INFO_</name>
+			<leaf>
+				<name>metalunid</name>
+				<group>meta-1</group>
+			</leaf>
+			<leaf>
+				<name>metalunname</name>
+				<group>meta-2</group>
+			</leaf>
+			<leaf>
+				<name>TotalCapacity (MB)</name>
+				<group>meta-3</group>
+			</leaf>
+			<leaf>
+				<name>numberofluns</name>
+				<group>meta-4</group>
+			</leaf>
+			<leaf>
+				<name>RemoveMe</name>
+				<group>meta-1</group>
+			</leaf>
+			<node>
+				<name>METAMEMBER_INFO_</name>
+				<leaf>
+					<name>lunnumber</name>
+					<group>lundetail-1</group>
+				</leaf>
+				<leaf>
+					<name>lunname</name>
+					<group>lundetail-2</group>
+				</leaf>
+				<leaf>
+					<name>lunwwn</name>
+					<group>lundetail-3</group>
+				</leaf>
+				<leaf>
+					<name>lunraid</name>
+					<group>lundetail-4</group>
+				</leaf>
+				<leaf>
+					<name>RemoveMe</name>
+					<group>lundetail-1</group>
+				</leaf>
+			</node>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)MetaLUN Number(.*?)(?=(MetaLUN Number|$))</regex>
+			<sub-regex group="1">
+				<regex name="meta">(?s)(\d+)[\r\n]MetaLUN Name:\s+(.*)[\r\n]Total User Capacity \(Blocks/Megabytes\):[\s]+[\d]+/([\d]+)[\r\n]Components:\s*[\r\n]Number of LUNs:\s+(\d)[\r\n]LUNs:\s*[\r\n](.*)</regex>
+				<sub-regex group="5">
+					<regex name="foreachlun">(?s)LUN Number:(.*?)(?=(LUN Number:|$))</regex>
+					<sub-regex group="1">
+						<regex name="lundetail">(?s)(\d+)[\r\n]LUN Name:\s+(.*)[\r\n]LUN WWN:\s+(.*)[\r\n]RAID Type:\s+(.*)</regex>
+					</sub-regex>
+				</sub-regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>METALUNS</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) metalun -list -name -totalusercap -components</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+MetaLUN Number:  238
+MetaLUN Name:  lglov037_8
+Total User Capacity (Blocks/Megabytes):  10485760/5120
+Components:
+Number of LUNs:  1
+LUNs:
+LUN Number:  8116
+LUN Name:  lglov037_8
+LUN WWN:  60:06:01:60:8D:90:2D:00:46:6E:5C:CB:D0:64:E2:11
+RAID Type:  RAID6
+Number of LUNs:  1
+LUNs:
+LUN Number:  8117
+LUN Name:  lglov037_10
+LUN WWN:  60:06:01:60:8D:90:2D:00:13:36:0A:44:D0:64:E2:11
+RAID Type:  RAID6
+-->
+

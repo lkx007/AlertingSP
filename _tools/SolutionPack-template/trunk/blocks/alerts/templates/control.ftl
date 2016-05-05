@@ -1,0 +1,1 @@
+<@process path="alert-definitions.xml.ftl" /><@alertdefinitions path="alert-definitions.xml" url="https://${alert.webservice.gateway.host}:${alert.webservice.gateway.port}/${alert.webservice.category}/${alert.webservice.module}/${alert.webservice.instance}" username="${alert.webservice.gateway.username}" password="${alert.webservice.gateway.password}" validateSSL="false" />

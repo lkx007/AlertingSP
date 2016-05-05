@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-611 -->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+                <max-threads>2</max-threads>
+                <parser-config>
+                                <parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+                                <tree-type>regex-group-tree</tree-type>
+                                <tree-schema>
+                                                <name>COMPLUN_</name>
+                                                <leaf><name>lun</name>          <group>block-1</group></leaf>
+                                                <leaf><name>name</name>         <group>block-2</group></leaf>
+                                                <leaf><name>uid</name>          <group>block-3</group></leaf>
+                                                <leaf><name>destpoolid</name>   <group>block-4</group></leaf>
+                                                <leaf><name>currentstate</name> <group>block-5</group></leaf>
+                                                <leaf><name>status</name>       <group>block-6</group></leaf>
+                                                <leaf><name>perccomplete</name> <group>block-7</group></leaf>
+                                                <leaf><name>rate</name>         <group>block-8</group></leaf>
+                                                <leaf><name>tcapb</name>        <group>block-9</group></leaf>
+                                                <leaf><name>tcapg</name>        <group>block-10</group></leaf>
+                                                <leaf><name>ccapb</name>        <group>block-11</group></leaf>
+                                                <leaf><name>ccapg</name>        <group>block-12</group></leaf>
+                                </tree-schema>
+                                <regex-group-config group="-1">
+                                                <regex name="main">(?s)LOGICAL UNIT NUMBER:(.*?)(?=(LOGICAL UNIT NUMBER:|$))</regex>
+                                                <sub-regex group="1">
+                                                  <regex name="block">(?s)(.+)\r*Name:\s+(.*)UID:\s+(.*)Destination Pool ID:\s+(.*)Current State:\s+(.*)Status:\s+(.*)Percent Complete:\s+(.*)Rate:\s+(.*)Total Capacity \(Blocks\):\s+(.*)Total Capacity \(GBs\):\s+(.*)Consumed Capacity \(Blocks\):\s+(.*)Consumed Capacity \(GBs\):\s+(.*).*</regex>
+                                                </sub-regex>
+                                </regex-group-config>
+                </parser-config>
+                <data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+                <data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+		<include-contexts>conf/context-block.xml</include-contexts>
+                <data-config>
+                                <data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+                                <stop-on-first-result>true</stop-on-first-result>
+                                <host-group-config>
+                                                <custom-group>
+                                                                <group-name>Compression</group-name>
+                                                                <host-config>
+                                                                                <host-list>@spa</host-list>
+                                                                                <host-list>@spb</host-list>
+                                                                </host-config>
+                                                </custom-group>
+                                </host-group-config>
+                                <command-configuration>
+                                                <command-list>
+                                                                <command>@command -h (host) compression -list</command>
+                                                </command-list>
+                                </command-configuration>
+                </data-config>
+<!--
+/opt/Navisphere/bin/naviseccli -h 10.245.18.201 -user sysadmin -password sysadmin -scope 0 compression -list
+
+LOGICAL UNIT NUMBER:  1
+Name:  Compressed_LUN
+UID:  60:06:01:60:2F:30:2B:00:26:40:01:25:77:96:E2:11
+Destination Pool ID:  N/A
+Current State:  Compressed
+Status:  OK(0x0)
+Percent Complete:  100
+Rate:  High
+Total Capacity (Blocks):  209715200
+Total Capacity (GBs):  100.000
+Consumed Capacity (Blocks):  8404992
+Consumed Capacity (GBs):  4.008
+-->
+
+
+</configuration>
+

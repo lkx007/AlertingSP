@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<translations>
+  <variable-specific-translations>
+    <variable-value-translation name="ifAdminStatus">
+      <value-match value="testing" rename="NaN"/>
+      <value-match value="up" rename="100"/>
+      <value-match value="down" rename="0"/>
+    </variable-value-translation>
+    <variable-value-translation name="Availability">
+      <value-match value="up" rename="100"/>
+      <value-match value="offCooling" rename="0"/>
+      <value-match value="running" rename="100"/>
+      <value-match value="testing" rename="NaN"/>
+      <value-match value="nonoperational" rename="0"/>
+      <value-match value="offConnectorRating" rename="0"/>
+      <value-match value="runningAtFullSpeed" rename="100"/>
+      <value-match value="reset" rename="0"/>
+      <value-match value="offEnvFan" rename="0"/>
+      <value-match value="standby" rename="0"/>
+      <value-match value="offDenied" rename="0"/>
+      <value-match value="offAdmin" rename="0"/>
+      <value-match value="offEnvOther" rename="0"/>
+      <value-match value="failed" rename="0"/>
+      <value-match value="on" rename="100"/>
+      <value-match value="unavailable" rename="0"/>
+      <value-match value="offEnvPower" rename="0"/>
+      <value-match value="ok" rename="100"/>
+      <value-match value="ready" rename="100"/>
+      <value-match value="offEnvTemp" rename="0"/>
+      <value-match value="onButFanFail" rename="0"/>
+      <value-match value="unknown" rename="NaN"/>
+      <value-match value="onButInlinePowerFail" rename="0"/>
+      <value-match value="down" rename="0"/>
+    </variable-value-translation>
+    <variable-value-translation name="ifOperStatus">
+      <value-match value="testing" rename="NaN"/>
+      <value-match value="notPresent" rename="0"/>
+      <value-match value="dormant" rename="100"/>
+      <value-match value="down" rename="0"/>
+      <value-match value="lowerLayerDown" rename="0"/>
+      <value-match value="up" rename="100"/>
+    </variable-value-translation>
+    <variable-value-translation name="fcNameServerPortType">
+      <value-match value="unknown" rename="1"/>
+      <value-match value="nPort" rename="2"/>
+      <value-match value="nlPort" rename="3"/>
+    </variable-value-translation>
+    <variable-value-translation name="hrDiskStorageMedia">
+      <value-match value="unknown" rename="2"/>
+      <value-match value="other" rename="1"/>
+      <value-match value="opticalDiskRW" rename="7"/>
+      <value-match value="opticalDiskROM" rename="5"/>
+      <value-match value="opticalDiskWORM" rename="6"/>
+      <value-match value="ramDisk" rename="8"/>
+      <value-match value="hardDisk" rename="3"/>
+      <value-match value="floppyDisk" rename="4"/>
+    </variable-value-translation>
+    <variable-value-translation name="ipForwarding">
+      <value-match value="forwarding" rename="1"/>
+      <value-match value="not-forwarding" rename="0"/>
+    </variable-value-translation>
+    <variable-value-translation name="hrDiskStorageAccess">
+      <value-match value="readOnly" rename="4"/>
+      <value-match value="readWrite" rename="3"/>
+    </variable-value-translation>
+    <variable-value-translation name="DeviceStatus">
+      <value-match value="testing" rename="0"/>
+      <value-match value="warning" rename="50"/>
+      <value-match value="unknown" rename="-1"/>
+      <value-match value="down" rename="0"/>
+      <value-match value="running" rename="100"/>
+    </variable-value-translation>
+    <variable-value-translation name="hrDiskStorageRemovable">
+      <value-match value="true" rename="1"/>
+      <value-match value="false" rename="2"/>
+    </variable-value-translation>
+    <variable-value-translation name="mediaType">
+      <value-match value="static" rename="4"/>
+      <value-match value="dynamic" rename="3"/>
+    </variable-value-translation>
+    <variable-value-translation name="OperationalState">
+      <value-match value="up" rename="1.0"/>
+      <value-match value="down" rename="2.0"/>
+    </variable-value-translation>
+    <variable-value-translation name="Fake_zoneEnforcedZoneMemberFormat">
+      <value-match value="fwwn" rename="4.0"/>
+      <value-match value="symNodeName" rename="5.0"/>
+      <value-match value="domainPort" rename="2.0"/>
+      <value-match value="ipAddrv6" rename="9.0"/>
+      <value-match value="ipAddr" rename="8.0"/>
+      <value-match value="deviceAlias" rename="10.0"/>
+      <value-match value="wwn" rename="1.0"/>
+      <value-match value="fcAddr" rename="3.0"/>
+      <value-match value="intf" rename="6.0"/>
+      <value-match value="domainIntf" rename="7.0"/>
+    </variable-value-translation>
+    <variable-value-translation name="fcsPortState">
+      <value-match value="other" rename="6.0"/>
+      <value-match value="online" rename="2.0"/>
+      <value-match value="offline" rename="3.0"/>
+      <value-match value="testing" rename="4.0"/>
+      <value-match value="fault" rename="5.0"/>
+      <value-match value="unknown" rename="1.0"/>
+    </variable-value-translation>
+    <variable-value-translation name="FeatureControlStatus">
+      <value-match value="enabled" rename="1.0"/>
+	  <value-match value="disabled" rename="2.0"/>
+    </variable-value-translation>		
+  </variable-specific-translations>
+</translations>

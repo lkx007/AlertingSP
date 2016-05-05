@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+	<handling-configuration id="ExtractDNSNameFromZone">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype='ZoneMember'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-mds-zone-dns.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="SolveDNSNameFromZone">
+	        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+	            <parameter name="filter">hostname</parameter>
+	        </matcher>
+	        <handler  class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.DnsResolveHandler">
+	            <parameter name="hostname-property">hostname</parameter>
+	            <parameter name="resolved-ip-property">resolved</parameter>
+	            <parameter name="cache-duration">43200</parameter>
+	        </handler>
+	</handling-configuration>
+	<handling-configuration id="HostnameAllLower">
+    	    <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+    	    	<parameter name="filter">hostname</parameter>
+    	    </matcher>
+    	    <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyStringCaseHandler">
+    	    	<parameter name="to-lower-case">hostname</parameter>
+    	    </handler>
+    	</handling-configuration>
+	<handling-configuration id="ForceRefresh">
+	        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+	            <parameter name="filter">parttype='ZoneMember'</parameter>
+	        </matcher>
+	        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyMonitorHandler"/>
+	</handling-configuration>
+</configuration>

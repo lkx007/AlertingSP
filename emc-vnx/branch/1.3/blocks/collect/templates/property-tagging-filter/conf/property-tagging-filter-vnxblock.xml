@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<property-tagging-filter-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter" xsi:schemaLocation="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter  property-tagging-filter-config.xsd">
+	<refresh unit="minutes">0</refresh>
+	<files>
+		<text-file path="conf/vnx_models.csv">
+			<field-separator>,</field-separator>
+			<default-symbol>**</default-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="regex">model</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>maxdisk</new-property>
+				<new-property>maxhost</new-property>
+			</new-properties>
+		</text-file>
+		<text-file path="conf/hd_rpm.csv">
+			<field-separator>,</field-separator>
+			<default-symbol>**</default-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="regex">partmdl</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>diskrpm</new-property>
+			</new-properties>
+		</text-file>
+		<text-file path="conf/hd_latency.csv">
+			<field-separator>,</field-separator>
+			<default-symbol>**</default-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="string">diskrpm</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>disklate</new-property>
+			</new-properties>
+		</text-file>
+		<text-file path="conf/hd_factors.csv">
+			<field-separator>,</field-separator>
+			<default-symbol>**</default-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="string">diskrpm</key-property>
+				<key-property delete-after-use="false" string-type="string">disktype</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>partmax</new-property>
+				<new-property>seektime</new-property>
+			</new-properties>
+		</text-file>
+		<text-file path="conf/disk_cost_per_gigabyte.csv">
+			<field-separator>,</field-separator>
+			<default-symbol>**</default-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="regex">model</key-property>
+				<key-property delete-after-use="false" string-type="string">dgraid</key-property>
+				<key-property delete-after-use="false" string-type="string">tiername</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>cost</new-property>
+			</new-properties>
+		</text-file>
+		<text-file path="conf/business_unit.csv">
+			<field-separator>,</field-separator>
+			<field-quoting>"</field-quoting>
+			<default-symbol>**</default-symbol>
+			<null-symbol>@@</null-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="string">device</key-property>
+				<key-property delete-after-use="false" string-type="regex">part</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>bunit</new-property>
+				<new-property>appname</new-property>
+				<new-property>appowner</new-property>
+			</new-properties>
+		</text-file>
+		<text-file path="conf/moduletotier.csv">
+			<field-separator>,</field-separator>
+			<default-symbol>**</default-symbol>
+			<key-properties>
+				<key-property delete-after-use="false" string-type="string">module</key-property>
+			</key-properties>
+			<new-properties>
+				<new-property>tiername</new-property>
+			</new-properties>
+		</text-file>
+	</files>
+</property-tagging-filter-config>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:spatial-aggregation-filter-config xmlns:tns="http://www.example.org/spatial-aggregation-filter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/spatial-aggregation-filter ../../spatial-aggregation-filter/src/conf/spatial-aggregation-filter.xsd ">
+	<tns:spatial-aggregation aggregate-name="RawCapacity" aggregation="sum" name="Capacity" forward-all-properties-from-all-rawvalues="false" send-all-original-raw-values="true" time-span="15" watchdog-period="15">
+		<tns:group-by>device</tns:group-by>
+		<tns:remove-property>part</tns:remove-property>
+		<tns:remove-property>diskgrp</tns:remove-property>
+		<tns:remove-property>raidgrp</tns:remove-property>
+		<tns:remove-property>dgname</tns:remove-property>
+		<tns:remove-property>partvend</tns:remove-property>
+		<tns:remove-property>director</tns:remove-property>
+		<tns:remove-property>partver</tns:remove-property>
+		<tns:remove-property>partmode</tns:remove-property>
+		<tns:remove-property>disktype</tns:remove-property>
+		<tns:remove-property>diskrpm</tns:remove-property>
+		<tns:remove-property>hypers</tns:remove-property>
+	</tns:spatial-aggregation>
+	<tns:spatial-aggregation aggregate-name="IOPSbyArray" aggregation="sum" name="IOPS" forward-all-properties-from-all-rawvalues="false" send-all-original-raw-values="true" time-span="15" watchdog-period="15">
+		<tns:group-by>device</tns:group-by>
+		<tns:remove-property>part</tns:remove-property>
+		<tns:remove-property>parttype</tns:remove-property>
+		<tns:remove-property>director</tns:remove-property>
+	</tns:spatial-aggregation>
+	<tns:spatial-aggregation aggregate-name="TotalThroughputbyArray" aggregation="sum" name="TotalThroughput" forward-all-properties-from-all-rawvalues="false" send-all-original-raw-values="true" time-span="15" watchdog-period="15">
+		<tns:group-by>device</tns:group-by>
+		<tns:remove-property>part</tns:remove-property>
+		<tns:remove-property>parttype</tns:remove-property>
+		<tns:remove-property>director</tns:remove-property>
+	</tns:spatial-aggregation>
+</tns:spatial-aggregation-filter-config>

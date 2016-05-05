@@ -1,0 +1,26 @@
+EMC MSS Alerts  
+=================
+Version 1.0 (Collector 1.0, snmp 1.0, Alerting 1.0)
+ * Owner : Bharath Basavarajappa : Date 04-June-2014
+ * Initial release, from ReportPack for Managed Services
+ 
+Version 2.0 (Collector 2.0, snmp 2.0, Alerting 2.0)
+ * Owner : Bharath Basavarajappa : Date 03-Nov-2014
+ * 2nd release, from Solution pack from Managed Service Solution team
+ 
+Version 2.0 (Collector 2.0, snmp 2.0, Alerting 2.0) - Name is changed as emc-mss-alerts
+ * Owner : Bharath Basavarajappa : Date 04-Nov-2014
+ * 2nd release, from Solution pack from Managed Service Solution team.
+ 
+ Version 3.6 (Collector 3.6, SNMP 3.6, Alerting 3.6) - Version is Synced to SRM release versions
+ * Owner : Bharath Basavarajappa : Date 03-June-2015
+ * 3rd release, from Solution pack from Managed Service Solution team.
+ 
+  Version 3.6.0.u85 (Collector 3.6.1, SNMP 3.6.1, Alerting 3.6.1) - Fix the issue
+ * Owner : Bharath Basavarajappa : Date 14-August-2015
+ * Fix the customer name property update.
+ 
+  Version 3.6.2.u84 (Collector 3.6.2, SNMP 3.6.2, Alerting 3.6.2) - Merging SRM Health Solution alerts
+ * Owner : Bharath Basavarajappa : Date 4-September-2015
+ * Merging SRM Health Solution alerts.
+ * 3 new enhancement request from FCA team.

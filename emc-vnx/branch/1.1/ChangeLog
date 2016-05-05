@@ -1,0 +1,12 @@
+EMC VNX
+=======
+
+ Version 1.1 (collect 1.1, events 1.0, reports 1.1)
+ * reports: Fix for Broken links reports (#364)
+ * reports: Now support for legacy licenses, VNX Block & File
+ * collect: Fix for #354. Double value of Raw Total and Usage
+ * collect: Fix windows escaping for naviseccli for non-default path
+ * collect: Support for R32 and pre32 flare for disks & QueueLength
+
+Version 1.0 (collect 1.0, events 1.0, reports 1.0)
+ * Initial release, from ReportPack for VNX Block & File (merge)

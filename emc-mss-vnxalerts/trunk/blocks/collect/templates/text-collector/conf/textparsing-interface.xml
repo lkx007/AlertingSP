@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 	xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>1</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+
+                        <name>DM_</name>
+                        <leaf>
+                                <name>DmID</name>
+                                <group>dm-1</group>
+                        </leaf>
+
+                        <node>
+                                <name>LINK_</name>
+                                <leaf>
+                                        <name>Junk</name>
+                                        <group>link-1</group>
+                                </leaf>
+                                <leaf>
+                                        <name>LinkName</name>
+                                        <group>link-2</group>
+                                </leaf>
+                                <leaf>
+                                        <name>LinkState</name>
+                                        <group>link-3</group>
+                                </leaf>
+                        </node>
+
+                </tree-schema>
+                <regex-group-config group="-1">
+                        <regex name="main">(?s)server_(.*?)(?=(server_|$))</regex>
+                        <sub-regex group="1">
+                                <regex name="dm">(?s)([\d]+)(.*)</regex>
+                                <sub-regex group="2">
+                                        <regex name="link">(\d+:\s+(.*)\s+IRQ:\s+\d+\s+Link:\s+(\w+))</regex>
+                                                        <!--    0:  cge-2-0  IRQ: 28    Link: Up
+                                                           (?s)(\d+:\s+.*IRQ:\s+\d+\s+.*?)(?=\d+:\s+.*IRQ:\s+\d+\s+|Link:\s+(\w+)) -->
+                                </sub-regex>
+                        </sub-regex>
+                </regex-group-config>
+
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-file.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.cli.RemoteCLICommandExecutor</data-accessor>
+		<stop-on-first-result>false</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>VNXFile-group</group-name>
+				<host-config>
+					<connection-type>ssh</connection-type>
+					<host-list>@csprimary</host-list>
+					<parameter name="auth-method">
+						<value>password</value>
+					</parameter>
+					<parameter name="username">
+						<value>@fileusername</value>
+					</parameter>
+					<parameter name="password">
+						<value>@filepassword</value>
+					</parameter>
+					<parameter name="hardcoded-os">
+						<value>vnxfile-interface</value>
+					</parameter>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<group-name>VNXFile-group</group-name>
+			<command-list>
+				<command type="defined">VNXFile interface</command>
+				<argument/>
+				<result-must-be-parsed>true</result-must-be-parsed>
+			</command-list>
+		</command-configuration>
+		<parameter name="command-definition-directory">
+			<value>./conf</value>
+		</parameter>
+	</data-config>
+</configuration>
+
+<!--
+
+server_2 : PCI DEVICES:
+    0:  cge-1-0  IRQ: 24
+    Link: Up
+    0:  cge-1-1  IRQ: 25
+    Link: Down
+    0:  cge-1-2  IRQ: 26
+    Link: Down
+    0:  cge-1-3  IRQ: 27
+    Link: Down
+
+output looks like
+
+erver_2 : PCI DEVICES:
+    0:  cge-1-0  IRQ: 24    Link: Up
+    0:  cge-1-1  IRQ: 25    Link: Down
+    0:  cge-1-2  IRQ: 26    Link: Down
+    0:  cge-1-3  IRQ: 27    Link: Down
+server_3 : PCI DEVICES:
+    0:  cge-1-0  IRQ: 24    Link: Down
+    0:  cge-1-1  IRQ: 25    Link: Down
+    0:  cge-1-2  IRQ: 26    Link: Down
+    0:  cge-1-3  IRQ: 27    Link: Down
+server_4 :
+Error 4023: server_4 : unknown host
+server_5 :
+Error 4023: server_5 : unknown host
+server_6 :
+Error 4023: server_6 : unknown host
+server_7 :
+Error 4023: server_7 : unknown host
+server_8 :
+Error 4023: server_8 : unknown host
+server_9 :
+Error 4023: server_9 : unknown host
+**************************************************
+TEST HOST
+        DEDUP_0
+                DataMoverID: 2
+                DATAMVINTF_1
+                        InterfaceName: cge-1-0
+                        Status: Up
+                DATAMVINTF_2
+                        InterfaceName: cge-1-1
+                        Status: Down
+                DATAMVINTF_3
+                        InterfaceName: cge-1-2
+                        Status: Down
+                DATAMVINTF_4
+                        InterfaceName: cge-1-3
+                        Status: Down
+        DEDUP_5
+                DataMoverID: 3
+                DATAMVINTF_6
+                        InterfaceName: cge-1-0
+                        Status: Down
+                DATAMVINTF_7
+                        InterfaceName: cge-1-1
+                        Status: Down
+                DATAMVINTF_8
+                        InterfaceName: cge-1-2
+                        Status: Down
+                DATAMVINTF_9
+                        InterfaceName: cge-1-3
+                        Status: Down
+
+-->

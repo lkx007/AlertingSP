@@ -1,0 +1,15 @@
+#collect
+symapi.connect_type.default=remote
+symapi.severity.default=warn
+unisphere.port.default=8443
+unisphere.username.default=smc
+unisphere.password.default=smc
+emcvmax.want.default=true
+topology.pollingperiod.default=300
+
+#alerts
+emcvmax.alerts.directorutilization.enable.default=false
+emcvmax.alerts.directorportutilization.enable.default=false
+
+#MB changes
+use_alert.default=false

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter"
+ 			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 			   xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+
+        <!--filter out Topology metric -->
+        <!-- Items which MATCH this filter will be blocked.  Add items here if you want them to be included in topology -->
+        <handling-configuration id="VNX-TOPO">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">!((memberof &amp; portid &amp; sgname ) | (name=='StateOfReplica') |
+                                                   (devtype=='Array' &amp; name=='TotalHotSpare') |
+                                                   (partsn &amp; devtype=='Array' &amp; name=='Availability' &amp; parttype=='Port') |
+                                                   (partsn &amp; devtype=='Array' &amp; (name=='Availability' | name=='UsedCapacity') &amp; parttype=='Lun') |
+                                                   (partsn &amp; devtype=='Array' &amp; name=='TotalMemory' &amp; parttype=='Controller') |
+                                                   (partsn &amp; devtype=='Array' &amp; name=='WriteCacheEnabled' &amp; parttype=='Controller') |
+                                                   (partsn &amp; devtype=='Array' &amp; parttype=='LUN' &amp; name=='Capacity') |
+                                                   (partsn &amp; parttype=='Host' &amp; name=='Availability') |
+                                                   (devtype=='FileServer' &amp; parttype=='Disk' &amp; name=='Capacity')|
+							  (devtype=='FileServer' &amp; parttype=='FileSystem') |
+							  (devtype=='FileServer' &amp; parttype=='DataMover' &amp; name=='Uptime')|
+							  (devtype=='FileServer' &amp; parttype=='Port' &amp; name=='StorageEndpoint')
+                                                  )</parameter>
+                </matcher>
+       <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler"/>
+        </handling-configuration>
+
+		
+	<!-- Cleanup one of the metric to remove parttype, it's required by the topo backend to create the array itself... -->
+	<!-- Sgroup ex: sgname=lgloe042, serialnb=APM00112100464, partip=172.23.137.42, datagrp=VNXBlock-Host, partsn=20000000C943FBA510000000C943FBA5, cost=1, ip=10.247.55.184, wwnn=, bunit=TBD, unit=%, source=VNXBlock-Collector, parttype=Host, wwpn=, appname=TBD, partdesc=@oem28.inf,%emulex%;Emulex, name=Availability, device=APM00112100464, appowner=TBD, devtype=Array, part=lgloe042})=100.0 -->
+
+        <handling-configuration id="metric-without-parttype">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">((partsn &amp; devtype=='Array' &amp; name=='WriteCacheEnabled' &amp; parttype=='Controller')| (partsn &amp; parttype=='Host' &amp; name=='Availability'))</parameter>
+                </matcher>
+                <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+                        <parameter name="file" type="file">conf/vhf-peh-vnxblock-topo.xml</parameter>
+                </handler>
+        </handling-configuration>
+
+	<!-- clean up HBA wwn format -->
+       <!-- part=20:00:00:00:C9:43:FB:A5:10:00:00:00:C9:43:FB:A5 change to part=10000000C943FBA5 -->
+       <handling-configuration id="metric-hba-part-wwn-format">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">(memberof &amp; portid &amp; sgname &amp; !sgname=='N/A')</parameter>
+                </matcher>
+                <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+                        <parameter name="file" type="file">conf/vhf-peh-vnxblock-topo-2.xml</parameter>
+                </handler>
+        </handling-configuration>
+
+
+</configuration>

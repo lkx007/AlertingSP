@@ -1,0 +1,12 @@
+temporarily
+set cli
+1000000
+120
+expand
+true
+yes
+yes
+yes
+GB
+show capacity total
+quit

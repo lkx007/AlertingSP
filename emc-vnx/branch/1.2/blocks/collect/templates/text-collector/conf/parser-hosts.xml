@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>HOST_</name>
+			<leaf>
+				<name>HbaUid</name>
+				<group>hba-1</group>
+			</leaf>
+			<leaf>
+				<name>ServerName</name>
+				<group>hba-2</group>
+			</leaf>
+			<leaf>
+				<name>ServerIp</name>
+				<group>hba-3</group>
+			</leaf>
+			<leaf>
+				<name>Description</name>
+				<group>hba-4</group>
+			</leaf>
+			<leaf>
+				<name>Availability</name>
+				<group>hba-5</group>
+			</leaf>
+		</tree-schema>
+		<!--
+HBA UID:                 20:00:00:00:C9:47:42:3E:10:00:00:00:C9:47:42:3E
+Server Name:             losak177.lss.emc.com
+Server IP Address:       172.23.140.177
+HBA Model Description:   
+HBA Vendor Description:  VMware ESXi 4.0.0
+HBA Device Driver Name:   
+		-->
+		<regex-group-config group="-1">
+			<regex name="main">(?s)HBA UID(.*?)(?=(HBA UID|$))</regex>
+			<sub-regex group="1">
+				<regex name="hba">(?s):\s+([\w\d|:]+).*Server Name:\s+([\w|-]+).*Server IP Address:\s+(.*?)\s*\r?\n.*HBA Vendor Description:\s+(.*?)\r?\n.*(\s).*</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>RAIDGROUPS</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) port -list -hba</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

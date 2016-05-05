@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/CrossReferencingFilter" xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<!-- Propagate the 'partsn' property (port wwn) from parttype Port to parttype Initiator -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<match-on>device</match-on>
+		<match-on>memberof</match-on>
+		<match-on>portid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>partsn</get-property>
+	</reference>
+	<!-- for replica chain to get device and partid from uuid of lun -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>partsn</match-on>
+		<include-properties>true</include-properties>
+		<get-property>partid</get-property>
+		<get-property>device</get-property>
+	</reference>
+</configuration>

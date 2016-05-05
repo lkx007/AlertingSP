@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/CrossReferencingFilter" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+    <blind-write>true</blind-write>
+    <data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+
+    <!-- Copy Array identifying info to all Array metrics -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <match-on>device</match-on>
+        <include-properties>true</include-properties>
+        
+        <get-property>serialnb</get-property>
+        <get-property>model</get-property>
+        <get-property>devdesc</get-property>
+        <get-property>arraytyp</get-property>
+        <get-property>vendor</get-property>
+    </reference>
+
+    <!-- Copy LUN properties -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <condition type="filter">parttype=='LUN' | parttype=='METAMEMBER'</condition>
+        <match-on>device</match-on>
+        <match-on>part</match-on>
+        <include-properties>true</include-properties>
+        
+        <get-property>config</get-property>
+        <get-property>devconf</get-property>
+        <get-property>director</get-property>
+        <get-property>partsn</get-property>
+        <get-property>luntagid</get-property>
+        <get-property>ismetah</get-property>
+        <get-property>ispolcsu</get-property>
+        <get-property>ispolctr</get-property>
+    </reference>
+    
+    <!-- Get the properties from VMAX-ACCESS.MVLunCapacity metric -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <condition type="filter">parttype=='LUN' | parttype=='METAMEMBER'</condition>
+        <match-on>device</match-on>
+        <match-on>part</match-on>
+        <include-properties>true</include-properties>
+        <!-- Note ismasked is defaulted to zero in ptf-vmax-defaultmasking.xml -->
+        <get-property>ismasked</get-property>
+        <get-property>mvlist</get-property>
+    </reference>
+
+    <!-- Get Local/Remote Replica srcdev properties from VMAX-BCVREPLICA, 
+             VMAX-SNAPREPLICA, VMAX-CLONEREPLICA, VMAX-RDFREPLICA, VMAX-RCOPYREPLICA metrics -->    
+    <reference>
+        <condition property="devtype">Array</condition>
+        <condition type="filter">parttype=='LUN' | parttype=='METAMEMBER'</condition>
+        <match-on>device</match-on>
+        <match-on>part</match-on>
+        <include-properties>true</include-properties>
+        <expiration>2400</expiration>
+
+        <get-property default="N/A">repltype</get-property>
+        <get-property default="N/A">srclun</get-property>
+        <get-property default="N/A">srcarray</get-property>
+    </reference>
+    
+    <!-- Get the name of the Pool (for reports under pool, to allow drilldown to devices) -->
+    <!-- Only LUNs that are bound to a pool will be added to the CRF cache.  
+         Only LUNs with no poolname will be enriched. 
+         Expire the cache so that on the next polling cycle only the latest bound pool is used. -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <condition property="parttype">LUN</condition>
+        <condition type="filter">(poolname &amp; isbound=='1') | (!poolname | poolname=='N/A')</condition>
+        <match-on>device</match-on>
+        <match-on>part</match-on>
+        <include-properties>true</include-properties>
+        <expiration>2400</expiration>
+
+        <get-property default="N/A">poolname</get-property>
+    </reference>
+
+    <!-- Copy Disk Characteristics based on Disk and LUN disk_group_name -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <match-on>device</match-on>
+        <match-on>dgname</match-on>
+        <include-properties>true</include-properties>
+        <get-property>disktype</get-property>
+        <get-property>disksize</get-property>
+        <get-property>diskrpm</get-property>
+    </reference>
+
+    <!-- Copy Disk Group, Tier Type, Tier Name, and Disk Technology to Storage Pool -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <condition property="parttype">Storage Pool</condition>
+        <match-on>device</match-on>
+        <match-on>part</match-on>
+        <include-properties>true</include-properties>
+        <get-property>dgname</get-property>
+        <get-property>tiertype</get-property>
+        <get-property>tiername</get-property>
+        <get-property>disktype</get-property>
+        <get-property>pooltype</get-property>
+    </reference>
+    
+    <!-- Copy pooltype from Storage Pool metrics to LUN metrics -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <match-on>device</match-on>
+        <match-on>poolname</match-on>
+        <include-properties>true</include-properties>
+        <expiration>2400</expiration>
+
+        <get-property default="N/A">pooltype</get-property>
+    </reference>
+
+    <!-- Copy Tier PolicyName, TierType to StorageGroup SGLunCapacity (parttype==LUN) -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <condition type="filter">poltype=='Thin' | dgstype=='Thin'</condition>
+        <match-on>device</match-on>
+        <match-on>sgname</match-on>
+        <include-properties>true</include-properties>
+        <expiration>2400</expiration>
+        
+        <get-property default="N/A">polname</get-property>
+        <get-property default="N/A">poltype</get-property>
+    </reference>
+ 
+    <!-- get the part from topo, to enrich perf data -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <condition property="parttype">Disk</condition>
+        <match-on>device</match-on>
+        <match-on>partid</match-on>
+        <include-properties>true</include-properties>
+        <get-property>part</get-property>
+        <get-property>partmode</get-property>
+        <get-property>director</get-property>
+    </reference>
+
+    <!-- get the director real name, to enrich LUN (device) data -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <match-on>device</match-on>
+        <match-on>directid</match-on>
+        <include-properties>true</include-properties>
+        <get-property>director</get-property>
+    </reference>
+
+    <!-- get the port wwn, to enrich LUN (device) data -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <match-on>device</match-on>
+        <match-on>directid</match-on>
+        <match-on>port</match-on>
+        <include-properties>true</include-properties>
+        <get-property>portwwn</get-property>
+    </reference>     
+
+    <!-- get the director id, to enrich director data, and link devices with directors -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <match-on>device</match-on>
+        <match-on>director</match-on>
+        <include-properties>true</include-properties>
+        <get-property>directid</get-property>
+    </reference>
+</configuration>

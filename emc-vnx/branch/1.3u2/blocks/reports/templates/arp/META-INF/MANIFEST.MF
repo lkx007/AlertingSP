@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Built-By: Watch4Net
+Description: SolutionPack for EMC VNX
+Report-Pack: EMC VNX
+Created-By: Watch4Net
+Version: 1.3
+
+Name: EMC VNX
+Hooks: #W4N_SP
+Description: SolutionPack for EMC VNX
+Version: 1.3
+

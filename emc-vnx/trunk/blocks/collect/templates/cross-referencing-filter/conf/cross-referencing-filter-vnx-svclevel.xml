@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 - 2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/CrossReferencingFilter" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+    <blind-write>true</blind-write>
+    <data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+
+    <!-- Copy LUN svclevel to other LUN metrics. -->
+    <reference>
+        <condition property="datatype">Block</condition>
+        <condition property="parttype">LUN</condition>
+        <match-on>device</match-on>
+        <match-on>part</match-on>
+        <include-properties>true</include-properties>
+        <get-property>svclevel</get-property>
+    </reference>
+	<!-- Copy snapshot LUN part and partid properties to metrics generated based on srclun-->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition type="filter">parttype=='LUN'&amp;srclun &amp; !srclun=='N/A'</condition>
+		<match-on>serialnb</match-on>
+		<match-on>srclun</match-on>
+		<match-on>dgraid</match-on>
+		<match-on>purpose</match-on>
+		<match-on>poolname</match-on>
+		<match-on>pooltype</match-on>
+		<include-properties>true</include-properties>
+		<get-property>part</get-property>
+		<get-property>partid</get-property>
+		<get-property>partdesc</get-property>
+		<get-property>partsn</get-property>
+		<get-property>uid</get-property>
+		<get-property>ispolcsu</get-property>
+		<get-property>ispolctr</get-property>
+		<get-property>dgtype</get-property>
+		<get-property>usedby</get-property>
+		<get-property>hexid</get-property>
+		<get-property>ismapped</get-property>
+		<get-property>ismasked</get-property>
+		<get-property>luntagid</get-property>
+	</reference>
+	
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>srclun</match-on>
+		<include-properties>true</include-properties>
+		<get-property>isused</get-property>
+		<get-property>ismapped</get-property>
+		<get-property>ismasked</get-property>
+	</reference>
+</configuration>

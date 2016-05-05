@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules on-failure="continue" xmlns="http://www.watch4net.com/Events/EventLogProcessor">
+
+    <regex field="source" pattern="VNX*"></regex>
+    <rules on-failure="continue">
+        <copy field="serialnb" to="device" />
+    </rules>
+
+    <!-- Rules for Part and Parttype Mapping of VNX Block alerts -->
+    <rules on-failure="continue">
+        <regex field="source" pattern="VNXBlock-Collector"></regex>
+        <exists name="Message condition check" field="messagekey" allow-null="false" />
+        <switch name="Severity Mapping" field="messagekey" strict="false">
+            <case value="ALERT_FAULTED_DISK_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Disk"/>
+            </case>
+            <case value="ALERT_FAULTED_FAN_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Fan"/>
+            </case>
+           <case value="ALERT_SMBUSACCESS_FAULTED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="BUS"/>
+            </case>
+            <case value="ALERT_FAULTED_POWERSUPPLY_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Power Supply"/>
+            </case>
+            <case value="ALERT_FAULTED_SP_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Controller"/>
+            </case>
+           <case value="ALERT_FAULTED_SPS_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Power Supply"/>
+            </case>
+            <case value="ALERT_FAULTED_LCC_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Link Controller Card"/>
+            </case>
+            <case value="ALERT_FAULTED_INTERPOSER_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="DAE"/>
+            </case>
+            <case value="ALERT_FAULTED_PERSONALITY_CARD_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+            <case value="ALERT_FAULTED_DPE_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="DPE"/>
+            </case>
+            <case value="ALERT_FAULTED_DAE_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="DAE"/>
+            </case>
+            <case value="ALERT_FAULTED_SFP_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+           <case value="ALERT_UNREGISTERED_HBAPORT_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+            <case value="ALERT_CACHELUN_DIRTY_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+            <case value="ALERT_PRIVATELUN_HOTSPARE_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+           <case value="ALERT_INACTIVE_CONNECTION_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+            <case value="ALERT_INACTIVE_CONNECTION_ALL_HOSTNAME_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+            <case value="ALERT_PEERSP_UNMANAGED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Controller"/>
+            </case>
+            <case value="ALERT_VOLUMES_UNOWNED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+            <case value="ALERT_POWERSUPPLY_FAILURE_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Power Supply"/>
+            </case>
+            <case value="ALERT_BYPASSED_ENCLOSURES_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="DAE"/>
+            </case>
+            <case value="ALERT_LUNMIGRATION_ERROR_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Application"/>
+            </case>
+            <case value="ALERT_LUNMIGRATION_WARNING_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Application"/>
+            </case>
+           <case value="ALERT_TOOMANYDISKENCLOSURES_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="DAE"/>
+            </case>
+            <case value="ALERT_DISKENCLOSUREUSERACTIONREQUIRED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="DAE"/>
+            </case>
+            <case value="ALERT_VLAN_MGMT_ISCSI_SAME_SUBNET_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+           <case value="ALERT_VLAN_VP_SAME_SUBNET_DIFFERENT_TAGS_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="VLAN"/>
+            </case>
+            <case value="ALERT_VLAN_VP_DIFFERENT_SUBNET_SAME_TAGS_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="VLAN"/>
+            </case>
+            <case value="ALERT_VLAN_VP_SAME_PP_SAME_VLANID_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="VLAN"/>
+            </case>
+            <case value="ALERT_VLAN_CONNECTIONPATH_NO_ROUTE_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+            <case value="ALERT_VLAN_FE_PORT_SUBNET_NO_PEER_COUNTERPART_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+            <case value="ALERT_VLAN_MV_PORT_SUBNET_NO_PEER_COUNTERPART_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+            <case value="ALERT_VLAN_VP_NO_GATEWAY_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+           <case value="ALERT_THINPOOL_USER_SET_CAPACITY_THRESHOLD_REACHED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+            <case value="ALERT_THINPOOL_SYSTEM_SET_CAPACITY_THRESHOLD_REACHED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+            <case value="ALERT_THINPOOL_CREATION_FAILED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+           <case value="ALERT_THINPOOL_EXPANSION_FAILED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+            <case value="ALERT_LUNMIGRATION_SOURCE_DISK_FULL_ERROR_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+            <case value="ALERT_LUNMIGRATION_DESTINATION_DISK_FULL_ERROR_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue2" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+            <case value="ALERT_THINPOOL_CANCELEXPANSION_FAILED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+            <case value="ALERT_MGMNT_STORAGE_GROUP_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="HBA"/>
+            </case>
+            <case value="ALERT_SUBFRU_IO_MODULE_FAULT_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+            <case value="ALERT_SUBFRU_CPU_MODULE_FAULT_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Controller"/>
+            </case>
+           <case value="ALERT_SUBFRU_DIMM_MODULE_FAULT_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Memory"/>
+            </case>
+            <case value="ALERT_SUBFRU_MGMT_MODULE_FAULT_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Controller"/>
+            </case>
+            <case value="ALERT_SUBFRU_CPU_MODULE_NOT_INSERTED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Controller"/>
+            </case>
+           <case value="ALERT_SUBFRU_IO_MODULE_NOT_INSERTED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+            <case value="ALERT_SUBFRU_DIMM_NOT_INSERTED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Controller"/>
+            </case>
+            <case value="ALERT_SUBFRU_MGMT_MODULE_NOT_INSERTED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Controller"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_IOMODULE_CORRECT_BUT_POWERED_OFF_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_UNUSED_IOMODULE_UNSUPPORTED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_IOMODULE_INCORRECT_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_UNUSED_IOMODULE_BROKEN_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+           <case value="ALERT_FLEXPORTS_IOMODULE_BROKEN_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_UNUSED_SFP_OVER_LIMITS_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_SFP_WRONG_TYPE_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+           <case value="ALERT_FLEXPORTS_UNUSED_SFP_BROKEN_OR_UNKNOWN_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_IOMODULE_OVER_LIMITS_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+            <case value="ALERT_MANAGEMENTPORT_RUNNING_IN_HALFDUPLEX_MODE_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+            <case value="ALERT_SPNETADMIN_IPV6_ADDRESS_CHANGE_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+            <case value="ALERT_AUTOTIERING_SCHEDULED_RELOCATION_FAILED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+            <case value="ALERT_UNREGISTERED_LOGGEDININITIATORS_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+            <case value="ALERT_VALID_SP_CACHE_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Controller"/>
+            </case>
+           <case value="ALERT_THINLUN_RECOVERY_REQUIRED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_IOMODULE_INCORRECT_WITH_EXPECTED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_UNUSED_IOMODULE_UNSUPPORTED_NOT_COMMITTED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="IO Module"/>
+            </case>
+           <case value="ALERT_RESERVEDLUNPOOL_DISKTYPE_WARNING_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+            <case value="ALERT_DUPLICATE_INITIATORS_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue3" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+            <case value="ALERT_MAX_ENCLOSURE_LIMIT_EXCEEDED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Bus"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_MEZZANINE_BROKEN_FIX_WITH_SP_DOWN_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+            <case value="ALERT_FLEXPORTS_FAULTED_SFP_WITH_INFO_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Port"/>
+            </case>
+            <case value="ALERT_ENCLOSURE_AIR_INLET_TEMP_OVERLIMIT_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Bus"/>
+            </case>
+            <case value="ALERT_POOL_SPACE_USED_HARVESTING_COULD_NOT_REACH_LWM_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Pool"/>
+            </case>
+           <case value="ALERT_SNAP_SPACE_USED_HARVESTING_COULD_NOT_REACH_LWM_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storgae Pool"/>
+            </case>
+            <case value="ALERT_MLUN_EXPAND_FAILED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue2" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+            <case value="ALERT_MLU_SHRINK_FAILED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue2" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+           <case value="ALERT_POOL_SPACE_USED_HARVESTING_SYSTEM_PAUSED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storgae Pool"/>
+            </case>
+            <case value="ALERT_SNAP_SPACE_USED_HARVESTING_SYSTEM_PAUSED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storgae Pool"/>
+            </case>
+            <case value="ALERT_SNAP_HARVESTING_FAILED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storgae Pool"/>
+            </case>
+            <case value="ALERT_RECOVERY_SPACE_ALLOCATION_NEEDED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+            <case value="ALERT_FQDN_EXIST_IN_MIXED_DOMAIN_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+            <case value="ALERT_DOMAIN_NAME_MISSING_IN_MIXED_DOMAIN_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+            <case value="ALERT_INVALID_CERT_CHAIN_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+           <case value="ALERT_LDAPSERVER_CERT_MISSING_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+            <case value="ALERT_LDAPSERVER_NONFIPS_CERT_CANNOT_ADD_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+            <case value="ALERT_POOL_SPACE_USED_HARVESTING_RUNNING_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+           <case value="ALERT_SNAP_SPACE_USED_HARVESTING_RUNNING_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+            <case value="ALERT_EFDCACHE_THINPOOL_MODIFICATION_FAILED_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Storage Pool"/>
+            </case>
+            <case value="ALERT_MLUN_RECOVERY_REQUIRED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+            <case value="ALERT_MLUN_SHRINK_FAILED_FULL_DETAIL_MSG" type="STRING">
+               <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="LUN"/>
+            </case>
+            <case value="ALERT_MGMNT_STORAGE_GROUP_ALL_HOSTNAME_FULL_DETAIL_MSG" type="STRING">
+              <copy field="paramvalue1" to="part" />
+              <set to="parttype" value="Host"/>
+            </case>
+        </switch>
+  </rules>
+
+    <!-- Unique ID Generation for VNX Alerts-->
+    <rules on-failure="continue">
+        <format name="Unique key attributes" pattern="{0}_{1}_{2}_{3}" to="name" type="message">
+            <field name="sourceip" type="STRING" />
+            <field name="sourceeventtype" type="STRING" />
+            <field name="sourcedomainname" type="STRING" />
+            <field name="eventname" type="STRING" />
+        </format>
+    </rules>
+
+    <rules on-failure="continue">
+        <exists name="Part condition check" field="part" allow-null="false" />
+        <not-equals name="Check for part field" field="part" value="" type="STRING" />
+        <format name="part key attributes" pattern="{0}_{1}" to="name" type="message">
+            <field name="name" type="STRING"/>
+            <field name="part" type="STRING"/>
+        </format>
+      </rules>
+
+  <!-- Rules for Severity Mapping of VNX Block alerts -->
+    <rules on-failure="continue">
+        <regex field="source" pattern="VNXBlock-Collector*"></regex>
+        <switch name="Severity Mapping" field="severity" strict="false">
+            <case value="0" type="STRING">
+                <set to="severity" value="critical"/>
+            </case>
+            <case value="1" type="STRING">
+                <set to="severity" value="critical"/>
+            </case>
+            <case value="2" type="STRING">
+                <set to="severity" value="critical"/>
+            </case>
+            <case value="3" type="STRING">
+                <set to="severity" value="error"/>
+            </case>
+            <case value="4" type="STRING">
+                <set to="severity" value="warning"/>
+            </case>
+            <case value="5" type="STRING">
+                <set to="severity" value="info"/>
+            </case>
+            <case value="6" type="STRING">
+                <set to="severity" value="info"/>
+            </case>
+            <case value="7" type="STRING">
+                <set to="severity" value="info"/>
+            </case>
+        </switch>
+  </rules>
+
+
+    <rules on-failure="continue">
+        <exists name="Match messages with a field openedat" field="openedat" allow-null="false" />
+        <format name="openedat in milliseconds" pattern="%d000" to="openedat" type="printf">
+            <field name="openedat" type="INT" />
+        </format>
+    </rules>
+
+    <rules on-failure="continue">
+        <copy field="openedat" to="lastchangedat" />
+    </rules>
+
+    <!-- Unique Finalizer - Allow fixup things sending to Writer -->
+    <include name="Call Finalizer Rule" includes="99-Finalizer.xml"/>
+</rules>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xmlns="http://www.watch4net.com/CrossReferencingFilter"
+			   xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<!-- device level properties - key:deviceid -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<match-on>serialnb</match-on>
+		<include-properties>true</include-properties>
+		<get-property>device</get-property>
+		<get-property>model</get-property>
+		<get-property>revision</get-property>
+		<get-property>serialnb</get-property>
+		<get-property>devdesc</get-property>
+		<get-property>arraytyp</get-property>
+		<get-property>vendor</get-property>
+		<get-property>maxhost</get-property>
+		<get-property>maxdisk</get-property>
+		<get-property>maxspace</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">Controller</condition>
+		<match-on>serialnb</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>partvrs</get-property>
+		<get-property>partsn</get-property>
+		<get-property>partname</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">Port</condition>
+		<match-on>serialnb</match-on>
+		<match-on>memberof</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>partsn</get-property>
+	</reference>
+	<!-- disk level properties - key:ip,part -->
+	<!-- for get all Disk properties for Disk Queue collecting group -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">Disk</condition>
+		<match-on>serialnb</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>partdesc</get-property>
+		<get-property>partvrs</get-property>
+		<get-property>disktype</get-property>
+		<get-property>disksize</get-property>
+		<get-property>partstat</get-property>
+		<get-property>partmdl</get-property>
+		<get-property>maxspeed</get-property>
+		<get-property>diskrpm</get-property>
+		<get-property>disklate</get-property>
+		<get-property>dgroup</get-property>
+		<get-property>dgname</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>dgtype</get-property>
+		<get-property>poolname</get-property>
+		<get-property>ispolctr</get-property>
+		<get-property>tiername</get-property>
+	</reference>
+	<!-- Get the storage group name -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<expiration>1800</expiration>
+		<get-property default="N/A">sgname</get-property>
+	</reference>
+	<!-- Propagate LUn properties -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<!-- Propagate the 'tiername' property from parttype LUN name TierCapacity to other metrics -->
+		<expiration>1800</expiration>
+		<get-property default="N/A">tiername</get-property>
+	</reference>
+	<!-- Propagate LUn properties -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<!-- Propagate the 'src*' property-->
+		<expiration>1800</expiration>
+		<get-property default="N/A">srclun</get-property>
+		<get-property default="N/A">srcarray</get-property>
+	</reference>
+	<!-- Propagate LUn properties -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<!-- Propagate the 'polname' property from parttype LUN name TierCapacity to other metrics -->
+		<expiration>1800</expiration>
+		<get-property default="N/A">polname</get-property>
+	</reference>
+	<!-- Propagate LUn properties -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<!-- Propagate the 'isfast -->
+		<expiration>1800</expiration>
+		<get-property default="0">isfast</get-property>
+	</reference>
+	<!-- Propagate LUn properties -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>dgroup</get-property>
+		<get-property>dgname</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>dgtype</get-property>
+		<get-property>dgstype</get-property>
+		<get-property>module</get-property>
+		<get-property>cost</get-property>
+		<get-property>spindles</get-property>
+		<get-property>purpose</get-property>
+		<get-property>svclevel</get-property>
+		<get-property>ispolctr</get-property>
+		<get-property>ispolcsu</get-property>
+		<get-property>pooltype</get-property>
+		<get-property>poolname</get-property>
+		<get-property>isfcache</get-property>
+		<get-property>disktype</get-property>
+		<get-property>disksize</get-property>
+		<get-property>hexid</get-property>
+		<!-- for ChargeBack -->
+		<get-property>part</get-property>
+		<get-property>cstate</get-property>
+	</reference>
+	<!-- Get the Meta-head properties propagated to LUN metrics-->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<match-on>deviceid</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<expiration>1800</expiration>
+		<get-property default="0">ismetah</get-property>
+	</reference>
+	<!-- Get the Meta-related (parttype MetaHead and MetaMember) properties propagated to LUN-->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<match-on>deviceid</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<expiration>1800</expiration>
+		<get-property default="0">ismetam</get-property>
+		<get-property default="N/A">metahid</get-property>
+		<get-property default="N/A">metahead</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">RAID Group</condition>
+		<match-on>serialnb</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>dgroup</get-property>
+		<get-property>dgname</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>dgtype</get-property>
+		<get-property>module</get-property>
+		<get-property>cost</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">Storage Pool</condition>
+		<match-on>serialnb</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>dgroup</get-property>
+		<get-property>dgname</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>dgtype</get-property>
+		<get-property>dgstype</get-property>
+		<get-property>poolname</get-property>
+		<get-property>pooltype</get-property>
+		<get-property>module</get-property>
+		<get-property>cost</get-property>
+		<get-property>hasfc</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">Host</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partsn</match-on>
+		<include-properties>true</include-properties>
+		<get-property>sgname</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<match-on>serialnb</match-on>
+		<match-on>dgname</match-on>
+		<include-properties>true</include-properties>
+		<get-property>dgraid</get-property>
+	</reference>
+</configuration>

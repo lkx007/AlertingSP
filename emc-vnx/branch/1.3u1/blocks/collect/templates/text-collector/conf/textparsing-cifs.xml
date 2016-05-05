@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd ">
+	<max-threads>1</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>table-like-tree</tree-type>
+		<sub-delimiter skip-empty-tokens="false">
+			<delimiter>,</delimiter>
+			<trimmer>"</trimmer>
+		</sub-delimiter>
+		<parameter name="table-params">
+			<value>ROW</value>
+			<value>"Time.*</value>
+			<value/>
+		</parameter>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-file.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.FileReader</data-accessor>
+		<stop-on-first-result>false</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>VNXFile parser</group-name>
+				<host-config>
+					<host-list>folder</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command type="custom">w4n_data/5min/@id</command>
+			</command-list>
+		</command-configuration>
+		<parameter name="file-regex">
+			<value>.*cifs\.server.*\.csv</value>
+		</parameter>
+		<parameter name="filename-properties-extraction">
+			<value>(.*)@cifs.server@(\d+).csv</value>
+			<value>device/1</value>
+		</parameter>
+		<parameter name="retrieve-files">
+			<value>sftp</value>
+			<value>60</value>
+			<value>@csprimary</value>
+			<value>@fileusername</value>
+			<value>@filepassword</value>
+			<value>/tmp/w4n_data/5min/@id</value>
+			<value>60000</value>
+			<value>120000</value>
+			<value>0</value>
+			<value>true</value>
+		</parameter>
+		<parameter name="file-close-action">
+			<value>delete</value>
+		</parameter>
+	</data-config>
+</configuration>

@@ -1,0 +1,1118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns="http://www.watch4net.com/APG/Web/XmlTree1" name="Cisco MDS/Nexus" singleNodeId="7" uid="W4N_cisco-mds-nexus_NOINDEX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <property xsi:type="NodeFilter" filterExpression="devtype=='FabricSwitch' &amp; (devdesc='%Cisco%' | datagrp=='CISCO-MDS-NEXUS-ENVIRONMENT')"/>
+  <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix" description="&lt;div&gt;&#10;  &lt;h4&gt;The SolutionPack combines MDS/Nexus reporting into a single pane of glass.&lt;/h4&gt;&#10;  &lt;p&gt;The Cisco MDS 9000 Series Multilayer SAN Switches can help lower the total cost of ownership of the most demanding storage environments. By combining a robust and flexible hardware architecture with multiple layers of network and storage-management intelligence, the Cisco MDS 9000 Series helps you build highly available, scalable storage networks with advanced security and unified management.&lt;/p&gt;&#10;  &lt;p&gt;Modular Cisco Nexus 5000 &amp;amp; 7000 Series Switches deliver a comprehensive NX-OS feature set, with high-density 10, 40, and 100 Gigabit Ethernet for the data center and campus core network.&lt;/p&gt;&#10;&lt;/div&gt;"/>
+  <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+  <report-layout hspan=".-55d5eff5=1,.-cb959207=2,.-c3cf446e=1,.-6c130c47=2" order=".-55d5eff5=3,.-cb959207=2,.-c3cf446e=4,.-6c130c47=1"/>
+  <report-rendering>
+    <charts mode="dynamic"/>
+  </report-rendering>
+  <node name="Overall Throughput" order="0" singleNodeId="cb959207">
+    <property xsi:type="NodeFilter" filterExpression="(name=='ifInOctets' | name=='ifOutOctets') &amp; (iftype=='fibreChannel' &amp; !(part='sup-fc%') | iftype=='portChannel')"/>
+    <property xsi:type="ReportPreferences" defaultMode="stk" legendDisplayPolicy="visible" displayUnselectedVariables="false" graphScaleFactor="BitRate::Binary::b/s::BitRate::Binary::Mib/s"/>
+    <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+    <report-rendering>
+      <charts mode="dynamic"/>
+    </report-rendering>
+    <node name="device" singleNodeId="7274fefb">
+      <property xsi:type="NodeExpansion" expandOn="device"/>
+      <property xsi:type="ReportPreferences" defaultMode="stk" legendProperties="name" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <formula formulaId="math.spatial.Sum">
+        <setting name="aggregation" value="DEFAULT"/>
+        <setting name="partial" value="true"/>
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Interface Traffic"/>
+        <result name="Device Traffic" default="true" graphable="false"/>
+      </formula>
+      <node name="part" order="0" singleNodeId="3ab35198">
+        <property xsi:type="NodeExpansion" expandOn="part"/>
+        <property xsi:type="ReportPreferences" defaultMode="stk" legendProperties="name" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <formula formulaId="math.spatial.Sum">
+          <setting name="aggregation" value="DEFAULT"/>
+          <setting name="partial" value="true"/>
+          <parameter name="metric" xsi:type="CombinedFormulaParameterDefinition">
+            <parameter xsi:type="ResultFormulaParameterDefinition" result="Incoming"/>
+            <parameter xsi:type="ResultFormulaParameterDefinition" result="Outcoming"/>
+          </parameter>
+          <result name="Interface Traffic" default="true" graphable="false"/>
+        </formula>
+        <node name="Incoming" singleNodeId="ca5020d6">
+          <property xsi:type="NodeFilter" filterExpression="name=='ifInOctets'"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+            <result name="Incoming" default="true" graphable="false"/>
+          </formula>
+        </node>
+        <node name="Outcoming" singleNodeId="63360895">
+          <property xsi:type="NodeFilter" filterExpression="name=='ifOutOctets'"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+            <result name="Outcoming" default="true" graphable="false"/>
+          </formula>
+        </node>
+      </node>
+    </node>
+  </node>
+  <node name="Switch Performance" order="1" singleNodeId="6c130c47">
+    <property xsi:type="NodeFilter" filterExpression="devtype=='FabricSwitch' &amp; (devdesc='%Cisco%' | datagrp=='CISCO-MDS-NEXUS-ENVIRONMENT')"/>
+    <property xsi:type="ReportPreferences" paging="10"/>
+    <property xsi:type="NodePropertyNodeColumn" name="Device" nodeProperty="name"/>
+    <property xsi:type="PropertyNodeColumn" name="Model" property="model"/>
+    <property xsi:type="PropertyNodeColumn" name="IP/hostname" property="ip"/>
+    <property xsi:type="ValueNodeColumn" name="# FC Ports" resultName="FCPorts Count" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="0"/>
+    <property xsi:type="ValueNodeColumn" name="# Ethernet Ports" columnFilterCondition="\b\B" resultName="EtherPorts Count" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="0"/>
+    <property xsi:type="ValueNodeColumn" name="Processor (%)" filterExpression="parttype=='Processor' &amp; name=='CurrentUtilization'" forcePeriod="never" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="BarChartSparkLineFormatter"/>
+    <property xsi:type="ValueNodeColumn" name="Reachability" filterExpression="name=='SnmpReachability'" forcePeriod="never" useTimeRange="true" criticalLevel="99.0" formatter="StatusSparkLineFormatter" criticityAsc="false"/>
+    <property xsi:type="ValueNodeColumn" name="Uptime" filterExpression="name=='Uptime'" forcePeriod="never" timeThreshold="3000" formatter="DurationFormatter" scaleOperation="divide" scaleFactor="100.0"/>
+    <node name="device" singleNodeId="460b3deb">
+      <property xsi:type="NodeExpansion" expandOn="device"/>
+      <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix" displayedProperties="devdesc ip model contact location"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <formula formulaId="util.Nop4">
+        <parameter name="First Value" xsi:type="ResultFormulaParameterDefinition" result="FCPorts Count"/>
+        <parameter name="Second Value" xsi:type="ResultFormulaParameterDefinition" result="EtherPorts Count"/>
+        <parameter name="Third Value" xsi:type="EmptyFormulaParameterDefinition"/>
+        <parameter name="Fourth Value" xsi:type="EmptyFormulaParameterDefinition"/>
+        <result name="FCPorts Count" default="false" graphable="false"/>
+        <result name="EtherPorts Count" default="false" graphable="false"/>
+        <result name="Third Result" default="false" graphable="false"/>
+        <result name="Fourth Result" default="false" graphable="false"/>
+      </formula>
+      <report-layout hspan=".-b4d408ac=2,.-..-..-55d5eff5-2fbabb9e=2,.-8ed80731=2,.-1d5a34a6=1,.-95e86637=2" order=".-d2f203d3=2,.-96caa955=5,.-b4d408ac=4,.-..-..-55d5eff5-2fbabb9e=7,.-ef9de952=6,.-124de8f2=9,.-1d5a34a6=8,.-c796b139=10,.-e6aa42f3=3,.-95e86637=1"/>
+      <node name="Overall Throughput (/s)" order="0" singleNodeId="95e86637">
+        <property xsi:type="NodeFilter" filterExpression="(name=='ifInOctets' | name=='ifOutOctets') &amp; (iftype=='fibreChannel' &amp; !(part='sup-fc%') | iftype=='portChannel')"/>
+        <property xsi:type="ReportPreferences" defaultMode="stk" legendProperties="name" legendDisplayPolicy="visible" displayUnselectedVariables="false" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <formula formulaId="math.spatial.Sum">
+          <setting name="aggregation" value="DEFAULT"/>
+          <setting name="partial" value="true"/>
+          <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Interface Traffic"/>
+          <result name="Device Traffic" default="true" graphable="false"/>
+        </formula>
+        <node name="part" order="0" singleNodeId="3ab35198">
+          <property xsi:type="NodeExpansion" expandOn="part"/>
+          <property xsi:type="ReportPreferences" defaultMode="stk" legendProperties="name" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          <formula formulaId="math.spatial.Sum">
+            <setting name="aggregation" value="DEFAULT"/>
+            <setting name="partial" value="true"/>
+            <parameter name="metric" xsi:type="CombinedFormulaParameterDefinition">
+              <parameter xsi:type="ResultFormulaParameterDefinition" result="Incoming"/>
+              <parameter xsi:type="ResultFormulaParameterDefinition" result="Outcoming"/>
+            </parameter>
+            <result name="Interface Traffic" default="true" graphable="false"/>
+          </formula>
+          <node name="Incoming" singleNodeId="ca5020d6">
+            <property xsi:type="NodeFilter" filterExpression="name=='ifInOctets'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+              <result name="Incoming" default="true" graphable="false"/>
+            </formula>
+          </node>
+          <node name="Outcoming" singleNodeId="63360895">
+            <property xsi:type="NodeFilter" filterExpression="name=='ifOutOctets'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+              <result name="Outcoming" default="true" graphable="false"/>
+            </formula>
+          </node>
+        </node>
+      </node>
+      <node name="System Resources" order="1" singleNodeId="d2f203d3">
+        <property xsi:type="NodeFilter" filterExpression="(parttype=='Processor' | parttype=='Memory' | parttype=='Flash') &amp; (name=='CurrentUtilization' | name=='StorageFree' | name=='StorageSize')"/>
+        <property xsi:type="ReportPreferences" defaultMode="ncr" legendProperties="unit" legendDisplayPolicy="visible" maxValue="100.0"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="EmptyFormulaParameterDefinition"/>
+          <result name="result" default="false" graphable="false"/>
+        </formula>
+        <threshold name="critical" value="80.0" color="#ff0000"/>
+        <threshold name="major" value="60.0" color="#ff8000"/>
+        <report-rendering>
+          <charts mode="dynamic"/>
+        </report-rendering>
+        <node name="Flash" singleNodeId="5c433aa">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='Flash'"/>
+          <property xsi:type="DisplayPreferences" displayPolicy="hideIfLeaf"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          <property xsi:type="PropertyNodeColumn" name="Partiton(s)" property="ppart"/>
+          <property xsi:type="PropertyNodeColumn" name="Description" property="partdesc"/>
+          <property xsi:type="ValueNodeColumn" name="Utilization (%)" sortMode="desc" resultName="Utilization (%)" forcePeriod="never" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="BarChartSparkLineFormatter"/>
+          <formula formulaId="math.spatial.Max">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Utilization (%)"/>
+            <result name="Utilization (%)" default="true" graphable="false"/>
+          </formula>
+          <threshold name="critical" value="80.0" color="#ff0000"/>
+          <threshold name="major" value="60.0" color="#ff8000"/>
+          <report-rendering>
+            <charts mode="dynamic"/>
+          </report-rendering>
+          <node name="part" singleNodeId="14f79ca9">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" defaultMode="ncr" maxValue="101.0"/>
+            <formula formulaId="utilization.StorageUtilization">
+              <parameter name="available space" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageFree'"/>
+              <parameter name="storage size" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageSize'"/>
+              <result name="storage space" default="false" graphable="false"/>
+              <result name="Utilization (%)" default="true" graphable="true"/>
+            </formula>
+            <threshold name="critical" value="80.0" color="#ff0000"/>
+            <threshold name="major" value="60.0" color="#ff8000"/>
+            <report-rendering>
+              <charts mode="dynamic"/>
+            </report-rendering>
+            <node name="ppart" singleNodeId="9c4de973">
+              <property xsi:type="NodeExpansion" expandOn="ppart"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageFree'"/>
+                <result name="Free Space" default="false" graphable="true"/>
+              </formula>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageSize'"/>
+                <result name="Size" default="false" graphable="true"/>
+              </formula>
+              <formula formulaId="utilization.StorageUtilization">
+                <parameter name="available space" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageFree'"/>
+                <parameter name="storage size" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageSize'"/>
+                <result name="storage space" default="false" graphable="false"/>
+                <result name="Utilization (%)" default="true" graphable="true"/>
+              </formula>
+              <axis minValue="0.0" maxValue="101.0" scaleFactor="1.0" filterExpression="@result=='Utilization (%)'"/>
+              <customization filter="@result=='Utilization (%)'"/>
+              <report-rendering>
+                <charts mode="dynamic"/>
+              </report-rendering>
+            </node>
+          </node>
+        </node>
+        <node name="Memory" singleNodeId="fc68b622">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='Memory'"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="parttype=='Memory'"/>
+            <result name="Utilization (%)" default="true" graphable="false"/>
+          </formula>
+          <threshold name="critical" value="80.0" color="#ff0000"/>
+          <threshold name="major" value="60.0" color="#ff8000"/>
+          <report-rendering>
+            <charts mode="dynamic"/>
+          </report-rendering>
+        </node>
+        <node name="Processor" singleNodeId="c078747">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='Processor'"/>
+          <property xsi:type="ReportPreferences" defaultMode="vrx" duration="l1w"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="parttype=='Processor'"/>
+            <result name="Utilization (%)" default="true" graphable="false"/>
+          </formula>
+          <threshold name="critical" value="80.0" color="#ff0000"/>
+          <threshold name="major" value="60.0" color="#ff8000"/>
+          <report-rendering>
+            <charts mode="dynamic"/>
+          </report-rendering>
+        </node>
+      </node>
+      <node name="Management Ports" order="2" singleNodeId="e6aa42f3">
+        <property xsi:type="NodeFilter" filterExpression="part='mgmt%' &amp; datagrp=='CISCO-MDS-NEXUS-PORTS' | part='sup-fc%' &amp; datagrp=='CISCO-MDS-NEXUS-PORTS'"/>
+        <property xsi:type="ReportPreferences" paging="5"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Port" nodeProperty="expandedNames[1]"/>
+        <property xsi:type="PropertyNodeColumn" name="WWN/MAC" property="partwwn"/>
+        <property xsi:type="PropertyNodeColumn" name="Speed" filterExpression="datagrp='CISCO%'" property="maxspeed"/>
+        <property xsi:type="PropertyNodeColumn" name="Operational Status" property="partstat"/>
+        <property xsi:type="ValueNodeColumn" name="Average Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="SparkLineFormatter"/>
+        <link singleNodeId="27832338" linkID=".-..-..-b4d408ac-3117b7f4"/>
+      </node>
+      <node name="FC Ports" order="3" singleNodeId="b4d408ac">
+        <property xsi:type="NodeFilter" filterExpression="iftype=='fibreChannel' &amp; !(part='sup-fc%' | part='mgmt%')"/>
+        <property xsi:type="ReportPreferences" paging="10"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Port" nodeProperty="expandedNames[1]"/>
+        <property xsi:type="PropertyNodeColumn" name="Type" property="porttype"/>
+        <property xsi:type="PropertyNodeColumn" name="WWN" property="partwwn"/>
+        <property xsi:type="PropertyNodeColumn" name="VSAN id" property="vsanid"/>
+        <property xsi:type="PropertyNodeColumn" name="Speed" filterExpression="datagrp='CISCO%'" property="maxspeed"/>
+        <property xsi:type="PropertyNodeColumn" name="Operational Status" property="partstat"/>
+        <property xsi:type="PropertyNodeColumn" name="FC Status" property="partphys"/>
+        <property xsi:type="PropertyNodeColumn" name="Connected Port WWN" property="portwwn"/>
+        <property xsi:type="ValueNodeColumn" name="Traffic (/s)" filterExpression="name=='ifInOctets' | name=='ifOutOctets'" forcePeriod="never" aggregationFunc="sum" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Average Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="SparkLineFormatter"/>
+        <formula formulaId="util.ChildCount">
+          <result name="FCPorts Count" default="false" graphable="false"/>
+        </formula>
+        <node name="device,part" singleNodeId="3117b7f4">
+          <property xsi:type="NodeExpansion" expandOn="device,part"/>
+          <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix" displayedProperties="partwwn[Port WWN] vsanid[Member of VSAN id] partnb[Part Number] serialnb[Serial Number] ifacemac partstat[Port Status] partphys[Status Description] ifalias[Interface Description] porttype[FC Type]"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          <report-layout hspan=".-d61bd3bd=2,.-3f4ab5fc=3,.-f6d4b251=1,.-a32f4e48=1,.-5019f46c=3" order=".-d61bd3bd=5,.-a0e9a83f=7,.-50e3d6c9=10,.-3f4ab5fc=4,.-f6d4b251=9,.-2031f709=8,.-f16c7ec2=2,.-c9093010=6,.-a32f4e48=1,.-5019f46c=3"/>
+          <node name="Connected Ports" order="0" singleNodeId="a32f4e48">
+            <property xsi:type="NodeFilter" filterExpression="parttype=='NameServer'"/>
+            <property xsi:type="NodeExpansion" expandOn="partwwn&lt;type=split;properties=partwwn;level-up=2;name-override=Connected Ports&gt;" filterMode="select"/>
+            <property xsi:type="ReportPreferences" paging="10"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfLeafOrEmpty"/>
+            <property xsi:type="PropertyNodeColumn" name="Connected NWWN" property="nodewwn"/>
+            <property xsi:type="PropertyNodeColumn" name="Connected Node Sym Name" property="nodename"/>
+            <property xsi:type="PropertyNodeColumn" name="Connected PWWN" property="portwwn"/>
+            <property xsi:type="PropertyNodeColumn" name="Connected Port Sym Name" property="portname"/>
+            <property xsi:type="ValueNodeColumn" name="Active?" sortMode="desc" resultName="Active" forcePeriod="never" useTimeRange="true" durationOverride="d:l1h" majorLevel="0.0020" criticalLevel="0.0010" formatter="BlankFormatter" roundingAccuracy="0"/>
+            <node name="device,partwwn,nodewwn" singleNodeId="9d78fb8">
+              <property xsi:type="NodeExpansion" expandOn="device,partwwn,nodewwn"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+              <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+              <formula formulaId="math.spatial.Max">
+                <parameter name="metric" xsi:type="CombinedFormulaParameterDefinition">
+                  <parameter xsi:type="FilterFormulaParameterDefinition" filter="name=='Fake1'"/>
+                  <parameter xsi:type="ConstantFormulaParameterDefinition" value="0.0"/>
+                </parameter>
+                <result name="Active" default="false" graphable="true"/>
+              </formula>
+            </node>
+          </node>
+          <node name="VSANs" order="1" singleNodeId="f16c7ec2">
+            <property xsi:type="NodeFilter" filterExpression="parttype=='VSAN'"/>
+            <property xsi:type="NodeExpansion" expandOn="vsanid&lt;type=split;properties=partid;level-up=3;name-override=VSANs&gt;" filterMode="select"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="alwaysHide"/>
+            <property xsi:type="PropertyNodeColumn" name="VSAN Name" property="part"/>
+            <property xsi:type="PropertyNodeColumn" name="Device(s)" property="device"/>
+            <property xsi:type="ValueNodeColumn" name="Number of FC Ports" resultName="NB Ports" forcePeriod="true" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="Static Ports Configured" resultName="Static Ports Configured" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="Traffic (/s)" sortMode="desc" resultName="VSAN bandwidth (Mb/s)" forcePeriod="true" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Bit::Storage::Mb::Byte::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Availability (%)" filterExpression="name=='Availability'" forcePeriod="never" useTimeRange="true" criticalLevel="99.99999" formatter="StatusSparkLineFormatter" criticityAsc="false"/>
+            <node name="partid" singleNodeId="3117b7f4">
+              <property xsi:type="NodeExpansion" expandOn="partid"/>
+              <property xsi:type="ReportPreferences" defaultMode="dmx" preferredAggregate="max"/>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="FCPorts Count"/>
+                <result name="NB Ports" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="math.spatial.Sum">
+                <setting name="aggregation" value="DEFAULT"/>
+                <setting name="partial" value="true"/>
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Port bandwidth (Mb/s)"/>
+                <result name="VSAN bandwidth (Mb/s)" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Static Ports Configured"/>
+                <result name="Static Ports Configured" default="false" graphable="false"/>
+              </formula>
+              <node name="Ports Details" order="0" singleNodeId="690c1da3">
+                <property xsi:type="NodeFilter" filterExpression="iftype=='fibreChannel' &amp; !(part='sup-fc%')"/>
+                <property xsi:type="NodeExpansion" expandOn="partid&lt;type=split;properties=vsanid;level-up=3;name-override=Ports Details&gt;" filterMode="select"/>
+                <property xsi:type="ReportPreferences" paging="10"/>
+                <property xsi:type="NodePropertyNodeColumn" name="Fabric" nodeProperty="expandedNames[0]"/>
+                <property xsi:type="NodePropertyNodeColumn" name="Port" nodeProperty="expandedNames[1]"/>
+                <property xsi:type="PropertyNodeColumn" name="WWN" property="partwwn"/>
+                <property xsi:type="PropertyNodeColumn" name="VSAN id" property="vsanid"/>
+                <property xsi:type="PropertyNodeColumn" name="Description" property="ifalias"/>
+                <property xsi:type="PropertyNodeColumn" name="Speed" property="maxspeed"/>
+                <property xsi:type="PropertyNodeColumn" name="Operational Status" property="partstat"/>
+                <property xsi:type="ValueNodeColumn" name="Traffic (/s)" filterExpression="name=='ifInOctets' | name=='ifOutOctets'" forcePeriod="never" aggregationFunc="sum" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+                <property xsi:type="ValueNodeColumn" name="Average Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="SparkLineFormatter"/>
+                <formula formulaId="util.ChildCount">
+                  <result name="FCPorts Count" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="utilization.BandwidthUtilization">
+                  <setting name="duplex" value="FULLDUPLEX"/>
+                  <setting name="ifOctets scale" value="8"/>
+                  <setting name="ifSpeed scale" value="1"/>
+                  <setting name="threshold" value="100"/>
+                  <parameter name="ifInOctets" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifInOctets'"/>
+                  <parameter name="ifOutOctets" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifOutOctets'"/>
+                  <parameter name="ifSpeed" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifSpeed'"/>
+                  <result name="Port bandwidth (Mb/s)" default="false" graphable="false"/>
+                  <result name="speed (Mb/s)" default="false" graphable="false"/>
+                  <result name="utilization (%)" default="false" graphable="false"/>
+                </formula>
+                <node name="device,part" singleNodeId="c6051a81">
+                  <property xsi:type="NodeExpansion" expandOn="device,part"/>
+                  <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+                  <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+                </node>
+              </node>
+              <node name="Static Ports Configured" order="1" singleNodeId="5af19012">
+                <property xsi:type="NodeFilter" filterExpression="parttype=='Domain'"/>
+                <property xsi:type="NodeExpansion" expandOn="partid&lt;type=split;properties=vsanid;level-up=3;name-override=Static Ports Configured&gt;" filterMode="select"/>
+                <property xsi:type="DisplayPreferences" displayPolicy="hideIfLeaf"/>
+                <property xsi:type="PropertyNodeColumn" name="Port WWN of the FC device" property="partsnid"/>
+                <property xsi:type="NodePropertyNodeColumn" name="FC Id" nodeProperty="name"/>
+                <property xsi:type="ValueNodeColumn" name="Active?" sortMode="desc" resultName="Active" forcePeriod="never" useTimeRange="true" durationOverride="d:l1h" majorLevel="0.0020" criticalLevel="0.0010" formatter="BlankFormatter" roundingAccuracy="0"/>
+                <formula formulaId="util.ChildCount">
+                  <result name="Static Ports Configured" default="false" graphable="false"/>
+                </formula>
+                <node name="part" singleNodeId="536f7fdf">
+                  <property xsi:type="NodeExpansion" expandOn="part"/>
+                  <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+                  <formula formulaId="math.spatial.Max">
+                    <parameter name="metric" xsi:type="CombinedFormulaParameterDefinition">
+                      <parameter xsi:type="FilterFormulaParameterDefinition" filter="name='Fake%'"/>
+                      <parameter xsi:type="ConstantFormulaParameterDefinition" value="0.0"/>
+                    </parameter>
+                    <result name="Active" default="false" graphable="true"/>
+                  </formula>
+                </node>
+              </node>
+              <node name="VSAN Availability" order="2" singleNodeId="dc8a9897">
+                <property xsi:type="NodeFilter" filterExpression="name=='Availability'"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrb" preferredPeriod="3600" preferredAggregate="max" maxValue="101.0"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+                  <result name="Availability (%)" default="false" graphable="true"/>
+                </formula>
+              </node>
+            </node>
+          </node>
+          <node name="Traffic (/s)" order="2" singleNodeId="5019f46c">
+            <property xsi:type="NodeFilter" filterExpression="name=='ifInOctets' | name=='ifOutOctets'"/>
+            <property xsi:type="ReportPreferences" defaultMode="stk" legendProperties="name" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+            <node name="Incoming" singleNodeId="c598a42e">
+              <property xsi:type="NodeFilter" filterExpression="name=='ifInOctets'"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+                <result name=" " default="true" graphable="false"/>
+              </formula>
+            </node>
+            <node name="Outgoing" singleNodeId="4e44fc77">
+              <property xsi:type="NodeFilter" filterExpression="name=='ifOutOctets'"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+                <result name=" " default="true" graphable="false"/>
+              </formula>
+            </node>
+          </node>
+          <node name="Utilization (%)" order="3" singleNodeId="3f4ab5fc">
+            <property xsi:type="NodeFilter" filterExpression="name=='CurrentUtilization'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx" legendDisplayPolicy="visible"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+            <threshold name="critical" value="80.0" color="#ff0000"/>
+            <threshold name="major" value="60.0" color="#ff8000"/>
+          </node>
+          <node name="Packets" order="4" singleNodeId="d61bd3bd">
+            <property xsi:type="NodeFilter" filterExpression="name=='ifInUcastPkts' | name=='ifOutUcastPkts'"/>
+            <property xsi:type="ReportPreferences" defaultMode="stk" legendDisplayPolicy="visible"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          </node>
+          <node name="Temperature" order="5" singleNodeId="c9093010">
+            <property xsi:type="NodeFilter" filterExpression="name=='Temperature'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx" description="This report will show only if you have configured the SSH collector for APG (part of the ReportPack)." legendDisplayPolicy="visible" minValue="NaN"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          </node>
+          <node name="Port Environmental" order="6" singleNodeId="a0e9a83f">
+            <property xsi:type="NodeFilter" filterExpression="name=='tx' | name=='rx' | name=='ma' | name=='volt'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx" description="This report will show only if you have configured the SSH collector for APG (part of the ReportPack)." legendDisplayPolicy="visible" minValue="NaN"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          </node>
+          <node name="Errors" order="7" singleNodeId="2031f709">
+            <property xsi:type="NodeFilter" filterExpression="name='if%Discards' | name='if%Errors'"/>
+            <property xsi:type="ReportPreferences" defaultMode="stk" legendDisplayPolicy="visible"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+            <threshold name="critical" value="1.0" color="#ff0000"/>
+          </node>
+          <node name="Availability (%)" order="8" singleNodeId="f6d4b251">
+            <property xsi:type="NodeFilter" filterExpression="name=='Availability'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrb" legendDisplayPolicy="visible" maxValue="101.0"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+            <threshold name="major" value="99.0" color="#ff8000"/>
+            <threshold name="critical" value="98.0" color="#ff0000"/>
+          </node>
+          <node name="Fibre Channel Performance" order="9" singleNodeId="50e3d6c9">
+            <property xsi:type="NodeFilter" filterExpression="datagrp=='CISCO-FCFE'"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Report" nodeProperty="name"/>
+            <node name="Class 2" singleNodeId="d805d7">
+              <property xsi:type="NodeFilter" filterExpression="name='C2%'"/>
+              <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+              <link singleNodeId="7b69ebc" linkID=".-..-..-998cf056-85e22c8e"/>
+            </node>
+            <node name="Class 3" singleNodeId="998cf056">
+              <property xsi:type="NodeFilter" filterExpression="name='C3%'"/>
+              <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+              <node name="name" singleNodeId="85e22c8e">
+                <property xsi:type="NodeExpansion" expandOn="name"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrx" legendDisplayPolicy="visible"/>
+                <report-rendering>
+                  <charts mode="dynamic"/>
+                </report-rendering>
+              </node>
+            </node>
+            <node name="Class F" singleNodeId="3b4abc20">
+              <property xsi:type="NodeFilter" filterExpression="name='CF%'"/>
+              <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+              <link singleNodeId="7b69ebc" linkID=".-..-..-998cf056-85e22c8e"/>
+            </node>
+            <node name="Errors" singleNodeId="d870ab7d">
+              <property xsi:type="NodeFilter" filterExpression="name='fc%' | name=='LinkFailures' | name=='SyncLosses' | name=='SigLosses' | name=='InCrcs'"/>
+              <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+              <property xsi:type="DisplayPreferences" displayPolicy="alwaysHide"/>
+              <link singleNodeId="7b69ebc" linkID=".-..-..-998cf056-85e22c8e"/>
+            </node>
+          </node>
+        </node>
+      </node>
+      <node name="Ethernet Ports" order="4" singleNodeId="8ed80731">
+        <property xsi:type="NodeFilter" filterExpression="iftype=='ethernetCsmacd' &amp; !(part='mgmt%' | part='sup-fc%' | part='control%') &amp; datagrp=='CISCO-MDS-NEXUS-PORTS'"/>
+        <property xsi:type="ReportPreferences" paging="10"/>
+        <property xsi:type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Port" nodeProperty="expandedNames[1]"/>
+        <property xsi:type="PropertyNodeColumn" name="MAC" property="ifacemac"/>
+        <property xsi:type="PropertyNodeColumn" name="Description" property="ifalias"/>
+        <property xsi:type="PropertyNodeColumn" name="Speed" property="maxspeed"/>
+        <property xsi:type="PropertyNodeColumn" name="Operational Status" property="partstat"/>
+        <property xsi:type="ValueNodeColumn" name="Traffic (/s)" filterExpression="name=='ifInOctets' | name=='ifOutOctets'" forcePeriod="never" aggregationFunc="sum" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage::B"/>
+        <property xsi:type="ValueNodeColumn" name="Average Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="SparkLineFormatter"/>
+        <formula formulaId="util.ChildCount">
+          <result name="EtherPorts Count" default="false" graphable="false"/>
+        </formula>
+        <link singleNodeId="27832338" linkID=".-..-..-b4d408ac-3117b7f4"/>
+      </node>
+      <node name="Port Channel" order="5" singleNodeId="96caa955">
+        <property xsi:type="NodeFilter" filterExpression="iftype=='portChannel' &amp; datagrp=='CISCO-MDS-NEXUS-PORTS'"/>
+        <property xsi:type="ReportPreferences" paging="10"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Port Channel" nodeProperty="expandedNames[1]"/>
+        <property xsi:type="PropertyNodeColumn" name="MAC" property="ifacemac"/>
+        <property xsi:type="PropertyNodeColumn" name="Description" property="ifalias"/>
+        <property xsi:type="PropertyNodeColumn" name="Speed" property="maxspeed"/>
+        <property xsi:type="PropertyNodeColumn" name="Operational Status" property="partstat"/>
+        <property xsi:type="ValueNodeColumn" name="Traffic (/s)" filterExpression="name=='ifInOctets' | name=='ifOutOctets'" forcePeriod="never" aggregationFunc="sum" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Average Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="SparkLineFormatter"/>
+        <formula formulaId="util.ChildCount">
+          <result name="PortChannel Count" default="false" graphable="false"/>
+        </formula>
+        <link singleNodeId="27832338" linkID=".-..-..-b4d408ac-3117b7f4"/>
+      </node>
+      <node name="VSANs" order="6" singleNodeId="ef9de952">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='VSAN'"/>
+        <property xsi:type="ReportPreferences" description="&lt;div&gt;&#10;  &lt;p&gt;A virtual storage area network (VSAN) is a collection of ports from a set of connected Fibre Channel switches, that form a virtual fabric. Ports within a single switch can be partitioned into multiple VSANs, despite sharing hardware resources. Conversely, multiple switches can join a number of ports to form a single VSAN.&lt;/p&gt;&#10;  &lt;p&gt;The use of VSANs allows traffic to be isolated within specific portions of the network. If a problem occurs in one VSAN, that problem can be handled with a minimum of disruption to the rest of the network. VSANs can also be configured separately and independently.&lt;/p&gt;&#10;&lt;/div&gt;" paging="10"/>
+        <property xsi:type="PropertyNodeColumn" name="VSAN" property="part"/>
+        <property xsi:type="NodePropertyNodeColumn" name="VSAN id" nodeProperty="name"/>
+        <property xsi:type="PropertyNodeColumn" name="VSAN WWN" property="partwwn"/>
+        <property xsi:type="PropertyNodeColumn" name="Logical Switch WWN" property="lswwn"/>
+        <property xsi:type="ValueNodeColumn" name="Number of FC Ports" resultName="FCPorts Count in VSAN" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="0"/>
+        <property xsi:type="ValueNodeColumn" name="Static Ports Configured" resultName="Static Ports Configured" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="0"/>
+        <property xsi:type="ValueNodeColumn" name="Traffic (/s)" sortMode="desc" resultName="VSAN bandwidth (Mb/s)" forcePeriod="true" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Bit::Storage::Mb::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Availability (%)" filterExpression="name=='Availability'" forcePeriod="never" useTimeRange="true" majorLevel="99.0" criticalLevel="98.0" formatter="StatusSparkLineFormatter"/>
+        <node name="partid" singleNodeId="3117b7f4">
+          <property xsi:type="NodeExpansion" expandOn="partid"/>
+          <property xsi:type="ReportPreferences" defaultMode="dmx"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="FCPorts Count"/>
+            <result name="FCPorts Count in VSAN" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="math.spatial.Sum">
+            <setting name="aggregation" value="DEFAULT"/>
+            <setting name="partial" value="true"/>
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Port bandwidth (Mb/s)"/>
+            <result name="VSAN bandwidth (Mb/s)" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Static Ports Configured"/>
+            <result name="Static Ports Configured" default="false" graphable="false"/>
+          </formula>
+          <report-rendering>
+            <charts mode="dynamic"/>
+          </report-rendering>
+          <node name="FC Ports" order="0" singleNodeId="2e390574">
+            <property xsi:type="NodeFilter" filterExpression="(iftype=='fibreChannel' | iftype=='portChannel') &amp; !(part='sup-fc%') &amp; datagrp=='CISCO-MDS-NEXUS-PORTS'"/>
+            <property xsi:type="NodeExpansion" expandOn="partid&lt;type=split;properties=vsanid;level-up=2;name-override=Ports&gt;" filterMode="select"/>
+            <property xsi:type="ReportPreferences" paging="10"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Port" nodeProperty="expandedNames[1]"/>
+            <property xsi:type="PropertyNodeColumn" name="WWN" property="partwwn"/>
+            <property xsi:type="PropertyNodeColumn" name="VSAN id" property="vsanid"/>
+            <property xsi:type="PropertyNodeColumn" name="Speed" property="maxspeed"/>
+            <property xsi:type="PropertyNodeColumn" name="Operational Status" property="partstat"/>
+            <property xsi:type="ValueNodeColumn" name="Traffic (/s)" filterExpression="name=='ifInOctets' | name=='ifOutOctets'" forcePeriod="true" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Average Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="SparkLineFormatter"/>
+            <formula formulaId="util.ChildCount">
+              <result name="FCPorts Count" default="false" graphable="false"/>
+            </formula>
+            <formula formulaId="utilization.BandwidthUtilization">
+              <setting name="duplex" value="FULLDUPLEX"/>
+              <setting name="ifOctets scale" value="1"/>
+              <setting name="ifSpeed scale" value="1"/>
+              <setting name="threshold" value="100"/>
+              <parameter name="ifInOctets" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifInOctets'"/>
+              <parameter name="ifOutOctets" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifOutOctets'"/>
+              <parameter name="ifSpeed" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifSpeed'"/>
+              <result name="Port bandwidth (Mb/s)" default="false" graphable="false"/>
+              <result name="speed (Mb/s)" default="false" graphable="false"/>
+              <result name="utilization (%)" default="false" graphable="false"/>
+            </formula>
+            <link singleNodeId="91edc6bc" linkID=".-..-..-..-..-b4d408ac-3117b7f4"/>
+          </node>
+          <node name="Static Ports Configured" order="1" singleNodeId="4dbd9f35">
+            <property xsi:type="NodeFilter" filterExpression="parttype=='Domain'"/>
+            <property xsi:type="NodeExpansion" expandOn="partid&lt;type=split;properties=vsanid;level-up=2;name-override=Static Ports Configured&gt;" filterMode="select"/>
+            <property xsi:type="ReportPreferences" paging="10"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfLeaf"/>
+            <property xsi:type="PropertyNodeColumn" name="Port WWN of the FC device" property="partsnid"/>
+            <property xsi:type="NodePropertyNodeColumn" name="FC Id" nodeProperty="name"/>
+            <property xsi:type="ValueNodeColumn" name="Active?" sortMode="desc" resultName="Active" forcePeriod="never" useTimeRange="true" durationOverride="d:l1h" majorLevel="0.0020" criticalLevel="0.0010" formatter="BlankFormatter" roundingAccuracy="0"/>
+            <formula formulaId="util.ChildCount">
+              <result name="Static Ports Configured" default="false" graphable="false"/>
+            </formula>
+            <node name="part" singleNodeId="536f7fdf">
+              <property xsi:type="NodeExpansion" expandOn="part"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+              <formula formulaId="math.spatial.Max">
+                <parameter name="metric" xsi:type="CombinedFormulaParameterDefinition">
+                  <parameter xsi:type="FilterFormulaParameterDefinition" filter="name='Fake%'"/>
+                  <parameter xsi:type="ConstantFormulaParameterDefinition" value="0.0"/>
+                </parameter>
+                <result name="Active" default="false" graphable="true"/>
+              </formula>
+            </node>
+          </node>
+          <node name="VSAN Availability" order="2" singleNodeId="9a0f707c">
+            <property xsi:type="NodeFilter" filterExpression="name=='Availability'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrb" preferredPeriod="3600" maxValue="101.0"/>
+            <threshold name="critical" value="80.0" color="#ff0000"/>
+            <threshold name="major" value="60.0" color="#ff8000"/>
+            <report-rendering>
+              <charts mode="dynamic"/>
+            </report-rendering>
+          </node>
+          <node name="Fabric Configuration Server Statistics" singleNodeId="7a77eb44">
+            <property xsi:type="NodeFilter" filterExpression="datagrp=='CISCO-FCS' &amp; parttype=='FCS'"/>
+            <property xsi:type="NodeExpansion" expandOn="partid&lt;type=split;properties=part;level-up=2;name-override=Fabric Configuration Server Statistics&gt;" filterMode="select"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Details" nodeProperty="name"/>
+            <property xsi:type="ValueNodeColumn" name="Queries Rx" filterExpression="name=='Queries Rx'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="Queries Tx" filterExpression="name=='Queries Tx'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="Rx Registration" filterExpression="name=='Rx Registration'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="Tx Registration" filterExpression="name=='Tx Registration'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="Rx Deregistration" filterExpression="name=='Rx Deregistration'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="Tx Deregistration" filterExpression="name=='Tx Deregistration'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="RSCN Tx" filterExpression="name=='RSCN Tx'" forcePeriod="never" useTimeRange="true" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="RSCN Rx" filterExpression="name=='RSCN Rx'" forcePeriod="never" useTimeRange="true" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="Rejects" filterExpression="name=='Rejects'" forcePeriod="never" useTimeRange="true" majorLevel="5.0" criticalLevel="10.0" formatter="SparkLineFormatter" roundingAccuracy="0"/>
+            <node name="Details" singleNodeId="7dd751a3">
+              <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+            </node>
+          </node>
+        </node>
+      </node>
+      <link singleNodeId="e34b4f5a" linkID=".-..-..-..-55d5eff5-2fbabb9e" order="7"/>
+      <node name="Reachability" order="8" singleNodeId="124de8f2">
+        <property xsi:type="NodeFilter" filterExpression="name=='SnmpReachability'"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx" maxValue="102.0"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <threshold name="critical" value="95.0" color="#ff0000"/>
+      </node>
+      <node name="Physical Sensors" order="9" singleNodeId="c796b139">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='Sensor' | parttype=='PowerSupply'"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Report" nodeProperty="name"/>
+        <node name="All Sensors" singleNodeId="deb494e2">
+          <property xsi:type="ReportPreferences" defaultMode="mix"/>
+          <node name="partclas" singleNodeId="76db5ad1">
+            <property xsi:type="NodeExpansion" expandOn="partclas"/>
+            <property xsi:type="PropertyNodeColumn" name="Sensor Name" property="part"/>
+            <property xsi:type="ValueNodeColumn" name="Sensor Status" sortMode="desc" filterExpression="name=='Availability'" forcePeriod="never" timeThreshold="3000" majorLevel="99.99" criticalLevel="99.9" formatter="BlankFormatter"/>
+            <property xsi:type="ValueNodeColumn" name="Value" resultName="Value" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter" roundingAccuracy="0"/>
+            <property xsi:type="PropertyNodeColumn" name="Unit" property="unit"/>
+            <property xsi:type="ValueNodeColumn" name="Threshold" resultName="Threshold" forcePeriod="never" timeThreshold="3000" roundingAccuracy="0"/>
+            <property xsi:type="ValueNodeColumn" name="Threshold Status" resultName="Threshold Window" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" majorLevel="1.0" criticalLevel="2.0" formatter="BlankFormatter"/>
+            <node name="part" singleNodeId="e8b9a211">
+              <property xsi:type="NodeExpansion" expandOn="part"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx" displayedProperties="part"/>
+              <formula formulaId="math.Division">
+                <setting name="scale" value="1"/>
+                <parameter name="numerator" xsi:type="FilterFormulaParameterDefinition" filter="name=='Value' &amp; scale=='units'"/>
+                <parameter name="denominator" xsi:type="ConstantFormulaParameterDefinition" value="1.0"/>
+                <result name="Value" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="math.Division">
+                <setting name="scale" value="1"/>
+                <parameter name="numerator" xsi:type="FilterFormulaParameterDefinition" filter="name=='Value' &amp; scale=='micro'"/>
+                <parameter name="denominator" xsi:type="ConstantFormulaParameterDefinition" value="1000000.0"/>
+                <result name="Value" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="threshold.ThresholdWindow">
+                <setting name="Reverse result" value="no"/>
+                <setting name="Default threshold1" value="50"/>
+                <setting name="Default threshold2" value="75"/>
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Value" from="node"/>
+                <parameter name="threshold1" xsi:type="ResultFormulaParameterDefinition" result="Threshold Minor GreaterOrEqual"/>
+                <parameter name="threshold2" xsi:type="ResultFormulaParameterDefinition" result="Threshold Major GreaterOrEqual"/>
+                <result name="Threshold Window" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Value" from="node"/>
+                <result name="Value Overtime" default="false" graphable="true"/>
+              </formula>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Threshold"/>
+                <result name="Threshold" default="false" graphable="true"/>
+              </formula>
+              <node name="part" singleNodeId="4f25d37e">
+                <property xsi:type="NodeFilter" filterExpression="name=='Threshold'"/>
+                <property xsi:type="NodeExpansion" expandOn="part&lt;type=split;properties=part;level-up=1&gt;" filterMode="select"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrx" displayedProperties="severity relation" legendProperties="severity name unit"/>
+                <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='Threshold' &amp; severity=='major' &amp; relation=='greaterOrEqual'"/>
+                  <result name="Threshold Major GreaterOrEqual" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='Threshold' &amp; severity=='minor' &amp; relation=='greaterOrEqual'"/>
+                  <result name="Threshold Minor GreaterOrEqual" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='Threshold' &amp; severity=='other' &amp; relation=='greaterOrEqual'"/>
+                  <result name="Threshold Other GreaterOrEqual" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='Threshold' &amp; severity=='major' &amp; relation=='lessThan'"/>
+                  <result name="Threshold Major LessThan" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='Threshold' &amp; severity=='minor' &amp; relation=='lessThan'"/>
+                  <result name="Threshold Minor LessThan" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='Threshold' &amp; severity=='other' &amp; relation=='lessThan'"/>
+                  <result name="Threshold Other LessThan" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='Threshold'"/>
+                  <result name="Threshold" default="false" graphable="false"/>
+                </formula>
+              </node>
+            </node>
+          </node>
+        </node>
+        <node name="Power Supplies" singleNodeId="8c1ac55d">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='PowerSupply'"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Component" nodeProperty="name"/>
+          <property xsi:type="ValueNodeColumn" name="Status" filterExpression="name=='Availability'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" majorLevel="99.99" criticalLevel="99.98" formatter="BarChartSparkLineFormatter"/>
+          <node name="part" singleNodeId="3885a092">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+            <report-rendering>
+              <charts mode="dynamic"/>
+            </report-rendering>
+          </node>
+        </node>
+      </node>
+      <node name="Interconnects" order="10" singleNodeId="1d5a34a6">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='InterConnect'"/>
+        <property xsi:type="ReportPreferences" paging="5"/>
+        <property xsi:type="PropertyNodeColumn" name="FC id" property="partsnid"/>
+        <property xsi:type="PropertyNodeColumn" name="System Name" property="partdesc"/>
+        <property xsi:type="PropertyNodeColumn" name="Domain ID" property="domainid"/>
+        <property xsi:type="PropertyNodeColumn" name="VSAN ID" property="vsanid"/>
+        <property xsi:type="ValueNodeColumn" name="Active?" sortMode="desc" forcePeriod="never" useTimeRange="true" durationOverride="d:l1h" majorLevel="0.0020" criticalLevel="0.0010" formatter="BlankFormatter" roundingAccuracy="0"/>
+        <node name="domainid" singleNodeId="6ae084a9">
+          <property xsi:type="NodeExpansion" expandOn="domainid"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+          <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+        </node>
+      </node>
+    </node>
+  </node>
+  <node name="Reports" order="2" singleNodeId="55d5eff5">
+    <property xsi:type="NodeFilter" filterExpression="devtype=='FabricSwitch' &amp; (devdesc='%Cisco%' | datagrp=='CISCO-MDS-NEXUS-ENVIRONMENT')"/>
+    <property xsi:type="NodePropertyNodeColumn" name="Report Name" nodeProperty="name"/>
+    <node name="All Ports" order="0" singleNodeId="3082d6b4">
+      <property xsi:type="NodeFilter" filterExpression="parttype=='Interface' | parttype=='Port'"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Device" nodeProperty="expandedNames[0]"/>
+      <property xsi:type="PropertyNodeColumn" name="Fabric Port" property="part"/>
+      <property xsi:type="PropertyNodeColumn" name="Fabric PWWN/MAC" sortMode="asc#1" property="partwwn ifacemac"/>
+      <property xsi:type="PropertyNodeColumn" name="Type" property="iftype"/>
+      <property xsi:type="PropertyNodeColumn" name="Operational Status" property="partstat"/>
+      <property xsi:type="ValueNodeColumn" name="Average Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0"/>
+      <link singleNodeId="b6d48893" linkID=".-..-..-..-6c130c47-460b3deb-b4d408ac-3117b7f4"/>
+    </node>
+    <node name="Ports Inventory" order="1" singleNodeId="faee4a3f">
+      <property xsi:type="NodeFilter" filterExpression="parttype=='Port' &amp; !(part='mgmt%' | part='sup-fc%') &amp; partstat"/>
+      <property xsi:type="ReportPreferences" duration="l1w" preferredPeriod="3600" paging="10"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+      <property xsi:type="PropertyNodeColumn" name="Model" property="model"/>
+      <property xsi:type="PropertyNodeColumn" name="Switch IP" property="ip"/>
+      <property xsi:type="PropertyNodeColumn" name="Type of port" property="iftype"/>
+      <property xsi:type="ValueNodeColumn" name="Total Ports" resultName="FCPortCount" forcePeriod="never" timeThreshold="600" roundingAccuracy="0"/>
+      <property xsi:type="ValueNodeColumn" name="Occupied Ports" resultName="OnlineFCPortCount" forcePeriod="never" timeThreshold="600" roundingAccuracy="0"/>
+      <property xsi:type="ValueNodeColumn" name="Free Ports" resultName="FreeFCPortCount" forcePeriod="never" timeThreshold="600" roundingAccuracy="0"/>
+      <property xsi:type="ValueNodeColumn" name="% of Free Ports" resultName="Free FC Port(%)" forcePeriod="never" timeThreshold="600" majorLevel="5.0" criticalLevel="2.0" roundingAccuracy="0"/>
+      <node name="device" singleNodeId="995f812f">
+        <property xsi:type="NodeExpansion" expandOn="device"/>
+        <property xsi:type="ReportPreferences" defaultMode="pie" preferredPeriod="3600" legendProperties="name" displayUnselectedVariables="false"/>
+        <formula formulaId="util.DistinctValueCountFormula">
+          <setting name="Filter" value="parttype='Port'"/>
+          <setting name="ExpandOn" value="device,part"/>
+          <setting name="Level-Up" value="0"/>
+          <result name="FCPortCount" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="util.DistinctValueCountFormula">
+          <setting name="Filter" value="parttype='Port'&amp;(partstat='online'|partstat='Online'|partstat='up')"/>
+          <setting name="ExpandOn" value="device,part"/>
+          <setting name="Level-Up" value="0"/>
+          <result name="OnlineFCPortCount" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="math.Subtraction">
+          <parameter name="base metric" xsi:type="ResultFormulaParameterDefinition" result="FCPortCount" from="node"/>
+          <parameter name="subtract metric" xsi:type="ResultFormulaParameterDefinition" result="OnlineFCPortCount" from="node"/>
+          <result name="FreeFCPortCount" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="math.Division">
+          <setting name="scale" value="100"/>
+          <parameter name="numerator" xsi:type="ResultFormulaParameterDefinition" result="FreeFCPortCount" from="node"/>
+          <parameter name="denominator" xsi:type="ResultFormulaParameterDefinition" result="FCPortCount" from="node"/>
+          <result name="Free FC Port(%)" default="false" graphable="false"/>
+        </formula>
+        <topn-report/>
+        <node name="FreePorts" singleNodeId="3f795b22">
+          <property xsi:type="NodeFilter" selectUnmatched="true"/>
+          <property xsi:type="ReportPreferences" paging="10"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Port" sortMode="asc" nodeProperty="name"/>
+          <formula formulaId="util.DistinctValueCountFormula">
+            <setting name="Filter" value="parttype='Port'"/>
+            <setting name="ExpandOn" value="device,part"/>
+            <setting name="Level-Up" value="0"/>
+            <result name="FCPortCount" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.DistinctValueCountFormula">
+            <setting name="Filter" value="parttype='Port'&amp;(partstat='online'|partstat='Online'|partstat='up')"/>
+            <setting name="ExpandOn" value="device,part"/>
+            <setting name="Level-Up" value="0"/>
+            <result name="OnlineFCPortCount" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="math.Subtraction">
+            <parameter name="base metric" xsi:type="ResultFormulaParameterDefinition" result="FCPortCount" from="node"/>
+            <parameter name="subtract metric" xsi:type="ResultFormulaParameterDefinition" result="OnlineFCPortCount" from="node"/>
+            <result name=" " default="true" graphable="false"/>
+          </formula>
+          <formula formulaId="math.Division">
+            <setting name="scale" value="100"/>
+            <parameter name="numerator" xsi:type="ResultFormulaParameterDefinition" result="FreeFCPortCount" from="node"/>
+            <parameter name="denominator" xsi:type="ResultFormulaParameterDefinition" result="FCPortCount" from="node"/>
+            <result name="Free FC Port(%)" default="false" graphable="false"/>
+          </formula>
+          <node name="part" singleNodeId="d59d51a8">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          </node>
+        </node>
+        <node name="OccupiedPorts" singleNodeId="577c8c95">
+          <property xsi:type="NodeFilter" filterExpression="partstat=='online' | partstat=='up'"/>
+          <property xsi:type="ReportPreferences" paging="10"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Port" sortMode="asc" nodeProperty="name"/>
+          <formula formulaId="util.DistinctValueCountFormula">
+            <setting name="Filter" value="parttype='Port'"/>
+            <setting name="ExpandOn" value="device,part"/>
+            <setting name="Level-Up" value="0"/>
+            <result name="FCPortCount" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.DistinctValueCountFormula">
+            <setting name="Filter" value="parttype='Port'&amp;(partstat='online'|partstat='Online'|partstat='up')"/>
+            <setting name="ExpandOn" value="device,part"/>
+            <setting name="Level-Up" value="0"/>
+            <result name=" " default="true" graphable="false"/>
+          </formula>
+          <formula formulaId="math.Subtraction">
+            <parameter name="base metric" xsi:type="ResultFormulaParameterDefinition" result="FCPortCount" from="node"/>
+            <parameter name="subtract metric" xsi:type="ResultFormulaParameterDefinition" result=" " from="node"/>
+            <result name="FreeFCPortCount" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="math.Division">
+            <setting name="scale" value="100"/>
+            <parameter name="numerator" xsi:type="ResultFormulaParameterDefinition" result="FreeFCPortCount" from="node"/>
+            <parameter name="denominator" xsi:type="ResultFormulaParameterDefinition" result="FCPortCount" from="node"/>
+            <result name="Free FC Port(%)" default="false" graphable="false"/>
+          </formula>
+          <node name="part" singleNodeId="1d3268f3">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          </node>
+        </node>
+      </node>
+    </node>
+    <node name="VSANs" order="3" singleNodeId="7eb75fd8">
+      <property xsi:type="NodeFilter" filterExpression="parttype=='VSAN'"/>
+      <property xsi:type="ReportPreferences" defaultMode="mix" description="&lt;div&gt;&#10;  &lt;p&gt;A virtual storage area network (VSAN) is a collection of ports from a set of connected Fibre Channel switches, that form a virtual fabric. Ports within a single switch can be partitioned into multiple VSANs, despite sharing hardware resources. Conversely, multiple switches can join a number of ports to form a single VSAN.&lt;/p&gt;&#10;  &lt;p&gt;The use of VSANs allows traffic to be isolated within specific portions of the network. If a problem occurs in one VSAN, that problem can be handled with a minimum of disruption to the rest of the network. VSANs can also be configured separately and independently.&lt;/p&gt;&#10;&lt;/div&gt;"/>
+      <node name="VSAN 1" order="0" singleNodeId="3a828383">
+        <property xsi:type="NodeFilter" filterExpression="partid=='1'"/>
+        <property xsi:type="PropertyNodeColumn" name="Device(s)" property="device"/>
+        <property xsi:type="ValueNodeColumn" name="Number of FC Ports" resultName="NB Ports" forcePeriod="true" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="0"/>
+        <property xsi:type="ValueNodeColumn" name="Traffic (/s)" sortMode="desc" resultName="VSAN bandwidth (Mb/s)" forcePeriod="true" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Bit::Storage::Mb::Byte::Storage"/>
+        <link singleNodeId="131d163e" linkID=".-..-..-c4c36b0c-3117b7f4"/>
+      </node>
+      <node name="All VSAN" order="1" singleNodeId="c4c36b0c">
+        <property xsi:type="NodeFilter" filterExpression="!(partid=='1')"/>
+        <property xsi:type="PropertyNodeColumn" name="VSAN Name" property="part"/>
+        <property xsi:type="NodePropertyNodeColumn" name="VSAN Id" nodeProperty="name"/>
+        <property xsi:type="PropertyNodeColumn" name="Device(s)" property="device"/>
+        <property xsi:type="ValueNodeColumn" name="Number of FC Ports" resultName="NB Ports" forcePeriod="true" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="0"/>
+        <property xsi:type="ValueNodeColumn" name="Static Ports Configured" resultName="Static Ports Configured" forcePeriod="never" timeThreshold="600" formatter="BasicFormatter" roundingAccuracy="0"/>
+        <property xsi:type="ValueNodeColumn" name="Traffic (/s)" sortMode="desc" resultName="VSAN bandwidth (Mb/s)" forcePeriod="true" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Bit::Storage::Mb::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Availability (%)" filterExpression="name=='Availability'" forcePeriod="never" useTimeRange="true" criticalLevel="99.99999" formatter="StatusSparkLineFormatter" criticityAsc="false"/>
+        <node name="partid" singleNodeId="3117b7f4">
+          <property xsi:type="NodeExpansion" expandOn="partid"/>
+          <property xsi:type="ReportPreferences" defaultMode="dmx" preferredAggregate="max"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="FCPorts Count"/>
+            <result name="NB Ports" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="math.spatial.Sum">
+            <setting name="aggregation" value="DEFAULT"/>
+            <setting name="partial" value="true"/>
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Port bandwidth (Mb/s)"/>
+            <result name="VSAN bandwidth (Mb/s)" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Static Ports Configured"/>
+            <result name="Static Ports Configured" default="false" graphable="false"/>
+          </formula>
+          <node name="Ports Details" order="0" singleNodeId="28ce5252">
+            <property xsi:type="NodeFilter" filterExpression="iftype=='fibreChannel' &amp; !(part='sup-fc%')"/>
+            <property xsi:type="NodeExpansion" expandOn="partid&lt;type=split;properties=vsanid;level-up=3;name-override=Ports Details&gt;" filterMode="select"/>
+            <property xsi:type="ReportPreferences" paging="10"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Fabric" nodeProperty="expandedNames[0]"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Port" nodeProperty="expandedNames[1]"/>
+            <property xsi:type="PropertyNodeColumn" name="WWN" property="partwwn"/>
+            <property xsi:type="PropertyNodeColumn" name="VSAN id" property="vsanid"/>
+            <property xsi:type="PropertyNodeColumn" name="Description" property="ifalias"/>
+            <property xsi:type="PropertyNodeColumn" name="Speed" property="maxspeed"/>
+            <property xsi:type="PropertyNodeColumn" name="Operational Status" property="partstat"/>
+            <property xsi:type="ValueNodeColumn" name="Traffic (/s)" filterExpression="name=='ifInOctets' | name=='ifOutOctets'" forcePeriod="never" aggregationFunc="sum" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Average Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="SparkLineFormatter"/>
+            <formula formulaId="util.ChildCount">
+              <result name="FCPorts Count" default="false" graphable="false"/>
+            </formula>
+            <formula formulaId="utilization.BandwidthUtilization">
+              <setting name="duplex" value="FULLDUPLEX"/>
+              <setting name="ifOctets scale" value="8"/>
+              <setting name="ifSpeed scale" value="1"/>
+              <setting name="threshold" value="100"/>
+              <parameter name="ifInOctets" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifInOctets'"/>
+              <parameter name="ifOutOctets" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifOutOctets'"/>
+              <parameter name="ifSpeed" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifSpeed'"/>
+              <result name="Port bandwidth (Mb/s)" default="false" graphable="false"/>
+              <result name="speed (Mb/s)" default="false" graphable="false"/>
+              <result name="utilization (%)" default="false" graphable="false"/>
+            </formula>
+            <link singleNodeId="91edc6bc" linkID=".-..-..-..-..-..-..-6c130c47-460b3deb-b4d408ac-3117b7f4"/>
+          </node>
+          <node name="Static Ports Configured" order="1" singleNodeId="5af19012">
+            <property xsi:type="NodeFilter" filterExpression="parttype=='Domain'"/>
+            <property xsi:type="NodeExpansion" expandOn="partid&lt;type=split;properties=vsanid;level-up=3;name-override=Static Ports Configured&gt;" filterMode="select"/>
+            <property xsi:type="PropertyNodeColumn" name="Port WWN of the FC device" property="partsnid"/>
+            <property xsi:type="NodePropertyNodeColumn" name="FC Id" nodeProperty="name"/>
+            <property xsi:type="ValueNodeColumn" name="Active?" sortMode="desc" resultName="Active" forcePeriod="never" useTimeRange="true" durationOverride="d:l1h" majorLevel="0.0020" criticalLevel="0.0010" formatter="BlankFormatter" roundingAccuracy="0"/>
+            <formula formulaId="util.ChildCount">
+              <result name="Static Ports Configured" default="false" graphable="false"/>
+            </formula>
+            <node name="part" singleNodeId="536f7fdf">
+              <property xsi:type="NodeExpansion" expandOn="part"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+              <formula formulaId="math.spatial.Max">
+                <parameter name="metric" xsi:type="CombinedFormulaParameterDefinition">
+                  <parameter xsi:type="FilterFormulaParameterDefinition" filter="name='Fake%'"/>
+                  <parameter xsi:type="ConstantFormulaParameterDefinition" value="0.0"/>
+                </parameter>
+                <result name="Active" default="false" graphable="true"/>
+              </formula>
+            </node>
+          </node>
+          <node name="VSAN Availability" order="2" singleNodeId="dc8a9897">
+            <property xsi:type="NodeFilter" filterExpression="name=='Availability'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrb" preferredPeriod="3600" preferredAggregate="max" maxValue="101.0"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+              <result name="Availability (%)" default="false" graphable="true"/>
+            </formula>
+          </node>
+        </node>
+      </node>
+    </node>
+    <node name="Name Server Database" order="4" singleNodeId="2fbabb9e">
+      <property xsi:type="NodeFilter" filterExpression="parttype=='NameServer'"/>
+      <property xsi:type="ReportPreferences" description="&lt;div&gt;&#10;  &lt;p&gt;The name server functionality maintains a database containing the attributes for all hosts and storage devices in each VSAN. Name servers allow a database entry to be modified by a device that originally registered the information.&lt;/p&gt;&#10;&lt;/div&gt;" paging="15"/>
+      <property xsi:type="PropertyNodeColumn" name="VSAN" property="vsanid"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Fabric" nodeProperty="expandedNames[0]"/>
+      <property xsi:type="PropertyNodeColumn" name="Fabric Port" property="part"/>
+      <property xsi:type="PropertyNodeColumn" name="Fabric PWWN" sortMode="asc#1" property="partwwn"/>
+      <property xsi:type="PropertyNodeColumn" name="Connected NWWN" property="nodewwn"/>
+      <property xsi:type="PropertyNodeColumn" name="Connected Node Sym Name" property="nodename"/>
+      <property xsi:type="PropertyNodeColumn" name="Connected PWWN" property="portwwn"/>
+      <property xsi:type="PropertyNodeColumn" name="Connected Port Sym Name" property="portwwn"/>
+      <property xsi:type="ValueNodeColumn" name="Active?" sortMode="desc" resultName="Active" forcePeriod="never" useTimeRange="true" durationOverride="d:l1h" majorLevel="0.0020" criticalLevel="0.0010" formatter="BlankFormatter" roundingAccuracy="0"/>
+      <node name="device,partwwn,nodewwn" singleNodeId="c9093010">
+        <property xsi:type="NodeExpansion" expandOn="device,partwwn,nodewwn"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <formula formulaId="math.spatial.Max">
+          <parameter name="metric" xsi:type="CombinedFormulaParameterDefinition">
+            <parameter xsi:type="FilterFormulaParameterDefinition" filter="name=='Fake1'"/>
+            <parameter xsi:type="ConstantFormulaParameterDefinition" value="0.0"/>
+          </parameter>
+          <result name="Active" default="false" graphable="true"/>
+        </formula>
+      </node>
+    </node>
+    <node name="Port Channel" order="5" singleNodeId="7573b63f">
+      <property xsi:type="NodeFilter" filterExpression="iftype=='portChannel'"/>
+      <property xsi:type="ReportPreferences" paging="10"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Fabric" nodeProperty="expandedNames[0]"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Port Channel" nodeProperty="expandedNames[1]"/>
+      <property xsi:type="PropertyNodeColumn" name="Speed" property="maxspeed"/>
+      <property xsi:type="PropertyNodeColumn" name="Operational Status" property="partstat"/>
+      <property xsi:type="ValueNodeColumn" name="Traffic (/s)" filterExpression="name=='ifInOctets' | name=='ifOutOctets'" forcePeriod="never" aggregationFunc="sum" useTimeRange="true" formatter="SparkLineFormatter" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+      <property xsi:type="ValueNodeColumn" name="Average Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" majorLevel="60.0" criticalLevel="80.0" formatter="SparkLineFormatter"/>
+      <formula formulaId="util.ChildCount">
+        <result name="PortChannel Count" default="false" graphable="false"/>
+      </formula>
+      <link singleNodeId="27832338" linkID=".-..-..-..-6c130c47-460b3deb-b4d408ac-3117b7f4"/>
+    </node>
+    <node name="Interconnects" order="6" singleNodeId="ece397a0">
+      <property xsi:type="NodeFilter" filterExpression="parttype=='InterConnect'"/>
+      <property xsi:type="ReportPreferences" paging="5"/>
+      <property xsi:type="PropertyNodeColumn" name="Device" property="device"/>
+      <property xsi:type="PropertyNodeColumn" name="Device FC id from" property="partsnid"/>
+      <property xsi:type="PropertyNodeColumn" name="Connected to System Name" property="partdesc"/>
+      <property xsi:type="PropertyNodeColumn" name="Domain ID" property="domainid"/>
+      <property xsi:type="PropertyNodeColumn" name="VSAN ID" property="vsanid"/>
+      <property xsi:type="ValueNodeColumn" name="Active?" sortMode="desc" forcePeriod="never" useTimeRange="true" durationOverride="d:l1h" majorLevel="0.0020" criticalLevel="0.0010" formatter="BlankFormatter" roundingAccuracy="0"/>
+      <node name="domainid" singleNodeId="6ae084a9">
+        <property xsi:type="NodeExpansion" expandOn="domainid"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+        <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+      </node>
+    </node>
+    <node name="Power Supplies" singleNodeId="487a249f">
+      <property xsi:type="NodeFilter" filterExpression="parttype=='PowerSupply'"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Device" nodeProperty="expandedNames[0]"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Component" nodeProperty="expandedNames[1]"/>
+      <property xsi:type="ValueNodeColumn" name="Status" filterExpression="name=='Availability'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" majorLevel="99.99" criticalLevel="99.98" formatter="BarChartSparkLineFormatter"/>
+      <node name="device,part" singleNodeId="3885a092">
+        <property xsi:type="NodeExpansion" expandOn="device,part"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+        <report-rendering>
+          <charts mode="dynamic"/>
+        </report-rendering>
+      </node>
+    </node>
+  </node>
+  <node name="Situations to Watch" order="3" singleNodeId="c3cf446e">
+    <property xsi:type="NodeFilter" filterExpression="devtype=='FabricSwitch' &amp; devdesc='%Cisco%'"/>
+    <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+    <node name="Connected RX &amp; TX Comparison" order="0" singleNodeId="272f6748">
+      <property xsi:type="NodeFilter" filterExpression="datagrp=='CISCO-MDS-NEXUS-ENVIRONMENT'"/>
+      <property xsi:type="ReportPreferences" description="&lt;div&gt;&#10;  &lt;p&gt;This report will show only if you have configured the SSH collector for APG (part of the ReportPack).&lt;/p&gt;&#10;  &lt;p&gt;If &quot;diff&quot; columns are empty, it's most likely that the port is not connected to an APG's known port. I.e. Port is not connected to another switch monitored by APG.&lt;/p&gt;&#10;&lt;/div&gt;"/>
+      <property xsi:type="DisplayPreferences" displayPolicy="alwaysHide"/>
+      <property xsi:type="NodePropertyNodeColumn" name="MDS" nodeProperty="expandedNames[0]"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Port" nodeProperty="expandedNames[1]"/>
+      <property xsi:type="ValueNodeColumn" name="RX" filterExpression="name=='rx'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter"/>
+      <property xsi:type="ValueNodeColumn" name="Diff RX" sortMode="desc" resultName="rx diff" forcePeriod="true" timeThreshold="600" majorLevel="4.0" criticalLevel="5.0"/>
+      <property xsi:type="ValueNodeColumn" name="TX" filterExpression="name=='tx'" forcePeriod="never" useTimeRange="true" formatter="SparkLineFormatter"/>
+      <property xsi:type="ValueNodeColumn" name="Diff TX" sortMode="desc#1" resultName="tx diff" forcePeriod="true" timeThreshold="600" majorLevel="4.0" criticalLevel="5.0"/>
+      <node name="device,part" singleNodeId="1b88b684">
+        <property xsi:type="NodeExpansion" expandOn="device,part"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <formula formulaId="math.Absolute">
+          <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="rx diff"/>
+          <result name="rx diff" default="false" graphable="true"/>
+        </formula>
+        <formula formulaId="math.Absolute">
+          <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="tx diff"/>
+          <result name="tx diff" default="false" graphable="true"/>
+        </formula>
+        <node name="device,part" singleNodeId="8d2d3737">
+          <property xsi:type="NodeExpansion" expandOn="device,part"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx" minValue="NaN"/>
+          <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          <formula formulaId="math.Subtraction">
+            <parameter name="base metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='rx'"/>
+            <parameter name="subtract metric" xsi:type="ResultFormulaParameterDefinition" result="rx"/>
+            <result name="rx diff" default="false" graphable="true"/>
+          </formula>
+          <formula formulaId="math.Subtraction">
+            <parameter name="base metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='tx'"/>
+            <parameter name="subtract metric" xsi:type="ResultFormulaParameterDefinition" result="tx"/>
+            <result name="tx diff" default="false" graphable="true"/>
+          </formula>
+          <node name="peerwwn" singleNodeId="c9093010">
+            <property xsi:type="NodeFilter" filterExpression="name='%x'"/>
+            <property xsi:type="NodeExpansion" expandOn="portwwn&lt;type=split;properties=partwwn;level-up=99&gt;" filterMode="select"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx" minValue="NaN"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="rx"/>
+              <result name="rx" default="false" graphable="false"/>
+            </formula>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="tx"/>
+              <result name="tx" default="false" graphable="false"/>
+            </formula>
+            <node name="device,part" singleNodeId="a7799de1">
+              <property xsi:type="NodeFilter" filterExpression="name='%x'"/>
+              <property xsi:type="NodeExpansion" expandOn="device,part" filterMode="select"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx" minValue="NaN"/>
+              <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='rx'"/>
+                <result name="rx" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='tx'"/>
+                <result name="tx" default="false" graphable="false"/>
+              </formula>
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+    <node name="Port Errors" singleNodeId="caac4bac">
+      <property xsi:type="NodeFilter" filterExpression="(name='if%Discards' | name='if%Errors' | name=='Availability') &amp; (parttype=='Interface' | parttype=='Port')"/>
+      <property xsi:type="ReportPreferences" description="Report will be empty if all ports don't have errors"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Device" nodeProperty="expandedNames[0]"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Port Name" nodeProperty="expandedNames[1]"/>
+      <property xsi:type="PropertyNodeColumn" name="Type" property="iftype"/>
+      <property xsi:type="ValueNodeColumn" name="Errors count" sortMode="desc" resultName="Check" forcePeriod="true" aggregationFunc="sum" useTimeRange="true" valuesAggregationFunc="max" nonMajorHidden="true" criticalLevel="1.0E-5" criticityAsc="true" roundingAccuracy="0"/>
+      <property xsi:type="ValueNodeColumn" name="Availability (%)" filterExpression="name=='Availability'" forcePeriod="never" useTimeRange="true" majorLevel="99.99999" criticalLevel="99.99998"/>
+      <node name="device,part" singleNodeId="3117b7f4">
+        <property xsi:type="NodeExpansion" expandOn="device,part"/>
+        <property xsi:type="ReportPreferences" defaultMode="mix"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <formula formulaId="util.ConditionalTimeValueCount">
+          <setting name="Comparison Type" value="'&gt;'"/>
+          <setting name="Base Value" value="0"/>
+          <setting name="Scale Factor" value="1"/>
+          <parameter name="Input Metric" xsi:type="FilterFormulaParameterDefinition" filter="name='if%Discards' | name='if%Errors'"/>
+          <result name="Check" default="false" graphable="false"/>
+        </formula>
+        <node name="Availability (%)" singleNodeId="87d264f4">
+          <property xsi:type="NodeFilter" filterExpression="name=='Availability'"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx" maxValue="101.0"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          <threshold name="critical" value="99.0" color="#ff0000"/>
+        </node>
+        <node name="Errors" singleNodeId="e279add3">
+          <property xsi:type="NodeFilter" filterExpression="name='if%Discards' | name='if%Errors'"/>
+          <property xsi:type="ReportPreferences" defaultMode="stk"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        </node>
+      </node>
+    </node>
+    <node name="Top10 Port Utilization (%)" singleNodeId="5d373459">
+      <property xsi:type="NodeFilter" filterExpression="!(part='mgmt%') &amp; (parttype=='Interface' | parttype=='Port')"/>
+      <property xsi:type="ReportPreferences" paging="-10"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Device" nodeProperty="expandedNames[0]"/>
+      <property xsi:type="PropertyNodeColumn" name="Model" property="model"/>
+      <property xsi:type="NodePropertyNodeColumn" name="Port Name" nodeProperty="expandedNames[1]"/>
+      <property xsi:type="PropertyNodeColumn" name="Type" property="iftype"/>
+      <property xsi:type="PropertyNodeColumn" name="WWN" property="partwwn"/>
+      <property xsi:type="ValueNodeColumn" name="Max Utilization (%)" sortMode="desc" filterExpression="name=='CurrentUtilization'" forcePeriod="true" useTimeRange="true" valuesAggregationFunc="max" majorLevel="60.0" criticalLevel="80.0"/>
+      <link singleNodeId="424da6f4" linkID=".-..-..-..-6c130c47-460b3deb-b4d408ac-3117b7f4"/>
+    </node>
+  </node>
+</node>

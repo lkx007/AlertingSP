@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Built-By: Watch4Net
+Description: SolutionPack for EMC Isilon
+Report-Pack: EMC Isilon
+Created-By: Watch4Net
+Version: 1.1
+
+Name: EMC Isilon
+Hooks: #W4N_SP
+Description: SolutionPack for EMC Isilon
+Version: 1.1
+

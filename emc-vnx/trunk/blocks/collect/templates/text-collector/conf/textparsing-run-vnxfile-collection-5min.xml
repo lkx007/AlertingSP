@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 	xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>1</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>single-line-tree</tree-type>
+		<tree-schema>
+			<name>name</name>
+			<leaf>
+				<name>name</name>
+			</leaf>
+		</tree-schema>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-file.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.cli.RemoteCLICommandExecutor</data-accessor>
+		<stop-on-first-result>false</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>VNXFile-group</group-name>
+				<host-config>
+					<connection-type>ssh</connection-type>
+					<host-list>@csprimary</host-list>
+					<parameter name="auth-method">
+						<value>password</value>
+					</parameter>
+					<parameter name="username">
+						<value>@fileusername</value>
+					</parameter>
+					<parameter name="password">
+						<value>@filepassword</value>
+					</parameter>
+					<parameter name="hardcoded-os">
+						<value>vnxfile-executables</value>
+					</parameter>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<group-name>VNXFile-group</group-name>
+			<command-list>
+				<command type="defined">VNXFile collect 5 min</command>
+				<result-must-be-parsed>false</result-must-be-parsed>
+			</command-list>
+		</command-configuration>
+		<parameter name="command-definition-directory">
+			<value>./conf</value>
+		</parameter>
+	</data-config>
+</configuration>

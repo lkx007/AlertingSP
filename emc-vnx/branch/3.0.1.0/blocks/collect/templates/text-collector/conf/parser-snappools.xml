@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>SNAP_POOL_</name>
+			<leaf><name>Name of the SP</name>
+				<group>poolInfo-1</group>
+			</leaf>
+			<leaf><name>Total Number of LUNs in Pool</name>
+				<group>poolInfo-2</group>
+			</leaf>
+			<leaf><name>Number of Unallocated LUNs in Pool</name>
+				<group>poolInfo-3</group>
+			</leaf>
+			<leaf><name>Unallocated LUNs</name>
+				<group>poolInfo-4</group>
+			</leaf>
+			<leaf><name>Total size in GB</name>
+				<group>poolInfo-5</group>
+			</leaf>
+			<leaf><name>Unallocated size in GB</name>
+				<group>poolInfo-6</group>
+			</leaf>
+			<leaf><name>Used LUN Pool in GB</name>
+				<group>poolInfo-7</group>
+			</leaf>
+			<leaf><name>% Used of LUN Pool</name>
+				<group>poolInfo-8</group>
+			</leaf>
+			<leaf><name>Chunk size in disk blocks</name>
+				<group>poolInfo-9</group>
+			</leaf>
+			<node>
+				<name>ALLOCATED_</name>
+				<leaf>
+					<name>Primary LUN</name>
+					<group>lun-1</group>
+				</leaf>
+				<leaf>
+					<name>Allocated LUNs</name>
+					<group>lun-2</group>
+				</leaf>
+				<leaf>
+					<name>Lun Pool LUN % Used</name>
+					<group>lun-3</group>
+				</leaf>
+			</node>
+			<node>
+				<name>UNALLOCATED_</name>
+				<leaf>
+					<name>LUN Name</name>
+					<group>unalloclun-1</group>
+				</leaf>					
+			</node>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Name of the SP(.*?)(?=(Name of the SP|$))</regex>
+			<sub-regex group="1">
+				<regex name="poolInfo">(?s):\s+(\p{Print}+)\r*\nTotal Number of LUNs in Pool:\s+(\d+)\r*\nNumber of Unallocated LUNs in Pool:\s+(\d+)\r*\nUnallocated LUNs:\s+(.*).*\nTotal size in GB:\s+([\d\.]+)\r*\nUnallocated size in GB:\s+([\d\.]+)\r*\nUsed LUN Pool in GB:\s+([\d\.]+)\r*\n\% Used of LUN Pool:\s+([\d\.]+)\r*\nChunk size in disk blocks:\s+(\d+)\r*\n(.*)</regex>				
+				<sub-regex group="10">
+					<regex name="allocated">(?s)Target LUN:(.*?)(?=(Target LUN:|$))</regex>
+					<sub-regex group="1">
+						<regex name="lun">(?s)(\d+)\r*\nAllocated LUNs:\s+(\d+)\r*\nLun Pool LUN % Used:\s+([\d\.]+)\r*</regex>
+					</sub-regex>
+				</sub-regex>
+				<sub-regex group="4">
+					<regex name="unallocated">(\d+)</regex>
+					<sub-regex group="1">
+						<regex name="unalloclun">(\d+)</regex>
+					</sub-regex>
+				</sub-regex>
+			</sub-regex>				
+		</regex-group-config> 
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>POOLs</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) reserved -lunpool -list</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+** reserved –lunpool –list  **
+Name of the SP:  GLOBAL
+Total Number of LUNs in Pool:  20
+Number of Unallocated LUNs in Pool:  16
+Unallocated LUNs:  48, 64, 67, 69, 51, 45, 44, 49, 65, 52, 46, 68, 50, 53, 47, 66
+Total size in GB:  11.686279
+Unallocated size in GB:  9.042358
+Used LUN Pool in GB:  0.131714
+% Used of LUN Pool:  1.127081
+Chunk size in disk blocks:  128
+
+
+No LUN in LUN Pool associated with target LUN.
+		... or
+Allocated Lun Pool:
+
+Target LUN:  0
+Allocated LUNs:  42
+Lun Pool LUN % Used:  0
+...
+Target LUN:  1
+Allocated LUNs:  40
+Lun Pool LUN % Used:  0.009294
+-->

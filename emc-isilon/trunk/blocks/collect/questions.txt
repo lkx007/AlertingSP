@@ -1,0 +1,37 @@
+#EXPORT .emcisilon.system AS device(host)
+
+[+storage.timeseries.socketconnector]
+host = hostname
+port = port
+
+[+alert.timeseries.socketconnector]
+host = hostname
+port = port
+
+[+credentials]
+username = username
+password = password
+
+[system]
+host = hostname
+credentials
+
+[emcisilon]
+system *
+use_advancedsettings = boolean
+if use_advancedsettings
+  perf.pollingperiod = integer[120,]
+  topology.pollingperiod = integer[120,]
+fi
+
+[main]
+# use_failover is defined in storage to avoid redefining timeseries which would fail
+storage.failover = boolean
+storage.timeseries.socketconnector
+
+# explicit condition since we can't use ? which would redefine timeseries and fail
+use_alert = boolean
+if use_alert
+  alert.timeseries.socketconnector
+fi
+emcisilon

@@ -1,0 +1,58 @@
+#!/usr/bin/perl
+# Copyright (C) EMC Corporation, 2006
+# All Rights Reserved.
+# Licensed Material-Property of EMC Corporation.
+# This software is made available solely pursuant to the
+# terms of a EMC license agreement which governs its use.
+
+use strict;
+use warnings;
+
+#untaint subroutine
+sub untaint {
+    my ($tainted) = $_[0];
+    $tainted  =~ /^(.*)$/;
+    my ($untainted) = $1;
+    return $untainted;
+}
+
+#set real UID to effective UID
+$< = $>;
+
+#check NAS_DB
+if(!$ENV{NAS_DB}) {
+  print 'NAS_DB environment not defined';
+  exit 14;
+}
+
+#untaint $NAS_DB
+my $NAS_DB = untaint($ENV{NAS_DB});
+
+#set java class path
+my $CP= "$NAS_DB/stats/lib/server_stats.jar".
+        ":$NAS_DB/http/webui/tools/tomcat/webapps/".
+           "ROOT/WEB-INF/lib/ccmd-support_en_US.jar".
+         ":$NAS_DB/j_lib/db.jar";
+
+#Initialize my args with required java options for server_stats
+my @args = ( "-DNAS_DB=$NAS_DB",
+             '-server', '-Xmx256M',
+             '-cp', $CP,
+             'server_stats' );
+
+#Loop through args and untaint each one
+foreach (@ARGV) {
+  $_ = untaint($_);
+}
+
+#add args to my arg array
+push(@args, @ARGV);
+
+#set PATH to bare minimum for running server_stats
+$ENV{PATH} = "/bin";
+
+#clean up env for safety
+delete @ENV{'IFS', 'CDPATH', 'ENV', 'BASH_ENV'};
+
+system('/usr/java/bin/java', @args);
+exit($? >> 8);

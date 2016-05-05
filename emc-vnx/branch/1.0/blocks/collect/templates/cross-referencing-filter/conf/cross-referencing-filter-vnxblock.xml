@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			   xmlns="http://www.watch4net.com/CrossReferencingFilter"
+			   xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<!-- device level properties - key:ip -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<include-properties>true</include-properties>
+		<get-property>device</get-property>
+		<get-property>model</get-property>
+		<get-property>revision</get-property>
+		<get-property>serialnb</get-property>
+		<!-- temporaire pour avoir un OE homogene dans devdesc pour maintenant
+		<get-property>devdesc</get-property>
+		-->
+		<get-property>maxhost</get-property>
+		<get-property>maxdisk</get-property>
+		<get-property>maxspace</get-property>
+	</reference>
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">Controller</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>partvrs</get-property>
+		<get-property>partsn</get-property>
+		<get-property>partname</get-property>
+	</reference>
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">Port</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>memberof</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>partsn</get-property>
+	</reference>
+	<!-- disk level properties - key:ip,part -->
+	<!-- for get all Disk properties for Disk Queue collecting group -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">Disk</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>partdesc</get-property>
+		<get-property>partvrs</get-property>
+		<get-property>disktype</get-property>
+		<get-property>partstat</get-property>
+		<get-property>partmdl</get-property>
+		<get-property>diskcost</get-property>
+		<get-property>maxspeed</get-property>
+		<get-property>diskrpm</get-property>
+		<get-property>disklate</get-property>
+		<get-property>dgroup</get-property>
+		<get-property>dgname</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>dgtype</get-property>
+	</reference>
+	<!-- Get the storage group name -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>sgname</get-property>
+		<get-property>dgroup</get-property>
+		<get-property>dgname</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>dgtype</get-property>
+		<get-property>dgstype</get-property>
+	</reference>
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">RAID Group</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>dgroup</get-property>
+		<get-property>dgname</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>dgtype</get-property>
+	</reference>
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">Storage Pool</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>dgroup</get-property>
+		<get-property>dgname</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>dgtype</get-property>
+		<get-property>dgstype</get-property>
+	</reference>
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">Host</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>partsn</match-on>
+		<include-properties>true</include-properties>
+		<get-property>sgname</get-property>
+	</reference>
+	<!-- for LUN Utilization collecting group -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>partdesc</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>memberof</get-property>
+		<get-property>private</get-property>
+		<get-property>partsn</get-property>
+		<get-property>uid</get-property>
+		<get-property>wwnn</get-property>
+		<get-property>wwpn</get-property>
+		<get-property>sgname</get-property>
+		<get-property>dgroup</get-property>
+		<get-property>dgname</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>dgtype</get-property>
+		<get-property>dgstype</get-property>
+	</reference>
+    <!-- from CLARIION-LUNS to CLARIION-UNUSEDLUNS --> 
+	<!--
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>raidgrp</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>part</get-property>
+		<get-property>partdesc</get-property>
+		<get-property>dgraid</get-property>
+		<get-property>memberof</get-property>
+		<get-property>private</get-property>
+		<get-property>partsn</get-property>
+		<get-property>uid</get-property>
+		<get-property>wwnn</get-property>
+		<get-property>wwpn</get-property>
+		<get-property>sgname</get-property>
+	</reference>
+	-->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<match-on>serialnb</match-on>
+		<match-on>ip</match-on>
+		<match-on>dgname</match-on>
+		<include-properties>true</include-properties>
+		<get-property>dgraid</get-property>
+	</reference>
+</configuration>

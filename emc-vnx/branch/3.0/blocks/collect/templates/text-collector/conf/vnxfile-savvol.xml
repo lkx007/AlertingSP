@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<os-command-definition xmlns="http://www.watch4net.com/OutputParsingLibrary"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary commanddefinition.xsd ">
+	<base-command>
+		<command-list>
+			<name>VNXFile savvol</name>
+			<command>export NAS_DB=&quot;/nas&quot; ; echo &quot;name,ID,checkpointof,savvolsize,savvolavailable,savvolused,savvolusedpercent,SizeKB,AutoExtend,maxsize,IsInUse,CkptSavVolUsedMB,ckptfstotal,ckptfsavail,ckptfsused,ckptfsusedpercent,ckptfsblockcount&quot; &amp;&amp; for i in $(/nas/bin/nas_fs -query:isroot=false:inuse=y:Type=ckpt -format:'%s,%s\n' -fields:name,backupof) ; do var1=${i%,*}; var2=${i#*,} ; /nas/bin/nas_fs -query:name=$var1 -format:'%s,%s,%s,%s,%s,%d,%s,%d,' -fields:name,id,backupof,sizeValues,AutoExtend,maxsize,IsInUse,CkptSavVolUsedMB ; /nas/bin/nas_fs -query:name=$var2 -format:'%d\n' -fields:sizeValues ; done</command>
+		</command-list>
+	</base-command>
+</os-command-definition>

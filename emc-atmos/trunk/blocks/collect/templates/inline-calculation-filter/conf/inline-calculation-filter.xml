@@ -1,0 +1,890 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.watch4net.com/Collecting/InlineCalculationFilter1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/Collecting/InlineCalculationFilter1 inline-calculation-filter.xsd">
+	<!-- Metrics for RMG/Site -->
+	<result name="UsedCapacity" unit="GB" time-window="30s">
+		<input>used_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[used_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="30s">
+		<input>free_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[free_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="Capacity" unit="GB" time-window="30s">
+		<input>total_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[total_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="30s">
+		<input>toremove_currentutil</input>
+		<input>used_capacity</input>
+		<input>total_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[total_capacity == 0 ? 0 : 100*(used_capacity/total_capacity)]]>
+		</jexl-formula>
+	</result>
+	<result name="NumNodesUp" unit="nb" time-window="30s">
+		<input>nodesUp</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[nodesUp]]>
+		</jexl-formula>
+	</result>
+	<result name="NumNodesDown" unit="nb" time-window="30s">
+		<input>nodesDown</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[nodesDown]]>
+		</jexl-formula>
+	</result>
+	<result name="TotalNodes" unit="nb" time-window="30s">
+		<input>nodesUp</input>
+		<input>nodesDown</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[nodesUp+nodesDown]]>
+		</jexl-formula>
+	</result>
+	<result name="AverageLoad15Min" unit="" time-window="30s">
+		<input>avgLoad15</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[avgLoad15]]>
+		</jexl-formula>
+	</result>
+	<result name="AverageLoad5Min" unit="" time-window="30s">
+		<input>avgLoad5</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[avgLoad5]]>
+		</jexl-formula>
+	</result>
+	<result name="AverageLoad1Min" unit="" time-window="30s">
+		<input>avgLoad1</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Site'</filter>
+		<jexl-formula>
+			<![CDATA[avgLoad1]]>
+		</jexl-formula>
+	</result>
+	<!-- Metrics for IS/Cluster -->
+	<result name="UsedCapacity" unit="GB" time-window="30s">
+		<input>used_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Cluster'</filter>
+		<jexl-formula>
+			<![CDATA[used_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="30s">
+		<input>free_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Cluster'</filter>
+		<jexl-formula>
+			<![CDATA[free_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="Capacity" unit="GB" time-window="30s">
+		<input>total_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Cluster'</filter>
+		<jexl-formula>
+			<![CDATA[total_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="30s">
+		<input>toremove_currentutil</input>
+		<input>used_capacity</input>
+		<input>total_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Cluster'</filter>
+		<jexl-formula>
+			<![CDATA[total_capacity == 0 ? 0 : 100*(used_capacity/total_capacity)]]>
+		</jexl-formula>
+	</result>
+
+	<!-- Metrics for Node -->
+	<result name="UsedCapacity" unit="GB" time-window="30s">
+		<input>used_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Node'</filter>
+		<jexl-formula>
+			<![CDATA[used_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="30s">
+		<input>free_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Node'</filter>
+		<jexl-formula>
+			<![CDATA[free_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="Capacity" unit="GB" time-window="30s">
+		<input>total_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Node'</filter>
+		<jexl-formula>
+			<![CDATA[total_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="30s">
+		<input>toremove_currentutil</input>
+		<input>used_capacity</input>
+		<input>total_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Node'</filter>
+		<jexl-formula>
+			<![CDATA[total_capacity == 0 ? 0 : 100*(used_capacity/total_capacity)]]>
+		</jexl-formula>
+	</result>
+	<!-- Data from system Management API -->
+	<result name="Availability" unit="%" time-window="30s">
+		<input>nodestatus</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Node'</filter>
+		<jexl-formula>
+			<![CDATA[nodestatus]]>
+		</jexl-formula>
+	</result>
+	<!-- Metrics for Node FileSystem -->
+	<result name="UsedCapacity" unit="GB" time-window="30s">
+		<input>used_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-FileSystem'</filter>
+		<jexl-formula>
+			<![CDATA[used_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="30s">
+		<input>free_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-FileSystem'</filter>
+		<jexl-formula>
+			<![CDATA[free_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="Capacity" unit="GB" time-window="30s">
+		<input>total_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-FileSystem'</filter>
+		<jexl-formula>
+			<![CDATA[total_capacity/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="30s">
+		<input>toremove_currentutil</input>
+		<input>used_capacity</input>
+		<input>total_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-FileSystem'</filter>
+		<jexl-formula>
+			<![CDATA[total_capacity == 0 ? 0 : 100*(used_capacity/total_capacity)]]>
+		</jexl-formula>
+	</result>
+
+	<!-- Metrics for Processor-->
+	<result name="System" unit="%" time-window="30s">
+		<input>cpuSystemUsage</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Processor'</filter>
+		<jexl-formula>
+			<![CDATA[cpuSystemUsage]]>
+		</jexl-formula>
+	</result>
+	<result name="User" unit="%" time-window="30s">
+		<input>cpuUserUsage</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Processor'</filter>
+		<jexl-formula>
+			<![CDATA[cpuUserUsage]]>
+		</jexl-formula>
+	</result>
+	<result name="Idle" unit="%" time-window="30s">
+		<input>cpuIdle</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Processor'</filter>
+		<jexl-formula>
+			<![CDATA[cpuIdle]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="60s">
+		<input>toremove_currentutil</input>
+		<input>cpuSystemUsage</input>
+		<input>cpuUserUsage</input>
+		<input>cpuIdle</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Processor'</filter>
+		<jexl-formula>
+			<![CDATA[(cpuIdle + cpuSystemUsage + cpuUserUsage ) == 0 ? 0 : 100 * ( ( cpuSystemUsage + cpuUserUsage) / ( cpuSystemUsage + cpuUserUsage + cpuIdle ) )]]>
+		</jexl-formula>
+	</result>
+	<result name="NumProcesses" unit="nb" time-window="30s">
+		<input>numberOfprocesses</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Processor'</filter>
+		<jexl-formula>
+			<![CDATA[numberOfprocesses]]>
+		</jexl-formula>
+	</result>
+	<!-- Metrics for Memory-->
+	<result name="Capacity" unit="GB" time-window="30s">
+		<input>totalMemory</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Memory'</filter>
+		<jexl-formula>
+			<![CDATA[totalMemory/(1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="30s">
+		<input>freeMemory</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Memory'</filter>
+		<jexl-formula>
+			<![CDATA[freeMemory/(1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="UsedCapacity" unit="GB" time-window="30s">
+		<input>toremove_usedmemory</input>
+		<input>totalMemory</input>
+		<input>freeMemory</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Memory'</filter>
+		<jexl-formula>
+			<![CDATA[(totalMemory-freeMemory)/(1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="30s">
+		<input>toremove_currentutil</input>
+		<input>totalMemory</input>
+		<input>freeMemory</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Memory'</filter>
+		<jexl-formula>
+			<![CDATA[totalMemory == 0 ? 0 : 100*((totalMemory-freeMemory)/totalMemory)]]>
+		</jexl-formula>
+	</result>
+	<result name="Capacity" unit="GB" time-window="30s">
+		<input>totalSwapMemory</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Memory'</filter>
+		<jexl-formula>
+			<![CDATA[totalSwapMemory/(1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="30s">
+		<input>freeSwapMemory</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Memory'</filter>
+		<jexl-formula>
+			<![CDATA[freeSwapMemory/(1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="UsedCapacity" unit="GB" time-window="30s">
+		<input>toremove_usedmemory</input>
+		<input>totalSwapMemory</input>
+		<input>freeSwapMemory</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Memory'</filter>
+		<jexl-formula>
+			<![CDATA[(totalSwapMemory-freeSwapMemory)/(1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="30s">
+		<input>toremove_currentutil</input>
+		<input>totalSwapMemory</input>
+		<input>freeSwapMemory</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Memory'</filter>
+		<jexl-formula>
+			<![CDATA[totalSwapMemory == 0 ? 0 : 100*((totalSwapMemory-freeSwapMemory)/totalSwapMemory)]]>
+		</jexl-formula>
+	</result>
+	<!-- Metrics for Node Process -->
+	<result name="ReadRequests" unit="IOPS" time-window="30s">
+		<input>rawReadsPerSec</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawReadsPerSec]]>
+		</jexl-formula>
+	</result>
+	<result name="WriteRequests" unit="IOPS" time-window="30s">
+		<input>rawWritesPerSec</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawWritesPerSec]]>
+		</jexl-formula>
+	</result>
+	<result name="DeleteRequests" unit="IOPS" time-window="30s">
+		<input>rawDeletesPerSec</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawDeletesPerSec]]>
+		</jexl-formula>
+	</result>
+	<result name="Requests" unit="IOPS" time-window="30s">
+		<input>rawTransPerSec</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawTransPerSec]]>
+		</jexl-formula>
+	</result>
+	<result name="MeanReadLatency" unit="ms" time-window="30s">
+		<input>rawMeanReadLatencyMS</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawMeanReadLatencyMS]]>
+		</jexl-formula>
+	</result>
+	<result name="MeanWriteLatency" unit="ms" time-window="30s">
+		<input>rawMeanWriteLatencyMS</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawMeanWriteLatencyMS]]>
+		</jexl-formula>
+	</result>
+	<result name="MeanLatency" unit="ms" time-window="30s">
+		<input>rawMeanLatencyMS</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawMeanLatencyMS]]>
+		</jexl-formula>
+	</result>
+	<result name="Reads" unit="nb" time-window="30s">
+		<input>rawReads</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawReads]]>
+		</jexl-formula>
+	</result>
+	<result name="Writes" unit="nb" time-window="30s">
+		<input>rawWrites</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawWrites]]>
+		</jexl-formula>
+	</result>
+	<result name="Deletes" unit="nb" time-window="30s">
+		<input>rawDeletes</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawDeletes]]>
+		</jexl-formula>
+	</result>
+	<result name="Total" unit="nb" time-window="30s">
+		<input>rawTotal</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawTotal]]>
+		</jexl-formula>
+	</result>
+	<result name="ReadLatency" unit="ms" time-window="30s">
+		<input>rawReadLatencyMS</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawReadLatencyMS]]>
+		</jexl-formula>
+	</result>
+	<result name="WriteLatency" unit="ms" time-window="30s">
+		<input>rawWriteLatencyMS</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawWriteLatencyMS]]>
+		</jexl-formula>
+	</result>
+	<result name="DeleteLatency" unit="ms" time-window="30s">
+		<input>rawDeleteLatencyMS</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawDeleteLatencyMS]]>
+		</jexl-formula>
+	</result>
+	<result name="Uptime" unit="s" time-window="30s">
+		<input>rawUptimeMS</input>
+		<group-by>datagrp</group-by>
+		<group-by>sitename</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Service'</filter>
+		<jexl-formula>
+			<![CDATA[rawUptimeMS/1000]]>
+		</jexl-formula>
+	</result>
+	<!-- 
+		Metrics for Tenant
+	-->
+	<result name="ObjectCount" unit="nb" time-window="30s">
+		<input>num_objects</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Tenant'</filter>
+		<jexl-formula>
+			<![CDATA[num_objects]]>
+		</jexl-formula>
+	</result>
+	<result name="ObjectCapacityUser" unit="GB" time-window="30s">
+		<input>object_size_user</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Tenant'</filter>
+		<jexl-formula>
+			<![CDATA[object_size_user/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="UsedCapacity" unit="GB" time-window="30s">
+		<input>object_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Tenant'</filter>
+		<jexl-formula>
+			<![CDATA[object_size/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="Capacity" unit="GB" time-window="30s">
+		<input>total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Tenant'</filter>
+		<jexl-formula>
+			<![CDATA[total_size/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="30s">
+		<input>toremove_freememory</input>
+		<input>object_size</input>
+		<input>total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Tenant'</filter>
+		<jexl-formula>
+			<![CDATA[(total_size - object_size)/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="30s">
+		<input>toremove_currentutil</input>
+		<input>object_size</input>
+		<input>total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Tenant'</filter>
+		<jexl-formula>
+			<![CDATA[total_size == 0 ? 0 : 100*(object_size/total_size)]]>
+		</jexl-formula>
+	</result>	
+	<result name="AvgObjectCapacity" unit="MB" time-window="30s">
+		<input>average_object_capacity</input>
+		<input>num_objects</input>
+		<input>object_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Tenant'</filter>
+		<jexl-formula>
+			<![CDATA[num_objects == 0 ? 0 : (object_size/(num_objects*1024*1024))]]>
+		</jexl-formula>
+	</result>
+	<result name="MetaDataSize" unit="GB" time-window="30s">
+		<input>metadata_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-Tenant'</filter>
+		<jexl-formula>
+			<![CDATA[metadata_size/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+
+	<!-- 
+		Metrics for SubTenant
+	-->
+	<result name="ObjectCount" unit="nb" time-window="30s">
+		<input>num_objects</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-SubTenant'</filter>
+		<jexl-formula>
+			<![CDATA[num_objects]]>
+		</jexl-formula>
+	</result>
+	<result name="ObjectCapacityUser" unit="GB" time-window="30s">
+		<input>object_size_user</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-SubTenant'</filter>
+		<jexl-formula>
+			<![CDATA[object_size_user/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="UsedCapacity" unit="GB" time-window="30s">
+		<input>object_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-SubTenant'</filter>
+		<jexl-formula>
+			<![CDATA[object_size/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="AvgObjectCapacity" unit="MB" time-window="30s">
+		<input>average_object_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-SubTenant'</filter>
+		<jexl-formula>
+			<![CDATA[average_object_capacity/(1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="MetaDataSize" unit="GB" time-window="30s">
+		<input>metadata_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-SubTenant'</filter>
+		<jexl-formula>
+			<![CDATA[metadata_size/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="Capacity" unit="GB" time-window="30s">
+		<input>total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-SubTenant'</filter>
+		<jexl-formula>
+			<![CDATA[total_size/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="30s">
+		<input>toremove_freememory</input>
+		<input>object_size</input>
+		<input>total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-SubTenant'</filter>
+		<jexl-formula>
+			<![CDATA[(total_size - object_size)/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="30s">
+		<input>toremove_currentutil</input>
+		<input>object_size</input>
+		<input>total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-SubTenant'</filter>
+		<jexl-formula>
+			<![CDATA[total_size == 0 ? 0 : 100*(object_size/total_size)]]>
+		</jexl-formula>
+	</result>
+	<result name="InstanceUtilization" unit="%" time-window="30s">
+		<input>percent_total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='ATMOS-SubTenant'</filter>
+		<jexl-formula>
+			<![CDATA[percent_total_size]]>
+		</jexl-formula>
+	</result>
+	<!-- Metrics for UID-->
+	<result name="ObjectCount" unit="nb" time-window="30s">
+		<input>num_objects</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Users'</filter>
+		<jexl-formula>
+			<![CDATA[num_objects]]>
+		</jexl-formula>
+	</result>
+	<result name="ObjectCapacityUser" unit="GB" time-window="30s">
+		<input>object_size_user</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Users'</filter>
+		<jexl-formula>
+			<![CDATA[object_size_user/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="UsedCapacity" unit="GB" time-window="30s">
+		<input>object_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Users'</filter>
+		<jexl-formula>
+			<![CDATA[object_size/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="AvgObjectCapacity" unit="MB" time-window="30s">
+		<input>average_object_capacity</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Users'</filter>
+		<jexl-formula>
+			<![CDATA[average_object_capacity/(1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="MetaDataSize" unit="GB" time-window="30s">
+		<input>metadata_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Users'</filter>
+		<jexl-formula>
+			<![CDATA[metadata_size/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="Capacity" unit="GB" time-window="30s">
+		<input>total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Users'</filter>
+		<jexl-formula>
+			<![CDATA[total_size/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="30s">
+		<input>toremove_freememory</input>
+		<input>object_size</input>
+		<input>total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Users'</filter>
+		<jexl-formula>
+			<![CDATA[(total_size - object_size)/(1024*1024*1024)]]>
+		</jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="30s">
+		<input>toremove_currentutil</input>
+		<input>object_size</input>
+		<input>total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Users'</filter>
+		<jexl-formula>
+			<![CDATA[total_size == 0 ? 0 : 100*(object_size/total_size)]]>
+		</jexl-formula>
+	</result>
+	<result name="InstanceUtilization" unit="%" time-window="30s">
+		<input>percent_total_size</input>
+		<group-by>datagrp</group-by>
+		<group-by>tenantnm</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='ATMOS-Users'</filter>
+		<jexl-formula>
+			<![CDATA[percent_total_size]]>
+		</jexl-formula>
+	</result>
+</config>

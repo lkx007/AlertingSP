@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns="http://www.watch4net.com/APG/Web/XmlTree1" name="VMAX - Performance Dashboard" singleNodeId="b" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <property xsi:type="NodeFilter" filterExpression="source=='VMAX-Collector'"/>
+  <property xsi:type="ReportPreferences" displayMode="3" defaultMode="mix"/>
+  <property xsi:type="DisplayPreferences" displayPolicy="hideIfLeafOrEmpty"/>
+  <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+  <report-layout hspan="*:#W4N-EMC-VMAX-STORAGEGROUP-SUMMARY=3,*:#W4N-EMC-VMAX-DEVICE-PERFORMANCE=3,*:#W4N-EMC-VMAX-FRONTEND-DIRECTOR-SUMMARY=3" order="*:#W4N-EMC-VMAX-STORAGEGROUP-SUMMARY=6,*:#W4N-EMC-VMAX-DEVICE-PERFORMANCE=4,*:#W4N-EMC-VMAX-THROUGHPUT=2,*:#W4N-EMC-VMAX-REQUESTS=1,*:#W4N-EMC-VMAX-CACHEWP=3,*:#W4N-EMC-VMAX-FRONTEND-DIRECTOR-SUMMARY=5"/>
+  <link singleNodeId="870d13d0" linkID="*:#W4N-EMC-VMAX-REQUESTS" order="0"/>
+  <link singleNodeId="335ffc0d" linkID="*:#W4N-EMC-VMAX-THROUGHPUT" order="1"/>
+  <link singleNodeId="5b8ca72b" linkID="*:#W4N-EMC-VMAX-CACHEWP" order="2"/>
+  <link singleNodeId="51ce6942" linkID="*:#W4N-EMC-VMAX-FRONTEND-DIRECTOR-SUMMARY" order="3"/>
+  <link singleNodeId="c0a76e92" linkID="*:#W4N-EMC-VMAX-STORAGEGROUP-SUMMARY" order="4"/>
+  <link singleNodeId="c62720cb" linkID="*:#W4N-EMC-VMAX-DEVICE-PERFORMANCE"/>
+</node>

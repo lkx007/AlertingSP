@@ -1,0 +1,18 @@
+[+gateway]
+host = hostname
+port = port
+username = string
+password = password
+
+[alert.webservice]
+gateway
+category = string
+module = string
+instance = string
+
+[alerts]
+portlinkutilization.enable = boolean
+
+[main]
+alert.webservice
+alerts

@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Built-By: [Watch4Net, Watch4net]
+Description: SolutionPack for EMC Centera
+Report-Pack: EMC Centera
+Created-By: [Watch4Net, Watch4net]
+Version: 1.1
+
+Name: EMC Centera
+Hooks: #W4N_SP
+Description: SolutionPack for EMC Centera
+Version: 1.1
+

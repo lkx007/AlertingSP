@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Built-By: EMC Corporation
+Report-Pack: MSS SRM Health Alerts
+Description: MSS SRM Health Alerts
+Version: 1.0
+Created-By: EMC Corporation
+
+Name: Device Details
+Description: Device Details last data collection time value for alerti
+ ng
+Version: 1.0
+Hooks: #W4N_SP+
+

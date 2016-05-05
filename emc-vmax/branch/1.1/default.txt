@@ -1,0 +1,1 @@
+symapi.connect_type.default=remote

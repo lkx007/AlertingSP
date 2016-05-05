@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<config xmlns="http://www.watch4net.com/Collecting/InlineCalculationFilter1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/Collecting/InlineCalculationFilter1 inline-calculation-filter.xsd">
+	<result name="RAIDOverheadCapacity" unit="GB" time-window="300s">
+		<input>ConfiguredRawCapacity</input>
+		<input>ConfiguredUsableCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='VNX-SAF' &amp; !parttype</filter>
+		<jexl-formula>
+			<![CDATA[ConfiguredRawCapacity - ConfiguredUsableCapacity]]>
+		</jexl-formula>
+	</result>
+	<!--Set 'UnusableCapacity' at the device level. If the value is >= 0, do the arithmetic; otherwise set to NaN-->
+	<result name="UnusableCapacity" unit="GB" time-window="300s">
+		<input>RawCapacity</input>
+		<input>ConfiguredRawCapacity</input>
+		<input>UnconfiguredCapacity</input>
+		<input>HotSpareCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<filter>datagrp=='VNX-SAF' &amp; !parttype</filter>
+		<jexl-formula>
+			<![CDATA[(RawCapacity - UnconfiguredCapacity - ConfiguredRawCapacity - HotSpareCapacity) >= 0 ? (RawCapacity - UnconfiguredCapacity - ConfiguredRawCapacity - HotSpareCapacity) : NaN]]>
+		</jexl-formula>
+	</result>
+	<!-- Set 'UsedCapacity' for THICK LUNs, excluding Hot Spare LUNs -->
+	<result name="UsedCapacity" unit="GB" time-window="300s">
+		<input keep="true">Capacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<group-by>partid</group-by>
+		<filter>parttype=='LUN' &amp; dgstype=='Thick' &amp; private=='NO' &amp; !dgraid='Hot Spare' &amp; name=='Capacity' &amp; source=='VNXBlock-Collector'</filter>
+		<jexl-formula>
+			<![CDATA[Capacity *1]]>
+		</jexl-formula>
+	</result>
+	<!-- Set 'UsedCapacity' for bound THIN LUNs (dgroup is present)-->
+	<result name="UsedCapacity" unit="GB" time-window="300s">
+		<input keep="true">ConsumedCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<group-by>partid</group-by>
+		<filter>parttype=='LUN' &amp; dgstype=='Thin' &amp; private=='NO' &amp; dgroup &amp; name=='ConsumedCapacity' &amp; source=='VNXBlock-Collector'</filter>
+		<jexl-formula>
+			<![CDATA[((ConsumedCapacity > 0) ? ConsumedCapacity : 0)]]></jexl-formula>
+	</result>
+	<!-- Set 'UsedCapacity' for unbound THIN LUNs (dgroup is NOT present)-->
+	<result name="UsedCapacity" unit="GB" time-window="300s">
+		<input keep="true">Capacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<group-by>partid</group-by>
+		<filter>parttype=='LUN' &amp; dgstype=='Thin' &amp; private=='NO' &amp; !dgroup &amp; name=='Capacity' &amp; source=='VNXBlock-Collector'</filter>
+		<jexl-formula>
+			<![CDATA[Capacity * 0]]>
+		</jexl-formula>
+	</result>
+	<!-- Set 'UsedCapacity' for SYSTEM RESOURCES, excluding Hot Spare LUNS and Pool Contributors-->
+	<result name="UsedCapacity" unit="GB" time-window="300s">
+		<input keep="true">Capacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<group-by>partid</group-by>
+		<filter>parttype=='LUN' &amp; private=='YES' &amp; !ispolctr=='1' &amp; !dgraid='Hot Spare' &amp; name=='Capacity' &amp; source=='VNXBlock-Collector'</filter>
+		<jexl-formula>
+			<![CDATA[Capacity *1]]>
+		</jexl-formula>
+	</result>
+	<!-- Set 'UsedCapacity' for Pool Contributor LUN (exclude replica pool contributors)-->
+	<result name="UsedCapacity" unit="GB" time-window="300s">
+		<input keep="true">Capacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<group-by>partid</group-by>
+		<filter>parttype=='LUN' &amp; ispolctr=='1' &amp; !pooltype=='Local Replica Mirror Pool' &amp; !pooltype=='Remote Replica Mirror Pool' &amp; source=='VNXBlock-Collector'</filter>
+		<jexl-formula>
+			<![CDATA[Capacity * 0]]>
+		</jexl-formula>
+	</result>
+	<!-- Set 'UsedCapacity' for Replica Pool Contributor LUNs-->
+	<result name="UsedCapacity" unit="GB" time-window="300s">
+		<input keep="true">Capacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<group-by>partid</group-by>
+		<filter>parttype=='LUN' &amp; ispolctr=='1' &amp; (pooltype=='Local Replica Mirror Pool' | pooltype=='Remote Replica Mirror Pool') &amp; source=='VNXBlock-Collector'</filter>
+		<jexl-formula>
+			<![CDATA[Capacity * 1]]>
+		</jexl-formula>
+	</result>
+	<!-- Set 'PresentedCapacity' to Capacity, excluding poolluns , metamembers, and metahead-->
+	<result name="PresentedCapacity" unit="GB" time-window="300s">
+		<input>Capacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>partid</group-by>
+		<filter>parttype=='LUN' &amp; !dgtype=='Storage Pool' &amp; !ismetam=='1' &amp; !ismetah=='1' &amp; name=='Capacity'</filter>
+		<jexl-formula>Capacity</jexl-formula>
+	</result>
+	<!-- Set 'UsedCapacity' for RAID Group-->
+	<result name="UsedCapacity" unit="GB" time-window="300s">
+		<input>Capacity</input>
+		<input>FreeCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>parttype</group-by>
+		<group-by>part</group-by>
+		<filter>
+			<![CDATA[datagrp=='VNXBlock-RAIDGroup']]>
+		</filter>
+		<jexl-formula>
+			<![CDATA[Capacity - FreeCapacity]]>
+		</jexl-formula>
+	</result>
+	<!-- Set 'FreeCapacity' to 0 for replica pools-->
+	<result name="FreeCapacity" unit="GB" time-window="300s">
+		<input>Capacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>pooltype</group-by>
+		<filter>parttype=='Storage Pool' &amp; (pooltype=='Local Replica Mirror Pool' | pooltype=='Remote Replica Mirror Pool')</filter>
+		<jexl-formula>0</jexl-formula>
+	</result>
+	<!-- Set 'OversubscribedCapacity' to 0 for snap pools and replica pools-->
+	<result name="OversubscribedCapacity" unit="GB" time-window="300s">
+		<input>Capacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>pooltype</group-by>
+		<filter>parttype=='Storage Pool' &amp; (pooltype=='Snap Pool' | pooltype=='Local Replica Mirror Pool' | pooltype=='Remote Replica Mirror Pool')</filter>
+		<jexl-formula>0</jexl-formula>
+	</result>
+	<!-- Set 'UsedCapacity' to Capacity replica pools-->
+	<result name="UsedCapacity" unit="GB" time-window="300s">
+		<input>Capacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>parttype</group-by>
+		<group-by>pooltype</group-by>
+		<filter>parttype=='Storage Pool' &amp; (pooltype=='Local Replica Mirror Pool' | pooltype=='Remote Replica Mirror Pool')</filter>
+		<jexl-formula>Capacity</jexl-formula>
+	</result>
+</config>

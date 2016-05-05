@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:spatial-aggregation-filter-config xmlns:tns="http://www.example.org/spatial-aggregation-filter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/spatial-aggregation-filter ../../spatial-aggregation-filter/src/conf/spatial-aggregation-filter.xsd ">
+	<tns:spatial-aggregation aggregate-name="LUNCapacity" aggregation="sum" name="Capacity" forward-all-properties-from-all-rawvalues="false" send-all-original-raw-values="true" time-span="15" watchdog-period="15">
+		<tns:group-by>device</tns:group-by>
+		<tns:remove-property>part</tns:remove-property>
+		<tns:remove-property>serialnb</tns:remove-property>
+		<tns:remove-property>partsn</tns:remove-property>
+		<tns:remove-property>pdname</tns:remove-property>
+		<tns:remove-property>config</tns:remove-property>
+		<tns:remove-property>poolname</tns:remove-property>
+	</tns:spatial-aggregation>
+</tns:spatial-aggregation-filter-config>

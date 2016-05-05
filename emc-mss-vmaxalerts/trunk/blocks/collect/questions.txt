@@ -1,0 +1,40 @@
+#EXPORT .vmax AS device(serialnb)
+
+[+storage.timeseries.socketconnector]
+host = hostname
+port = port
+
+[+alert.timeseries.socketconnector]
+host = hostname
+port = port
+
+
+[+gateway]host = hostnameport = portusername = stringpassword = password
+
+[symapi]
+path = string ?
+connect_type = string(remote, local)
+if connect_type == 'remote'
+  connect = string
+fi
+severity = string(v,warn,error,fatal)
+
+[vmax]
+serialnb = string
+
+
+[main]
+# use_failover is defined in storage to avoid redefining timeseries which would fail
+storage.failover = boolean
+storage.timeseries.socketconnector
+
+# explicit condition since we can't use ? which would redefine timeseries and fail
+use_alert = boolean
+if use_alert
+  alert.timeseries.socketconnector
+fi
+
+symapi
+vmax *
+topology.pollingperiod = integer[120,3600]
+

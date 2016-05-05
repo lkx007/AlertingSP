@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter"
+ 			   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 			   xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+	<!-- W4N/AVA: change to simplify processing
+	<handling-configuration id="wwn2wwnn-wwpn">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn='%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-peh-vnxblock-wwn.xml</parameter>
+		</handler>
+	</handling-configuration>
+	-->
+
+		<handling-configuration id="RemoveNodeWWN">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn &amp; parttype='Port'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-peh-vnxblock-remove-nodewwn.xml</parameter>
+		</handler>
+	</handling-configuration>
+	
+	<handling-configuration id="RemoveColumns">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn|alun|plun</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-peh-vnxblock-remove-columns.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!-- 
+	  There is typo on  the vnxblock output. Extra space after enclosure  
+	  Example: "Bus 1 Enclosure 1  Disk 0"
+	-->
+	<handling-configuration id="rewrite-disk-part">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype='Disk'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-peh-vnxblock-diskpart.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="extract-lun-id">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype='LUN'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-peh-vnxblock-lunid.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="remove-removeme">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">removeme</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-peh-vnxblock-removeme.xml</parameter>
+		</handler>
+	</handling-configuration>	
+	<!--
+	<handling-configuration id="renamepartdesc">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">datagrp=='VNXBlock-FASTCACHE' &amp; ( name=='Flushed' | name=='Dirty')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+			<parameter name="file" type="file">conf/vhf-peh-vnxblock-renamepartdesc.xml</parameter>
+		</handler>
+	</handling-configuration>
+	-->
+	<handling-configuration id="WWN_UCase_a">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">a</parameter>
+			<parameter name="replacement">A</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="WWN_UCase_b">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">b</parameter>
+			<parameter name="replacement">B</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="WWN_UCase_c">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">c</parameter>
+			<parameter name="replacement">C</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="WWN_UCase_d">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">d</parameter>
+			<parameter name="replacement">D</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="WWN_UCase_e">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">e</parameter>
+			<parameter name="replacement">E</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="WWN_UCase_f">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn &amp; partsn='%f%'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">f</parameter>
+			<parameter name="replacement">F</parameter>
+		</handler>
+	</handling-configuration>	
+	<handling-configuration id="scale-VNX-LUNS-TIERS">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">datagrp=='VNXBlock-LUNs-Tier' &amp; tierdist</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-pah-scale-VNX-LUNS-TIERS.xml</parameter>
+		</handler>
+	</handling-configuration>
+
+	<!--Replace "/s/sEnabled" in property spindles with "|"-->
+	<handling-configuration id="Spindles-format-Enabled-TwoSpaces">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">spindles</parameter>
+                </matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">spindles</parameter>
+			<parameter name="regex">  Enabled</parameter>
+			<parameter name="replacement">|</parameter>
+		</handler>
+	</handling-configuration>
+
+	<!--Replace "/sEnabled" in property spindles with "|"-->
+	<handling-configuration id="Spindles-format-Enabled-OneSpace">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">spindles</parameter>
+                </matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">spindles</parameter>
+			<parameter name="regex"> Enabled</parameter>
+			<parameter name="replacement">|</parameter>
+		</handler>
+	</handling-configuration>
+
+	<!--Replace "/s/sDisabled" in property spindles with "|"-->
+	<handling-configuration id="Spindles-format-Disabled-TwoSpaces">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">spindles</parameter>
+                </matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">spindles</parameter>
+			<parameter name="regex">  Disabled</parameter>
+			<parameter name="replacement">|</parameter>
+		</handler>
+	</handling-configuration>
+
+	<!--Replace "/sDisabled" in property spindles with "|"-->
+	<handling-configuration id="Spindles-format-Disabled-OneSpace">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">spindles</parameter>
+                </matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">spindles</parameter>
+			<parameter name="regex"> Disabled</parameter>
+			<parameter name="replacement">|</parameter>
+		</handler>
+	</handling-configuration>
+
+	<!--Replace "  Bus" in property spindles with "Bus"-->
+	<handling-configuration id="Spindles-format-Bus">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">spindles</parameter>
+                </matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">spindles</parameter>
+			<parameter name="regex"> Bus</parameter>
+			<parameter name="replacement">Bus</parameter>
+		</handler>
+	</handling-configuration>
+
+	<!--Replace "  Disk" in property spindles with " Disk"-->
+	<handling-configuration id="Spindles-format-Disk">
+                <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+                        <parameter name="filter">spindles</parameter>
+                </matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">spindles</parameter>
+			<parameter name="regex">  Disk</parameter>
+			<parameter name="replacement"> Disk</parameter>
+		</handler>
+	</handling-configuration>
+
+	<!--Create new property named 'hexid' which contains the same value as 'partid' for LUN-->
+	<handling-configuration id="Create-LUN-hexid">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">parttype=='LUN'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyExtractionHandler">
+            <parameter name="file" type="file">conf/peh-create-LUN-hexid.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+    <!--Convert 'hexid' property from decimal to hexadecimal and pad with leading 0's so it's always 5 characters-->
+    <handling-configuration id="LUNid-Dec-To-Hex">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">hexid &amp; parttype=='LUN'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.DecimalConverterHandler">
+            <parameter name="converter">com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.decimalconverter.HexDecimalConverter</parameter>
+            <parameter name="property">hexid</parameter>
+            <parameter name="zero-padding">5</parameter>
+        </handler>
+    </handling-configuration>
+
+	<!--Create new metric named 'RawCapacity' for VNXe KH for pools that is sum of all the disks for the pool -->
+	<handling-configuration id="CREATE-POOLRAWCAPACITY">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+            <parameter name="filter">source=='VNXUnity-Collector' &amp; parttype=='Disk' &amp; name=='Capacity'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+            <parameter name="file" type="file">conf/sah-PoolRawCapacity.xml</parameter>
+        </handler>
+    </handling-configuration>
+
+</configuration>

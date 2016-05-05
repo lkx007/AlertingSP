@@ -1,0 +1,69 @@
+!!! Strict
+%html
+  %head
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}/
+    -#%link{:href => "../media/images/favicon.ico", :rel => "shortcut icon", :type => "image/ico"}/
+    %title="Test Results for #{options[:host]}"
+    %style{:title => "currentStyle", :type => "text/css"}
+      -%w{demo_page demo_table}.each do |cssfile|
+        @import "../media/css/#{cssfile}.css";
+    -%w{jquery jquery.dataTables.min custom}.each do |jsfile|
+      %script{src: "../media/js/#{jsfile}.js", type: "text/javascript"}
+  %body#dt_example
+    #container
+      .full_width.big
+        Test results
+      %h1 Summary
+      %table.display{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+        %thead
+          %tr
+            -%w{Count Passed Skipped Failed Error Assertions Time Percentage}.each do |x|
+              %th=x
+        %tbody
+          %tr
+            -%w{count passed skips failures errors assertions}.map(&:to_sym).each do |x|
+              %td.center=self.send x
+            %td.center=sprintf "%.2fs" % [self.total_time]
+            %td.center=sprintf "%.2f%" % [100*(0.0+passed+skips)/count]
+      %h1 Test Results
+      #demo
+        %table#example.display{:border => "0", :cellpadding => "0", :cellspacing => "0"}
+          %thead
+            %tr
+              -%w{Module Class Name Status Time Hidden1 Hidden2 Hidden3 Hidden4}.each do |x|
+                %th=x
+          %tbody
+            -p_to_css = { passed: 'gradeA', skipped: 'gradeC', failed: 'gradeX', error: 'gradeU'}
+            -self.results.each do |x|
+              %tr{:class => p_to_css[x.result]}
+                -(kmod,kclass)=*x.class.name.split('::')
+                %td=kmod
+                %td=kclass
+                %td=x.name
+                %td.center=x.result
+                %td{align:'right'}=sprintf "%.2f" % [x.time*1000]
+                %td=x.failures.first.location.split(':')[0] rescue 'n/a'
+                %td=x.failures.first.location.split(':')[1] rescue 'n/a'
+                %td=x.failures.first.to_s.encode xml: :text
+                %td
+                  %a{href: sprintf("../doc/tests/%s/%s.html#method-i-%s",kmod,kclass,x.name)}='Doc'
+          %tfoot
+            %tr
+              %th
+              -4.times do
+                %th.wantselect
+              -4.times do
+                %th
+      .spacer
+      -#%h1 Test Details
+      -#%pre
+        :preserve
+          aaaa
+      #footer.clear{:style => "text-align:center;"}
+        %p
+        %span{:style => "font-size:12px;"}
+          You can find the tests documentation
+          %a{href: "../doc/index.html"} here
+          %br/
+          If it doesn't exist, you can generate it with
+          %tt gendoc.rb

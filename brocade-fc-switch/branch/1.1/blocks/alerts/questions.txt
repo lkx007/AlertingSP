@@ -1,0 +1,21 @@
+[+gateway]
+host = hostname
+port = port
+username = string
+password = password
+
+[alert.webservice]
+gateway
+category = string
+module = string
+instance = string
+
+[alerts]
+defaultrecipient = string
+
+[brocade]
+alerts
+
+[main]
+alert.webservice
+brocade

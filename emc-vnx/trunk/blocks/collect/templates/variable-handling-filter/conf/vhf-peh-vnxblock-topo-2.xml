@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler ./property-extraction-handler.xsd">
+  <properties>
+
+    <!-- Topo Backend filter out the first part of uid as second part is port wwn ... -->
+
+    <regex-property name="part" keep="true">
+        <regex>(..:..:..:..:..:..:..:..):(..):(..):(..):(..):(..):(..):(..):(..)$</regex>
+        <part name="part" value="${2}${3}${4}${5}${6}${7}${8}${9}" />
+    </regex-property>
+
+  </properties>
+</config>

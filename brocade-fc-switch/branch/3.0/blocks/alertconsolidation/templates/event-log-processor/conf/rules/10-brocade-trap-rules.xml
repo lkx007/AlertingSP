@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules xmlns="http://www.watch4net.com/Events/EventLogProcessor" on-failure="continue">
+    <!-- File Parsing will be skipped if this rule does not match: -->
+    <regex field="enterprise" pattern=".1.3.6.1.4.1.1588.(.*)">
+        <extraction name="enterpriseKey" />
+    </regex>
+    <!-- brocade generic event processing -->
+    <copy field="sourceIP" to="device"/>
+    <copy field="sourceeventtype" to="eventname"/>
+    <!--Generating Alert Description for swFCPortScn -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="swFCPortScn" type="STRING" />
+		<format name="eventtext" pattern="Port Index {0} changed state to {1}. Port Name: {2}" to="fullmsg" type="message">
+			<field name="swFCPortIndex" type="STRING" />
+			<field name="swFCPortOpStatus" type="STRING" />
+			<field name="part" type="STRING" />
+		</format>
+    </rules>
+    <!--Generating Alert Description for swFabricWatchTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="swFabricWatchTrap" type="STRING" />
+		<format name="eventtext" pattern="Threshold {0} in Class/Area {1} at index {2} has generated event {3} with {4} on {5}. This event is {6}.This event label is {7}, event severity level is {8}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="swFwClassAreaIndex" type="STRING" />
+			<field name="swFwThresholdIndex" type="STRING" />
+			<field name="swFwLastEvent" type="STRING" />
+			<field name="swFwLastEventVal" type="STRING" />
+			<field name="swFwLastEventTime" type="STRING" />
+			<field name="swFwLastState" type="STRING" />
+			<field name="swFwLabel" type="STRING" />
+			<field name="severity" type="STRING" />
+		</format>
+    </rules>
+    <!-- swTrackChangesTrap-->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="swTrackChangesTrap" type="STRING" />
+		<format name="eventtext" pattern="{0} generated this alert." to="fullmsg" type="message">
+			<field name="swTrackChangesInfo" type="STRING" />
+		</format>
+    </rules>
+    <!-- swFabricSegmentTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="swFabricSegmentTrap" type="STRING" />
+		<format name="eventtext" pattern="The trap has been sent for tracking segmentation changes. The port {0} has generated event. This events port index is {1}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="swFCPortIndex" type="STRING" />
+		</format>
+    </rules>
+    <!-- swPortMoveTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="swPortMoveTrap" type="STRING" />
+		<format name="eventtext" pattern="This trap is sent when the virtual ports are moved from one switch to another. The list of ports and its WWN when the ports are moved from one switch to another is {1}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="swPortList" type="STRING" />
+		</format>
+    </rules>
+    <!--fruStatusChanged -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="fruStatusChanged" type="STRING" />
+		<format name="eventtext" pattern="The Fru {0} status has been changed to {1}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="fruStatus" type="STRING" />
+		</format>
+    </rules>
+    <!-- cpStatusChanged -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cpStatusChanged" type="STRING" />
+		<format name="eventtext" pattern="The Control Processor status of swID {0} has been changed to {2}. The {1} event generated this alert." to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="cpLastEvent" type="STRING" />
+			<field name="cpStatus" type="STRING" />
+		</format>
+    </rules>
+    <!-- fruHistoryTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="fruHistoryTrap" type="STRING" />
+		<format name="eventtext" pattern="Fru {0} is {2} in Class/Area {1} at part number {4} and serial number {6} and unit number {0} has generated event at {3}. tNum is {5}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="fruHistoryClass" type="STRING" />
+			<field name="fruHistoryEvent" type="STRING" />
+			<field name="fruHistoryTime" type="STRING" />
+			<field name="fruHistoryFactoryPar" type="STRING" />
+			<field name="tNum" type="STRING" />
+			<field name="fruHistoryFactorySerialNum" type="STRING" />
+		</format>
+    </rules>
+    <!--linkRNIDDeviceRegistration -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="linkRNIDDeviceRegistration" type="STRING" />
+		<format name="eventtext" pattern="A device registered with the switch with Port WWN {0}, Index into the nodeRNIDTable {1}, WWN of the connected port {2}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="nodeRNIDIndex" type="STRING" />
+			<field name="nodeRNIDConnectedPortWWN" type="STRING" />
+		</format>
+    </rules>
+    <!--linkRNIDDeviceDeRegistration -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="linkRNIDDeviceDeRegistration" type="STRING" />
+		<format name="eventtext" pattern="A device deregistered with the switch with Port WWN {0}, Index into the nodeRNIDTable {1} , WWN of the connected port {2}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="nodeRNIDIndex" type="STRING" />
+			<field name="nodeRNIDConnectedPortWWN" type="STRING" />
+		</format>
+    </rules>
+    <!--linkLIRRListenerAdded -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="linkLIRRListenerAdded" type="STRING" />
+		<format name="eventtext" pattern="A listener for link failure incident is added. WWN of the Listener port {0}, PID for the Listener port {1}, index into the LIRR table {2}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="lIRRListenerPID" type="STRING" />
+			<field name="lIRRIndex" type="STRING" />
+		</format>
+    </rules>
+    <!--linkLIRRListenerRemoved -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="linkLIRRListenerRemoved" type="STRING" />
+		<format name="eventtext" pattern="A listener for link failure incident was removed. WWN of the Listener port {0}, PID for the Listener port {1}, index into the LIRR table {2}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="lIRRListenerPID" type="STRING" />
+			<field name="lIRRIndex" type="STRING" />
+		</format>
+    </rules>
+    <!--linkRLIRFailureIncident -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="linkRLIRFailureIncident" type="STRING" />
+		<format name="eventtext" pattern="A link failure incident has occurred. The value of index into the LIRR table will be -2147483647 and PID for the Listener port will be 0 if there is nolistener for incident. Port WWN for RLIR Incident port {0},Index into the nodeRNIDTable {1},index into the LIRR table {2},RLIR Connected port WWN {3},Index into the RLIR table {4},RLIR Link failure type {5},PID for the Listener port {6}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="nodeRNIDIndex" type="STRING" />
+			<field name="lIRRIndex" type="STRING" />
+			<field name="rLIRConnectedPortWwn" type="STRING" />
+			<field name="rLIRIndex" type="STRING" />
+			<field name="rLIRLinkFailureType" type="STRING" />
+			<field name="lIRRListenerPID" type="STRING" />
+		</format>
+    </rules>
+    <!-- bdTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="bdTrap" type="STRING" />
+		<format name="eventtext" pattern="The trap is triggered because threshold is exceeded. Bd type {0},user port number {1},time window in seconds {2},bd threshold {3},aggregrate stats value {4},absolute value of aggregrate {5},average frame size transmitted {6}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="userPortNumber" type="STRING" />
+			<field name="bdWinAvgTime" type="STRING" />
+			<field name="bdThreshold" type="STRING" />
+			<field name="bdAggrStats" type="STRING" />
+			<field name="bdAbsoluteValue" type="STRING" />
+			<field name="bdAvgFrameSize" type="STRING" />
+		</format>
+    </rules>
+    <!-- bdClearTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="bdClearTrap" type="STRING" />
+		<format name="eventtext" pattern="The trap is triggered because latency or congestion bottleneck is cleared. Bd type {0},user port number {1},time window in seconds {2},bd threshold {3},aggregrate stats value {4},absolute value of aggregrate {5},average frame size transmitted {6}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="userPortNumber" type="STRING" />
+			<field name="bdWinAvgTime" type="STRING" />
+			<field name="bdThreshold" type="STRING" />
+			<field name="bdAggrStats" type="STRING" />
+			<field name="bdAbsoluteValue" type="STRING" />
+			<field name="bdAvgFrameSize" type="STRING" />
+		</format>
+    </rules>
+    <!-- LINKUP -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="linkup" type="STRING" />
+		<format name="eventtext" pattern="ifOperStatus {1} object for one of its communication links left the down state and transitioned into some other state (but not into the notPresent state). This other state is indicated by the included value of current operational state of the interface {1}.The Index is {0} and the desired state of the interface is {2}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="ifOperStatus" type="STRING" />
+			<field name="ifAdminStatus" type="STRING" />
+		</format>
+    </rules>
+    <!-- LINKDOWN -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="linkdown" type="STRING" />
+		<format name="eventtext" pattern="ifOperStatus {1} object for one of its communication links left the down state and transitioned into some other state (but not into the notPresent state).This other state is indicated by the included value of current operational state of the interface {1}.The Index is {0} and the desired state of the interface is {2}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="ifOperStatus" type="STRING" />
+			<field name="ifAdminStatus" type="STRING" />
+		</format>
+    </rules>
+    <!-- swIPv6ChangeTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="swIPv6ChangeTrap" type="STRING" />
+		<format name="eventtext" pattern="This trap is generated when an IPv6 address status change event occurs. It is generated only when IPv6 stateless state changes to the deprecation state and not for address change notification. The IPv6 address is {0} and the current status of the IPv6 address is {1} " to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="swIPv6Status" type="STRING" />
+		</format>
+    </rules>
+    <!-- swFabricReconfigTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="swFabricReconfigTrap" type="STRING" />
+		<format name="eventtext" pattern="The trap to be sent for tracking fabric reconfiguration. The current Fibre Channel domain ID of the switch is {0}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+		</format>
+    </rules>
+    <!-- swBrcdGenericTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="swBrcdGenericTrap" type="STRING" />
+		<format name="eventtext" pattern="This trap is sent for one of the following events: fabric change, device change, FAPWWN change, FDMI events.The type of notification by a single bit is {0}" to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+		</format>
+    </rules>
+    <!-- coldstartTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="coldstart" type="STRING" />
+        <set to="fullmsg" value="A coldStart trap signifies that the sending protocol entity is re-initializing itself such
+that the agent's configuration or the protocol entity implementation may be altered.
+This trap is generated for the following switch events: reboot, fastboot" />
+    </rules>
+<!-- warmstartTrap -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="warmstart" type="STRING" />
+        <set to="fullmsg" value="A warmStart trap signifies that the sending protocol entity is re-initializing itself such
+that neither the agent configuration nor the protocol entity implementation is altered.
+This trap is generated for the following switch events: firmwaredownload, hafailover" />
+    </rules>
+    <!-- event name key -->
+    <rules on-failure="continue">
+        <format name="Unique key attributes" pattern="{0}_{1}_{2}" to="name" type="message">
+            <field name="source" type="STRING"/>
+            <field name="device" type="STRING"/>
+            <field name="sourcedomainname" type="STRING"/>
+        </format>
+    </rules>
+    <rules on-failure="continue">
+        <exists name="Part condition check" field="part" allow-null="false" />
+        <not-equals name="Check for part field" field="part" value="" type="STRING" />
+        <format name="part key attributes" pattern="{0}_{1}" to="name" type="message">
+            <field name="name" type="STRING"/>
+            <field name="part" type="STRING"/>
+        </format>
+    </rules>
+    <rules on-failure="continue">
+        <equals name="checkfortrap" field="sourcedomainname" value="swEventTrap" type="STRING" />
+            <regex name="Extracts message code" field="fullmsg" pattern="^([\w\d-\s]{9})">
+                <extraction name="messagecodeextract" value="$1" />
+            </regex>
+    </rules>
+    <rules on-failure="continue">
+        <equals name="Match messages which type is ERROR" field="sourcedomainname" value="swEventTrap" type="STRING" />
+        <format name="Unique key attributes" pattern="{0}_{1}" to="name" type="message">
+            <field name="name" type="STRING"/>
+            <field name="messagecodeextract" type="STRING"/>
+       </format>
+    </rules>
+	<!-- swStateChangeTrap-->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="swStateChangeTrap" type="STRING" />
+		<format name="eventtext" pattern="Change in state of switch to {0}." to="fullmsg" type="message">
+			<field name="swOperStatus" type="STRING" />
+		</format>
+    </rules>
+    <!-- Unique Finalizer - Allow fixup things sending to Writer -->
+    <include name="Call Finalizer Rule" includes="99-Finalizer.xml"/>
+</rules>

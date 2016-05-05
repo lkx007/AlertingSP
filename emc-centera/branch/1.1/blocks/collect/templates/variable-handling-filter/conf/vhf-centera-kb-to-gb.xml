@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:config xmlns:tns="http://www.watch4net.com/property-arithmetic-handler" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/property-arithmetic-handler ../../src/conf/com/watch4net/apg/v2/collector/plugins/variablehandlingfilter/property-arithmetic-handler.xsd ">
+	<tns:output-value></tns:output-value>
+	<tns:input-value>metric</tns:input-value>
+	<tns:expression>(metric /  1048576)</tns:expression>
+</tns:config>

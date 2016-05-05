@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/CrossReferencingFilter" xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<!-- Get the hexid and luntagid propagated to all LUN metrics -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>hexid</get-property>
+		<get-property>luntagid</get-property>
+	</reference>
+	<!-- Propage isfast from storage pool to disk -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<match-on>serialnb</match-on>
+		<match-on>poolname</match-on>
+		<match-on>dgname</match-on>
+		<include-properties>true</include-properties>
+		<expiration>1800</expiration>
+		<get-property default="0">isfast</get-property>
+	</reference>
+	<!-- Propage LUN root* property based on Topology Service replica chain -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<expiration>1800</expiration>
+		<get-property default="N/A">rootwwn</get-property>
+		<get-property default="N/A">rootarry</get-property>
+		<get-property default="N/A">rootlun</get-property>
+	</reference>
+	<!-- Propage LUN purpose and issused based on Topology Service replica chain -->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>serialnb</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>purpose</get-property>
+		<get-property>isused</get-property>
+	</reference>
+</configuration>

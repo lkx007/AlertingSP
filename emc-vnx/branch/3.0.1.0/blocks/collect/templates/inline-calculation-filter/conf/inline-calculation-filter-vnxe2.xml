@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<config xmlns="http://www.watch4net.com/Collecting/InlineCalculationFilter1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/Collecting/InlineCalculationFilter1 inline-calculation-filter.xsd">
+	<result name="Full" unit="%" time-window="300s">
+		<input>Capacity</input>
+		<input>UsedCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<filter>source=='VNXUnity-Collector' &amp; parttype=='Storage Pool'</filter>
+		<jexl-formula><![CDATA[( ( UsedCapacity ) == 0 ) ? 0 : 100 * ( UsedCapacity / Capacity )]]></jexl-formula>
+	</result>
+	<result name="Subscribed" unit="%" time-window="300s">
+		<input>Capacity</input>
+		<input>SubscribedCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<filter>source=='VNXUnity-Collector' &amp; parttype=='Storage Pool'</filter>
+		<jexl-formula><![CDATA[( ( SubscribedCapacity ) == 0 ) ? 0 : 100 * ( SubscribedCapacity / Capacity )]]></jexl-formula>
+	</result>
+	<result name="OversubscribedCapacity" unit="GB" time-window="300s">
+		<input>Capacity</input>
+		<input>SubscribedCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<filter>source=='VNXUnity-Collector' &amp; parttype=='Storage Pool'</filter>
+		<jexl-formula><![CDATA[( ( SubscribedCapacity - Capacity ) <= 0 ) ? 0 : ( SubscribedCapacity - Capacity )]]></jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="300s">
+		<input>Capacity</input>
+		<input>UsedCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<filter>source=='VNXUnity-Collector' &amp; (parttype=='LUN' | parttype=='LUNGroup')</filter>
+		<jexl-formula><![CDATA[( (Capacity - UsedCapacity <=0) ? 0 : (Capacity - UsedCapacity) )]]></jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="300s">
+		<input>Capacity</input>
+		<input>UsedCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<filter>source=='VNXUnity-Collector' &amp; (parttype=='LUN' | parttype=='LUNGroup')</filter>
+		<jexl-formula><![CDATA[( ( UsedCapacity ) >= Capacity ) ? 100 : 100 * ( UsedCapacity / Capacity )]]></jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="300s">
+		<input>Capacity</input>
+		<input>UsedCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<filter>source=='VNXUnity-Collector' &amp; parttype=='FileSystem'</filter>
+		<jexl-formula><![CDATA[( (Capacity - UsedCapacity <=0) ? 0 : (Capacity - UsedCapacity) )]]></jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="300s">
+		<input>Capacity</input>
+		<input>UsedCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<filter>source=='VNXUnity-Collector' &amp; parttype=='FileSystem'</filter>
+		<jexl-formula><![CDATA[( ( UsedCapacity ) >= Capacity ) ? 100 : 100 * ( UsedCapacity / Capacity )]]></jexl-formula>
+	</result>
+	<result name="UsedCapacity" unit="GB" time-window="300s">
+		<input>Capacity</input>
+		<input>FreeCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<filter>source=='VNXUnity-Collector' &amp; parttype=='FAST Cache'</filter>
+		<jexl-formula><![CDATA[( (Capacity - FreeCapacity <=0) ? 0 : (Capacity - FreeCapacity) )]]></jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="300s">
+		<input>Capacity</input>
+		<input>FreeCapacity</input>
+		<group-by>sstype</group-by>
+		<group-by>serialnb</group-by>
+		<group-by>device</group-by>
+		<group-by>part</group-by>
+		<filter>source=='VNXUnity-Collector' &amp; parttype=='FAST Cache'</filter>
+		<jexl-formula><![CDATA[( ( FreeCapacity ) <= Capacity ) ? 0 : 100 * ( (Capacity - FreeCapacity) / Capacity )]]></jexl-formula>
+	</result>
+</config>

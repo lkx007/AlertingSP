@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			   xmlns="http://www.watch4net.com/CrossReferencingFilter"
+			   xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<!-- device level properties - key:ip -->
+	<reference>
+		<condition property="devtype">CAS-Cluster</condition>
+		<match-on>ip</match-on>
+		<match-on>datagrp</match-on>
+		<include-properties>true</include-properties>
+		<get-property>serialnb</get-property>
+	</reference>
+</configuration>

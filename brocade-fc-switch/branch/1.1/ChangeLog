@@ -1,0 +1,13 @@
+Brocade FC Switch
+=================
+
+Version 1.1 (reports 1.1, snmp 1.1, alert 1.1)
+ * Add charts on Buffer Credit Lost
+ * Add default alert on Credit Lost
+ * Fix typos
+ * New charts
+ * Reorg some reports with 'Situation to Watch' & 'Inventory'
+ * Cleanup MIB-2 collection & Brocade used MIB
+
+Version 1.0 (reports 1.0, snmp 1.0)
+ * Initial release, from ReportPack for Brocade

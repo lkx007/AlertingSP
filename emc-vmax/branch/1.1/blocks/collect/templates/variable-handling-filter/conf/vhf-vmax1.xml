@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+	<handling-configuration id="wwnALLCAPSa">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn &amp; partsn='%a%'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">a</parameter>
+			<parameter name="replacement">A</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="wwnALLCAPSb">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn &amp; partsn='%b%'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">b</parameter>
+			<parameter name="replacement">B</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="wwnALLCAPSc">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn &amp; partsn='%c%'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">c</parameter>
+			<parameter name="replacement">C</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="wwnALLCAPSd">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn &amp; partsn='%d%'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">d</parameter>
+			<parameter name="replacement">D</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="wwnALLCAPSe">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn &amp; partsn='%e%'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">e</parameter>
+			<parameter name="replacement">E</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="wwnALLCAPSf">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">partsn &amp; partsn='%f%'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+			<parameter name="property">partsn</parameter>
+			<parameter name="regex">f</parameter>
+			<parameter name="replacement">F</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="vmaxRemoveMe">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name=='RemoveMe' | (name=='RAIDOverHead' &amp; dgstype=='Thin')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler"/>
+	</handling-configuration>
+	<handling-configuration id="RAIDOverhead">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name=='RAIDOverHead' &amp; dgstype=='Thick' &amp; !(roc1=='')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-vmax-raidoverhead.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="SAH">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">parttype=='Disk' | name=='RAIDOverHead' | name=='Capacity' | parttype=='Port'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/vhf-vmax-sah.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="fixunitthroughput">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">unit=='KB/s' &amp; (name=='ReadThroughput' | name=='WriteThroughput')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-vmax-fixunitthroughput.xml</parameter>
+		</handler>
+	</handling-configuration>
+</configuration>

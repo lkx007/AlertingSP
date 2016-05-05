@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler ./property-extraction-handler.xsd" xmlns="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler">
+	<properties>
+		<regex-property name="partsn" keep="true">
+			<regex>(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..)</regex>
+			<part name="partsn" value="${1}${2}${3}${4}${5}${6}${7}${8}${9}${10}${11}${12}${13}${14}${15}${16}" />
+		</regex-property>
+	</properties>
+</config>

@@ -1,0 +1,15 @@
+vnx.type.default=unified
+vnx.block.userscope.default=global
+vnx.block.username.default=sysadmin
+vnx.block.password.default=sysadmin
+vnx.file.username.default=nasadmin
+vnx.file.password.default=nasadmin
+topology.pollingperiod.default=900
+perf.pollingperiod.default=300
+events.host.default=localhost
+events.port.default=52001
+#alerts
+emcvnx.alerts.sputilization.enable.default=false
+emcvnx.alerts.dirtypagesutilization.enable.default=false
+alertconsolidation.host.default=localhost
+alertconsolidation.port.default=2040

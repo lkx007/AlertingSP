@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>POOL_INFO_</name>
+			<leaf>
+				<name>PoolName</name>
+				<group>poolInfo-1</group>
+			</leaf>
+			<leaf>
+				<name>poolid</name>
+				<group>poolInfo-2</group>
+			</leaf>
+			<leaf>
+				<name>RaidType</name>
+				<group>poolInfo-3</group>
+			</leaf>
+			<leaf>
+				<name>percentfullthreshold</name>
+				<group>poolInfo-4</group>
+			</leaf>
+			<leaf>
+				<name>Description</name>
+				<group>poolInfo-5</group>
+			</leaf>
+			<leaf>
+				<name>raidtype</name>
+				<group>poolInfo-6</group>
+			</leaf>
+			<leaf>
+				<name>State</name>
+				<group>poolInfo-7</group>
+			</leaf>
+			<leaf>
+				<name>Status</name>
+				<group>poolInfo-8</group>
+			</leaf>
+			<leaf>
+				<name>currentoperation</name>
+				<group>poolInfo-9</group>
+			</leaf>
+			<leaf>
+				<name>currentoperationstate</name>
+				<group>poolInfo-10</group>
+			</leaf>
+			<leaf>
+				<name>currentoperationstatus</name>
+				<group>poolInfo-11</group>
+			</leaf>
+			<leaf>
+				<name>currentoperationpercentcompleted</name>
+				<group>poolInfo-12</group>
+			</leaf>
+			<leaf>
+				<name>rawcapacityblocks</name>
+				<group>poolInfo-13</group>
+			</leaf>
+			<leaf>
+				<name>RawCapacityGbs</name>
+				<group>poolInfo-14</group>
+			</leaf>
+			<leaf>
+				<name>usercapacityblocks</name>
+				<group>poolInfo-15</group>
+			</leaf>
+			<leaf>
+				<name>UserCapacityGbs</name>
+				<group>poolInfo-16</group>
+			</leaf>
+			<leaf>
+				<name>consumedcapacityblocks</name>
+				<group>poolInfo-17</group>
+			</leaf>
+			<leaf>
+				<name>ConsumedCapacityGbs</name>
+				<group>poolInfo-18</group>
+			</leaf>
+			<leaf>
+				<name>availablecapacityblocks</name>
+				<group>poolInfo-19</group>
+			</leaf>
+			<leaf>
+				<name>AvailableCapacityGbs</name>
+				<group>poolInfo-20</group>
+			</leaf>
+			<leaf>
+				<name>PercentFull</name>
+				<group>poolInfo-21</group>
+			</leaf>
+			<leaf>
+				<name>totalsubscribedcapacityblocks</name>
+				<group>poolInfo-22</group>
+			</leaf>
+			<leaf>
+				<name>TotalSubscribedCapacityGbs</name>
+				<group>poolInfo-23</group>
+			</leaf>
+			<leaf>
+				<name>PercentSubscribed</name>
+				<group>poolInfo-24</group>
+			</leaf>
+			<leaf>
+				<name>oversubscribedbyblocks</name>
+				<group>poolInfo-25</group>
+			</leaf>
+			<leaf>
+				<name>OverSubscribedByGbs</name>
+				<group>poolInfo-26</group>
+			</leaf>
+			<leaf>
+				<name>Disks</name>
+				<group>poolInfo-27</group>
+			</leaf>
+			<leaf>
+				<name>LUNs</name>
+				<group>poolInfo-28</group>
+			</leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Pool Name(.*?)(?=(Pool Name|$))</regex>
+			<sub-regex group="1">
+				<regex name="poolInfo">(?s):\s+(\p{Print}+)\r*\nPool ID:\s+(\d+)\r*\nRaid Type:\s+([\w ]+)\r*\nPercent Full Threshold:\s+(\d+)\r*\nDescription: (\p{Print}*)\r*\nDisk Type:\s+([\w ]+)\r*\nState:\s+([\w]+)\r*\nStatus:\s+([\w\(\)]+)\r*\nCurrent Operation:\s+([\w ]+)\r*\nCurrent Operation State:\s+([\w\/]+)\r*\nCurrent Operation Status:\s+([\w\/]+)\r*\nCurrent Operation Percent Completed:\s+([\d\.]+)\r*\nRaw Capacity \(Blocks\):\s+(\d+)\r*\nRaw Capacity \(GBs\):\s+([\d\.]+)\r*\nUser Capacity \(Blocks\):\s+(\d+)\r*\nUser Capacity \(GBs\):\s+([\d\.]+)\r*\nConsumed Capacity \(Blocks\):\s+(\d+)\r*\nConsumed Capacity \(GBs\):\s+([\d\.]+)\r*\nAvailable Capacity \(Blocks\):\s+(\d+)\r*\nAvailable Capacity \(GBs\):\s+([\d\.]+)\r*\nPercent Full:\s+([\d\.]+)\r*\nTotal Subscribed Capacity \(Blocks\):\s+(\d+)\r*\nTotal Subscribed Capacity \(GBs\):\s+([\d\.]+)\r*\nPercent Subscribed:\s+([\d\.]+)\r*\nOversubscribed by \(Blocks\):\s+(\d+)\r*\nOversubscribed by \(GBs\):\s+([\d\.]+)\nDisks:(.*)LUNs:\s+(.*).*</regex>
+			</sub-regex>
+		</regex-group-config> 
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Group</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@navisecclipath -h (host) -user @blockusername -password @blockpassword -scope @userscope storagepool -list</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+** storagepool -list  **
+Pool Name:  Pool_1_SG_VNX_1
+Pool ID:  0
+Raid Type:  Mixed
+Percent Full Threshold:  70
+Description:  
+Disk Type:  Mixed
+State:  Ready
+Status:  OK(0x0)
+Current Operation:  None
+Current Operation State:  N/A
+Current Operation Status:  N/A
+Current Operation Percent Completed:  0
+Raw Capacity (Blocks):  223770720720
+Raw Capacity (GBs):  106702.195
+User Capacity (Blocks):  194865537024
+User Capacity (GBs):  92919.129
+Consumed Capacity (Blocks):  6992953344
+Consumed Capacity (GBs):  3334.500
+Available Capacity (Blocks):  187872583680
+Available Capacity (GBs):  89584.629
+Percent Full:  3.589
+Total Subscribed Capacity (Blocks):  8417599488
+Total Subscribed Capacity (GBs):  4013.824
+Percent Subscribed:  4.320
+Oversubscribed by (Blocks):  0
+Oversubscribed by (GBs):  0.000
+Disks:  
+Bus 2 Enclosure 0 Disk 8
+Bus 1 Enclosure 0 Disk 14
+Bus 1 Enclosure 0 Disk 12
+...
+Bus 3 Enclosure 0 Disk 5
+Bus 3 Enclosure 0 Disk 3
+LUNs:  105, 167, 171, 150, 161, 109, 127, 170, 146, 120, 111, 143, 151, 140, 202, 115, 138, 126, 203, 139, 159, 164, 107, 130, 135, 155, 207, 163, 103, 121, 165, 129, 149, 160, 108, 145, 118, 153, 119, 117, 133, 205, 201, 114, 137, 125, 169, 123, 158, 106, 124, 168, 134, 172, 154, 206, 142, 162, 102, 110, 128, 147, 113, 101, 148, 112, 144, 152, 141, 116, 132, 204, 200, 131, 136, 156, 104, 122, 166, 157
+-->

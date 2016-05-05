@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config xmlns="http://www.watch4net.com/Collecting/InlineCalculationFilter1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/Collecting/InlineCalculationFilter1 inline-calculation-filter.xsd">
+
+	<result name="UsedSpace" unit="MB" time-window="120s">
+		<input>UsedSpace</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<jexl-formula><![CDATA[UsedSpace * 1024]]></jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="120s">
+		<input>Idle</input>
+		<input>Busy</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-SP-Cache'</filter>
+		<jexl-formula><![CDATA[100 * ( Busy / ( Idle + Busy ) )]]></jexl-formula>
+	</result>
+	<result name="SeekTime" unit="ms" time-window="120s">
+		<input>ReadRequests</input>
+		<input>WriteRequests</input>
+		<input>Latency</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<jexl-formula><![CDATA[if(( ReadRequests + WriteRequests ) gt 0 ){ (1000 / (ReadRequests + WriteRequests)) - Latency;}else{0;}]]></jexl-formula>
+	</result>
+
+	<!-- SP BW -->
+	<result name="ReadThroughput" unit="KB/s" time-window="120s">
+		<input>ReadBlocks</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' | datagrp=='VNXBlock-SP-Cache'</filter>
+		<jexl-formula><![CDATA[ReadBlocks / 2]]></jexl-formula>
+	</result>
+	<result name="WriteThroughput" unit="KB/s" time-window="120s">
+		<input>WriteBlocks</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' | datagrp=='VNXBlock-SP-Cache'</filter>
+		<jexl-formula><![CDATA[WriteBlocks / 2]]></jexl-formula>
+	</result>
+
+	<!-- LUN Stats -->
+	<result name="ReadThroughput" unit="KB/s" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadBlocksSPA</input>
+		<input>ReadBlocksSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN'</filter>
+		<jexl-formula><![CDATA[(ReadBlocksSPA + ReadBlocksSPB) / 2]]></jexl-formula>
+	</result>
+	<result name="WriteThroughput" unit="KB/s" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>WriteBlocksSPA</input>
+		<input>WriteBlocksSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN'</filter>
+		<jexl-formula><![CDATA[(WriteBlocksSPA + WriteBlocksSPB) / 2]]></jexl-formula>
+	</result>
+	<result name="ReadRequests" unit="IOPS" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadRequestsSPA</input>
+		<input>ReadRequestsSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN'</filter>
+		<jexl-formula><![CDATA[(ReadRequestsSPA + ReadRequestsSPB)]]></jexl-formula>
+	</result>
+	<result name="WriteRequests" unit="IOPS" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>WriteRequestsSPA</input>
+		<input>WriteRequestsSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN'</filter>
+		<jexl-formula><![CDATA[(WriteRequestsSPA + WriteRequestsSPB)]]></jexl-formula>
+	</result>
+	<!-- Utilization, QL, ABQL, Serv. Time and Resp. Time from raw metrics -->
+	<!--
+	TT_SPA = ( ReadRequestsSPA + WriteRequestsSPA )
+	TT_SPB = ( ReadRequestsSPB + WriteRequestsSPB )
+	Utilization_SPA = ( ( BusySPA / ( BusySPA + IdleSPA ) ) * 100 )
+	Utilization_SPB = ( ( BusySPB / ( BusySPB + IdleSPB ) ) * 100 )
+	ABQL_SPA = ( ( SumOutstandingRequestsSPA - NonZeroRequestCountArrivalsSPA / 2 ) / ( ReadRequestsSPA + WriteRequestsSPA ) )
+	ABQL_SPB = ( ( SumOutstandingRequestsSPB - NonZeroRequestCountArrivalsSPB / 2 ) / ( ReadRequestsSPB + WriteRequestsSPB ) )
+	QL_SPA = ( ( ( SumOutstandingRequestsSPA - NonZeroRequestCountArrivalsSPA / 2 ) / ( ReadRequestsSPA + WriteRequestsSPA ) ) * ( BusySPA / ( BusySPA + IdleSPA ) ) )
+	QL_SPB = ( ( ( SumOutstandingRequestsSPB - NonZeroRequestCountArrivalsSPB / 2 ) / ( ReadRequestsSPB + WriteRequestsSPB ) ) * ( BusySPB / ( BusySPB + IdleSPB ) ) )
+	RespTime_SPA = ( ( ( ( SumOutstandingRequestsSPA - NonZeroRequestCountArrivalsSPA / 2 ) / ( ReadRequestsSPA + WriteRequestsSPA ) ) * ( BusySPA / ( BusySPA + IdleSPA ) ) ) / ( ReadRequestsSPA + WriteRequestsSPA ) )
+	RespTime_SPB = ( ( ( ( SumOutstandingRequestsSPB - NonZeroRequestCountArrivalsSPB / 2 ) / ( ReadRequestsSPB + WriteRequestsSPB ) ) * ( BusySPB / ( BusySPB + IdleSPB ) ) ) / ( ReadRequestsSPB + WriteRequestsSPB ) )
+	ServTime_SPA = ( ( ( BusySPA / ( BusySPA + IdleSPA ) ) * 100 ) / ( ReadRequestsSPA + WriteRequestsSPA ) )
+	ServTime_SPB = ( ( ( BusySPB / ( BusySPB + IdleSPB ) ) * 100 ) / ( ReadRequestsSPB + WriteRequestsSPB ) )
+
+	RespTime = ( ( ( ( SumOutstandingRequestsSPA - NonZeroRequestCountArrivalsSPA / 2 ) / ( ReadRequestsSPA + WriteRequestsSPA ) ) * ( BusySPA / ( BusySPA + IdleSPA ) ) ) + ( ( ( SumOutstandingRequestsSPB - NonZeroRequestCountArrivalsSPB / 2 ) / ( ReadRequestsSPB + WriteRequestsSPB ) ) * ( BusySPB / ( BusySPB + IdleSPB ) ) ) ) / ( ( ReadRequestsSPA + WriteRequestsSPA ) + ( ReadRequestsSPB + WriteRequestsSPB ) )
+	ServTime = ( ( ( BusySPA / ( BusySPA + IdleSPA ) ) * 100 ) + ( ( BusySPB / ( BusySPB + IdleSPB ) ) * 100 ) ) / ( ( ReadRequestsSPA + WriteRequestsSPA ) + ( ReadRequestsSPB + WriteRequestsSPB ) )
+
+	Utilization = ( ( ( BusySPA / ( BusySPA + IdleSPA ) ) * 100 ) + ( ( BusySPB / ( BusySPB + IdleSPB ) ) * 100 ) )
+	QL = ( ( ( ( SumOutstandingRequestsSPA - NonZeroRequestCountArrivalsSPA / 2 ) / ( ReadRequestsSPA + WriteRequestsSPA ) ) * ( BusySPA / ( BusySPA + IdleSPA ) ) ) + ( ( ( SumOutstandingRequestsSPB - NonZeroRequestCountArrivalsSPB / 2 ) / ( ReadRequestsSPB + WriteRequestsSPB ) ) * ( BusySPA / ( BusySPA + IdleSPA ) ) ) )
+	ABQL = ( ( ( ( ( SumOutstandingRequestsSPA - NonZeroRequestCountArrivalsSPA / 2 ) / ( ReadRequestsSPA + WriteRequestsSPA ) ) * ( BusySPA / ( BusySPA + IdleSPA ) ) ) + ( ( ( SumOutstandingRequestsSPB - NonZeroRequestCountArrivalsSPB / 2 ) / ( ReadRequestsSPB + WriteRequestsSPB ) ) * ( BusySPB / ( BusySPB + IdleSPB ) ) ) ) / ( ( ( BusySPA / ( BusySPA + IdleSPA ) ) * 100 ) + ( ( BusySPB / ( BusySPB + IdleSPB ) ) * 100 ) ) )
+	-->
+	<result name="CurrentUtilization" unit="%" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>BusySPA</input>
+		<input>BusySPB</input>
+		<input>IdleSPA</input>
+		<input>IdleSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN'</filter>
+		<jexl-formula><![CDATA[
+			(
+				( ( BusySPA / ( BusySPA + IdleSPA ) ) * 100 ) +
+				( ( BusySPB / ( BusySPB + IdleSPB ) ) * 100 )
+			 )
+		]]></jexl-formula>
+	</result>
+	<result name="QueueLength" unit="" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadRequestsSPA</input>
+		<input>ReadRequestsSPB</input>
+		<input>WriteRequestsSPA</input>
+		<input>WriteRequestsSPB</input>
+		<input>BusySPA</input>
+		<input>BusySPB</input>
+		<input>IdleSPA</input>
+		<input>IdleSPB</input>
+		<input>NonZeroRequestCountArrivalsSPA</input>
+		<input>NonZeroRequestCountArrivalsSPB</input>
+		<input>SumOutstandingRequestsSPA</input>
+		<input>SumOutstandingRequestsSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN'</filter>
+		<jexl-formula><![CDATA[
+			(
+				(
+				( ( ReadRequestsSPA + WriteRequestsSPA ) == 0 ) ? 0 :
+				( ( ( SumOutstandingRequestsSPA - NonZeroRequestCountArrivalsSPA / 2 ) / ( ReadRequestsSPA + WriteRequestsSPA ) ) * ( BusySPA / ( BusySPA + IdleSPA ) ) )
+				)
+				+
+				(
+				( ( ReadRequestsSPB + WriteRequestsSPB ) == 0 ) ? 0 :
+				( ( ( SumOutstandingRequestsSPB - NonZeroRequestCountArrivalsSPB / 2 ) / ( ReadRequestsSPB + WriteRequestsSPB ) ) * ( BusySPB / ( BusySPB + IdleSPB ) ) )
+				)
+			)
+		]]></jexl-formula>
+	</result>
+	<!--
+	<result name="AverageBusyQueueLength" unit="ms" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadRequestsSPA</input>
+		<input>ReadRequestsSPB</input>
+		<input>WriteRequestsSPA</input>
+		<input>WriteRequestsSPB</input>
+		<input>BusySPA</input>
+		<input>BusySPB</input>
+		<input>IdleSPA</input>
+		<input>IdleSPB</input>
+		<input>NonZeroRequestCountArrivalsSPA</input>
+		<input>NonZeroRequestCountArrivalsSPB</input>
+		<input>SumOutstandingRequestsSPA</input>
+		<input>SumOutstandingRequestsSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN'</filter>
+	</result>
+	-->
+	<result name="ServiceTime" unit="ms" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadBlocksSPA</input>
+		<input>ReadBlocksSPB</input>
+		<input>WriteBlocksSPA</input>
+		<input>WriteBlocksSPB</input>
+		<input>ReadRequestsSPA</input>
+		<input>ReadRequestsSPB</input>
+		<input>WriteRequestsSPA</input>
+		<input>WriteRequestsSPB</input>
+		<input>BusySPA</input>
+		<input>BusySPB</input>
+		<input>IdleSPA</input>
+		<input>IdleSPB</input>
+		<input>NonZeroRequestCountArrivalsSPA</input>
+		<input>NonZeroRequestCountArrivalsSPB</input>
+		<input>SumOutstandingRequestsSPA</input>
+		<input>SumOutstandingRequestsSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN'</filter>
+		<jexl-formula><![CDATA[
+			( 1000 *
+				( ( BusySPA / ( BusySPA + IdleSPA ) )  + ( BusySPB / ( BusySPB + IdleSPB ) ) )
+			) /
+			( ( ReadRequestsSPA + WriteRequestsSPA ) + ( ReadRequestsSPB + WriteRequestsSPB ) )
+		]]></jexl-formula>
+	</result>
+	<result name="ResponseTime" unit="ms" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadBlocksSPA</input>
+		<input>ReadBlocksSPB</input>
+		<input>WriteBlocksSPA</input>
+		<input>WriteBlocksSPB</input>
+		<input>ReadRequestsSPA</input>
+		<input>ReadRequestsSPB</input>
+		<input>WriteRequestsSPA</input>
+		<input>WriteRequestsSPB</input>
+		<input>BusySPA</input>
+		<input>BusySPB</input>
+		<input>IdleSPA</input>
+		<input>IdleSPB</input>
+		<input>NonZeroRequestCountArrivalsSPA</input>
+		<input>NonZeroRequestCountArrivalsSPB</input>
+		<input>SumOutstandingRequestsSPA</input>
+		<input>SumOutstandingRequestsSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN'</filter>
+		<jexl-formula><![CDATA[
+			 ( 1000 *
+				(
+					(
+						( ( ReadRequestsSPA + WriteRequestsSPA ) == 0 ) ? 0 :
+							(
+							( ( SumOutstandingRequestsSPA - NonZeroRequestCountArrivalsSPA / 2 ) / ( ReadRequestsSPA + WriteRequestsSPA ) ) *
+							( BusySPA / ( BusySPA + IdleSPA ) )
+							)
+				 	) +
+				 	(
+						( ( ReadRequestsSPB + WriteRequestsSPB ) == 0 ) ? 0 :
+							(
+							( ( SumOutstandingRequestsSPB - NonZeroRequestCountArrivalsSPB / 2 ) / ( ReadRequestsSPB + WriteRequestsSPB ) ) *
+							( BusySPB / ( BusySPB + IdleSPB ) )
+							)
+					)
+				 )
+			 ) /
+			 ( ( ReadRequestsSPA + WriteRequestsSPA ) + ( ReadRequestsSPB + WriteRequestsSPB ) )
+		]]></jexl-formula>
+	</result>
+
+	<!-- Disk Stats -->
+	<!-- FLARE R32+ -->
+	<result name="CurrentUtilization" unit="%" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>BusySPA</input>
+		<input>BusySPB</input>
+		<input>IdleSPA</input>
+		<input>IdleSPB</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' &amp; flare=='R32'</filter>
+		<jexl-formula><![CDATA[
+			100 * math:max(
+				( BusySPA / ( BusySPA + IdleSPA ) ),
+				( BusySPB / ( BusySPB + IdleSPB ) ) 
+			 )
+		]]></jexl-formula>
+	</result>
+	<result name="QueueLength" unit="" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadRequests</input>
+		<input>WriteRequests</input>
+		<input>BusySPA</input>
+		<input>BusySPB</input>
+		<input>IdleSPA</input>
+		<input>IdleSPB</input>
+		<input>NonZeroRequestCountArrivals</input>
+		<input>SumOutstandingRequests</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' &amp; flare=='R32'</filter>
+		<jexl-formula><![CDATA[
+			(
+				(
+				( ( ReadRequests + WriteRequests ) == 0 ) ? 0 :
+				( ( ( SumOutstandingRequests - NonZeroRequestCountArrivals / 2 ) / ( ReadRequests + WriteRequests ) ) *
+				math:max(
+				( BusySPA / ( BusySPA + IdleSPA ) ),
+				( BusySPB / ( BusySPB + IdleSPB ) ) 
+			 	)
+				)
+				)
+			)
+		]]></jexl-formula>
+	</result>
+	<result name="ServiceTime" unit="ms" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadRequests</input>
+		<input>WriteRequests</input>
+		<input>BusySPA</input>
+		<input>BusySPB</input>
+		<input>IdleSPA</input>
+		<input>IdleSPB</input>
+		<input>NonZeroRequestCountArrivals</input>
+		<input>SumOutstandingRequests</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' &amp; flare=='R32'</filter>
+		<jexl-formula><![CDATA[
+			( ( ReadRequests + WriteRequests ) == 0 ) ? 0 :
+			(
+			( 1000 *
+				math:max(
+				( BusySPA / ( BusySPA + IdleSPA ) ),
+				( BusySPB / ( BusySPB + IdleSPB ) ) 
+			 	)
+			) /
+			( ReadRequests + WriteRequests )
+			)
+		]]></jexl-formula>
+	</result>
+	<result name="ResponseTime" unit="ms" time-window="120s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadRequests</input>
+		<input>WriteRequests</input>
+		<input>BusySPA</input>
+		<input>BusySPB</input>
+		<input>IdleSPA</input>
+		<input>IdleSPB</input>
+		<input>NonZeroRequestCountArrivals</input>
+		<input>SumOutstandingRequests</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' &amp; flare=='R32'</filter>
+		<jexl-formula><![CDATA[
+			( ( ReadRequests + WriteRequests ) == 0 ) ? 0 :
+			(
+			( 1000 *
+				(
+					(
+						(
+						( ( SumOutstandingRequests - NonZeroRequestCountArrivals / 2 ) / ( ReadRequests + WriteRequests ) ) *
+						math:max(
+						( BusySPA / ( BusySPA + IdleSPA ) ),
+						( BusySPB / ( BusySPB + IdleSPB ) ) 
+			 			)
+						)
+					)
+				 )
+			) /
+			( ReadRequests + WriteRequests )
+			)
+		]]></jexl-formula>
+	</result>
+
+	<!-- FLARE preR32 -->
+	<result name="CurrentUtilization" unit="%" time-window="240s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>Busy</input>
+		<input>Idle</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' &amp; flare=='preR32'</filter>
+		<jexl-formula><![CDATA[
+			100 * ( Busy / ( Busy + Idle ) )
+		]]></jexl-formula>
+	</result>
+	<result name="QueueLength" unit="" time-window="240s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadRequests</input>
+		<input>WriteRequests</input>
+		<input>Busy</input>
+		<input>Idle</input>
+		<input>SumOutstandingRequests</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' &amp; flare=='preR32'</filter>
+		<jexl-formula><![CDATA[
+			(
+				(
+				( ( ReadRequests + WriteRequests ) == 0 ) ? 0 :
+				( ( ( SumOutstandingRequests ) / ( ReadRequests + WriteRequests ) ) *
+				( Busy / ( Busy + Idle ) ) 
+				)
+				)
+			)
+		]]></jexl-formula>
+	</result>
+	<result name="ServiceTime" unit="ms" time-window="240s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadRequests</input>
+		<input>WriteRequests</input>
+		<input>Busy</input>
+		<input>Idle</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' &amp; flare=='preR32'</filter>
+		<jexl-formula><![CDATA[
+			( ( ReadRequests + WriteRequests ) == 0 ) ? 0 :
+			(
+			( 1000 *
+				( Busy / ( Busy + Idle ) ) 
+			) /
+			( ReadRequests + WriteRequests )
+			)
+		]]></jexl-formula>
+	</result>
+	<result name="ResponseTime" unit="ms" time-window="240s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}" >
+		<input>ReadRequests</input>
+		<input>WriteRequests</input>
+		<input>Busy</input>
+		<input>Idle</input>
+		<input>SumOutstandingRequests</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' &amp; flare=='preR32'</filter>
+		<jexl-formula><![CDATA[
+			( ( ReadRequests + WriteRequests ) == 0 ) ? 0 :
+			(
+			( 1000 *
+				(
+					(
+						(
+						( ( SumOutstandingRequests ) / ( ReadRequests + WriteRequests ) ) *
+						( Busy / ( Busy + Idle ) ) 
+						)
+					)
+				 )
+			) /
+			( ReadRequests + WriteRequests )
+			)
+		]]></jexl-formula>
+	</result>
+
+	<!-- RAIDGroup metrics from blocks to GB -->
+	<result name="UserCapacity" unit="GB" time-window="10s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}">
+		<input keep="false">UserCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-RAIDGroup'</filter>
+		<jexl-formula><![CDATA[( ( UserCapacity * 512 ) / ( 1024 * 1024 * 1024 ))]]></jexl-formula>
+	</result>
+	<result name="RawCapacity" unit="GB" time-window="10s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}">
+		<input keep="false">RawCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-RAIDGroup'</filter>
+		<jexl-formula><![CDATA[( ( RawCapacity * 512 ) / ( 1024 * 1024 * 1024 ))]]></jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="10s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}">
+		<input keep="false">FreeCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-RAIDGroup'</filter>
+		<jexl-formula><![CDATA[( ( FreeCapacity * 512 ) / ( 1024 * 1024 * 1024 ))]]></jexl-formula>
+	</result>
+	<result name="FreeContiguous" unit="GB" time-window="10s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}">
+		<input keep="false">FreeContiguous</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-RAIDGroup'</filter>
+		<jexl-formula><![CDATA[( ( FreeContiguous * 512 ) / ( 1024 * 1024 * 1024 ))]]></jexl-formula>
+	</result>
+
+</config>

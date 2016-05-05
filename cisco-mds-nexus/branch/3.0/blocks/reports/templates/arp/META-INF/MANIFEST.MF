@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Built-By: EMC Corporation
+Description: SolutionPack for Cisco MDS/Nexus
+Report-Pack: Cisco MDS Nexus
+Created-By: EMC Corporation
+Version: 3.0
+
+Name: Cisco MDS Nexus
+Hooks: #W4N_SP
+Description: SolutionPack for Cisco MDS/Nexus
+Version: 3.0
+

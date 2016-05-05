@@ -1,0 +1,27 @@
+[+gateway]
+host = hostname
+port = port
+username = string
+password = password
+
+[alert.webservice]
+gateway
+category = string
+module = string
+instance = string
+
+[alerts2]
+destIPAddr = string
+destPortNo = port
+destComStr = string
+destGenID = integer[1,9]
+destEntID = integer[1,9]
+destCustName = string
+destDCName = string 
+
+[msotsdt]
+alerts2
+
+[main]
+alert.webservice
+msotsdt

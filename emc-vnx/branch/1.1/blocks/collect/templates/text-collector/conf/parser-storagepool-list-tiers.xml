@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+        <max-threads>2</max-threads>
+        <parser-config>
+                <parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+                <tree-type>regex-group-tree</tree-type>
+                <tree-schema>
+                        <name>POOL_</name>
+                        <leaf>
+                                <name>PoolName</name>
+                                <group>pool-1</group>
+                        </leaf>
+                        <leaf>
+                                <name>PoolID</name>
+                                <group>pool-2</group>
+                        </leaf>
+                        <node>
+                                <name>TIER_</name>
+                                <leaf><name>TierName</name><group>tier-1</group></leaf>
+                                <leaf><name>RaidType</name><group>tier-2</group></leaf>
+                                <leaf><name>UserCapacity</name><group>tier-3</group></leaf>
+                                <leaf><name>ConsumedCapacity</name><group>tier-4</group></leaf>
+                                <leaf><name>AvailableCapacity</name><group>tier-5</group></leaf>
+                                <leaf><name>PercentSubscribed</name><group>tier-6</group></leaf>
+                                <leaf><name>DataTargetedforHigherTier</name><group>tier-8</group></leaf>
+                                <leaf><name>DataTargetedforLowerTier</name><group>tier-9</group></leaf>
+                                <leaf><name>Disks</name><group>tier-10</group></leaf>
+                        </node>
+                </tree-schema>
+                <regex-group-config group="-1">
+                        <regex name="main">(?s)Pool Name:(.*?)(?=(Pool Name:|$))</regex>
+                        <sub-regex group="1">
+                                <regex name="pool">(?s)\s+(\p{Print}+)\r*\nPool ID:\s+(\d+)\r*\n(.*)</regex>
+                                <sub-regex group="3">
+                                        <regex name="tiers">(?s)Tier Name(.*?)(?=(Tier Name|$))</regex>
+                                        <sub-regex group="1">
+                                                <regex name="tier">(?s):\s+([\w ]+)\r*\nRaid Type:\s+(\w+)\r*\nUser Capacity \(GBs\):\s+(.*)\nConsumed Capacity \(GBs\):\s+(.*)\nAvailable Capacity \(GBs\):\s+(.*)\nPercent Subscribed:\s+(.*)%\n(Data Targeted for Higher Tier \(GBs\):\s+(.*)\nData Targeted for Lower Tier \(GBs\):\s+(.*)\n)?Disks \(Type\):(.*)</regex>
+                                        </sub-regex>
+                                </sub-regex>
+                        </sub-regex>
+                </regex-group-config>
+        </parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Group</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@navisecclipath -h (host) -user @blockusername -password @blockpassword -scope @userscope storagepool -list -tiers</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+Pool Name:  Scott IV
+Pool ID:  2
+
+Tier Name:  Performance
+Raid Type:  r_10
+User Capacity (GBs):  533.04
+Consumed Capacity (GBs):  9.02
+Available Capacity (GBs):  524.02
+Percent Subscribed:  1.69%
+Data Targeted for Higher Tier (GBs):  0.00
+Data Targeted for Lower Tier (GBs):  0.00
+Disks (Type):  
+Bus 0 Enclosure 0 Disk 13 (SAS)
+Bus 3 Enclosure 0 Disk 18 (SAS)
+
+Tier Name:  Capacity
+Raid Type:  r_10
+User Capacity (GBs):  3661.14
+Consumed Capacity (GBs):  5.01
+Available Capacity (GBs):  3656.13
+Percent Subscribed:  0.14%
+Data Targeted for Higher Tier (GBs):  0.00
+Data Targeted for Lower Tier (GBs):  0.00
+Disks (Type):  
+Bus 2 Enclosure 0 Disk 2 (NL SAS)
+Bus 2 Enclosure 0 Disk 1 (NL SAS)
+Bus 2 Enclosure 0 Disk 0 (NL SAS)
+Bus 2 Enclosure 0 Disk 3 (NL SAS)
+-->

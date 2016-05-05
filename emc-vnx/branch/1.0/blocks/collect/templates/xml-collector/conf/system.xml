@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RequestPacket xmlns="http://www.emc.com/schemas/celerra/xml_api" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+	<Request clientHandle='FileSystem'>
+		<Query>
+			<FileSystemQueryParams>
+				<AspectSelection  fileSystems="true" />
+			</FileSystemQueryParams>
+		</Query>
+	</Request>
+	<Request clientHandle='Checkpoint'>
+		<Query>
+			<CheckpointQueryParams/>
+		</Query>
+	</Request>
+	<Request clientHandle='Volume'>
+		<Query>
+			<VolumeQueryParams />
+		</Query>
+	</Request>
+	<Request clientHandle='Mover'>
+		<Query>
+			<MoverQueryParams>
+				<AspectSelection movers="true" moverDnsDomains="true" moverInterfaces="true" moverNetworkDevices="true" moverNisDomains="true" moverStatuses="true" moverRoutes="true" />
+			</MoverQueryParams>
+		</Query>
+	</Request>
+	<Request clientHandle='Vdm'>
+		<Query>
+			<VdmQueryParams />
+		</Query>
+	</Request>
+	<Request clientHandle='CifsConfig'>
+		<Query>
+			<CifsConfigQueryParams />
+		</Query>
+	</Request>
+	<Request clientHandle='CifsShare'>
+		<Query>
+			<CifsShareQueryParams />
+		</Query>
+	</Request>
+	<Request clientHandle='CifsServer'>
+		<Query>
+			<CifsServerQueryParams />
+		</Query>
+	</Request>
+	<Request clientHandle='NfsExport'>
+		<Query>
+			<NfsExportQueryParams />
+		</Query>
+	</Request>
+	<Request clientHandle='CelerraSystem'>
+		<Query>
+			<CelerraSystemQueryParams />
+		</Query>
+	</Request>
+	<Request clientHandle='ControlStation'>
+		<Query>
+			<ControlStationQueryParams />
+		</Query>
+	</Request>
+	<Request clientHandle='StorageSystem'>
+		<Query>
+			<StorageSystemQueryParams />
+		</Query>
+	</Request>
+	<Request clientHandle='StoragePoolQueryParams'>
+		<Query>
+			<StoragePoolQueryParams />
+		</Query>
+	</Request>
+</RequestPacket>

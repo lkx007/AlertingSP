@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<tns:config xmlns:tns="http://www.watch4net.com/property-arithmetic-handler" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.watch4net.com/property-arithmetic-handler ../../src/conf/com/watch4net/apg/v2/collector/plugins/variablehandlingfilter/property-arithmetic-handler.xsd ">
+
+    <!-- Put RawCapacity metric's rawcap property as the metric's value so we can sum it in SAH -->
+    <!-- NOTE: I had to do this since the XPath sum() operation that I used to sum the 
+         hyper capacities returns a number rather than a node and this was causing an 
+         XML Collector error when putting it in the raw value XPath expression. -->
+    <tns:output-value>true</tns:output-value>  <!-- Sets incoming metric to new value -->
+    <tns:input-property>rawcap</tns:input-property>
+    <tns:expression>(rawcap / 1024)</tns:expression>
+</tns:config>

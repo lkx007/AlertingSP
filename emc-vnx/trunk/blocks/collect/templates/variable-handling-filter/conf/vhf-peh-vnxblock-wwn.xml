@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler ./property-extraction-handler.xsd"
+	xmlns="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler">
+	<properties>
+		<!-- ex partsn=60:06:01:60:CE:E0:25:00:2E:DC:B6:5E:C9:0C:DF:11 -->
+		<list-property name="partsn" separator=":" keep="true">
+			<part name="partsn1" size="1" />
+			<part name="partsn2" size="1" />
+			<part name="partsn3" size="1" />
+			<part name="partsn4" size="1" />
+			<part name="partsn5" size="1" />
+			<part name="partsn6" size="1" />
+			<part name="partsn7" size="1" />
+			<part name="partsn8" size="1" />
+			<part name="partsn9" size="1" />
+			<part name="partsn10" size="1" />
+			<part name="partsn11" size="1" />
+			<part name="partsn12" size="1" />
+			<part name="partsn13" size="1" />
+			<part name="partsn14" size="1" />
+			<part name="partsn15" size="1" />
+			<part name="partsn16" size="1" />
+		</list-property>
+	</properties>
+</config>

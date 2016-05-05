@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/CrossReferencingFilter" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+    <blind-write>true</blind-write>
+    <data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+    
+    <!-- Copy LUN properties set by PTF -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <condition type="filter">parttype=='LUN' | parttype=='METAMEMBER'</condition>
+        <match-on>device</match-on>
+        <match-on>part</match-on>
+        <include-properties>true</include-properties>
+        <get-property>dgstype</get-property>
+        <get-property>purpose</get-property>
+    </reference>
+    
+     <reference>
+        <condition property="devtype">Array</condition>
+        <condition type="filter">parttype=='LUN' | parttype=='METAMEMBER'</condition>
+        <match-on>device</match-on>
+        <match-on>part</match-on>
+        <include-properties>true</include-properties>
+        <expiration>2400</expiration>
+        <get-property default="N/A">rootarry</get-property>
+        <get-property default="N/A">rootlun</get-property>
+        <get-property default="N/A">rootwwn</get-property>
+    </reference>
+    
+    <!-- Copy LUN related properties for usedby from primary LUNs to replicas -->
+    <reference>
+        <condition property="devtype">Array</condition>
+        <condition type="filter">parttype=='LUN'</condition>
+        <match-on>device</match-on>
+        <match-on>rootwwn</match-on>
+        <include-properties>true</include-properties>
+        <get-property>usedby</get-property>
+    </reference>
+    
+</configuration>

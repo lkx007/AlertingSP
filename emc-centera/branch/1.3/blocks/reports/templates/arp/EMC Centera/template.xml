@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns="http://www.watch4net.com/APG/Web/XmlTree1" name="EMC Centera" singleNodeId="7" uid="W4N_emc-centera_NOINDEX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <property xsi:type="NodeFilter" filterExpression="devtype=='CAS-Cluster'"/>
+  <property xsi:type="ReportPreferences" displayMode="1" defaultMode="mix"/>
+  <node name="Total Clusters Capacity" order="0" singleNodeId="caddda7b">
+    <property xsi:type="NodeFilter" filterExpression="parttype=='Node' &amp; (name=='UsedCapacity' | name=='FreeCapacity')"/>
+    <property xsi:type="ReportPreferences" defaultMode="hsb" legendProperties="" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::GB::Byte::Storage"/>
+    <customization color="#bc474d" filter="@node=='Free Capacity'"/>
+    <customization color="#1f8bca" filter="@node=='Used Capacity'"/>
+    <node name="Free Capacity" singleNodeId="39a16ceb">
+      <property xsi:type="NodeFilter" filterExpression="name=='FreeCapacity'"/>
+      <property xsi:type="ReportPreferences" defaultMode="lst"/>
+      <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+      <formula formulaId="math.spatial.Sum">
+        <setting name="aggregation" value="DEFAULT"/>
+        <setting name="partial" value="true"/>
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="FreeCapacity"/>
+        <result name=" " default="true" graphable="true"/>
+      </formula>
+      <node name="serialnb" singleNodeId="a175932">
+        <property xsi:type="NodeExpansion" expandOn="serialnb,part"/>
+        <property xsi:type="ReportPreferences" defaultMode="lst"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='FreeCapacity'"/>
+          <result name="FreeCapacity" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='UsedCapacity'"/>
+          <result name="UsedCapacity" default="false" graphable="false"/>
+        </formula>
+      </node>
+    </node>
+    <node name="Used Capacity" singleNodeId="776ffb9">
+      <property xsi:type="NodeFilter" filterExpression="name=='UsedCapacity'"/>
+      <property xsi:type="ReportPreferences" defaultMode="lst"/>
+      <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+      <formula formulaId="math.spatial.Sum">
+        <setting name="aggregation" value="DEFAULT"/>
+        <setting name="partial" value="true"/>
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="UsedCapacity"/>
+        <result name=" " default="true" graphable="true"/>
+      </formula>
+      <link singleNodeId="48cd3049" linkID=".-..-..-39a16ceb-a175932"/>
+    </node>
+  </node>
+  <node name="Top 10 Pool Used Capacity" order="1" singleNodeId="f70bf87">
+    <property xsi:type="NodeFilter" filterExpression="parttype=='Storage Pool' &amp; name=='UsedCapacity' &amp; !(part=='Total')"/>
+    <property xsi:type="ReportPreferences" defaultMode="hb" graphScaleFactor="Byte::Storage::GB::Byte::Storage" paging="-10"/>
+    <topn-report/>
+    <node name="serialnb,part" singleNodeId="ddb82162">
+      <property xsi:type="NodeExpansion" expandOn="serialnb,part"/>
+      <property xsi:type="ReportPreferences" defaultMode="lst"/>
+      <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+      <formula formulaId="util.Nop">
+        <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+        <result name="test" default="true" graphable="true"/>
+      </formula>
+    </node>
+  </node>
+  <node name="Centera Summary" singleNodeId="d846d4ab">
+    <property xsi:type="ReportPreferences" preferredAggregate="last"/>
+    <property xsi:type="PropertyNodeColumn" name="Serial Number" property="serialnb"/>
+    <property xsi:type="ValueNodeColumn" name="System Buffer" filterExpression="name=='SystemBuffer'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Regeneration Buffer" filterExpression="name=='RegenerationBuffer'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Available Capacity" filterExpression="name=='AvailableCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Total Object Count" filterExpression="name=='TotalObjectCount'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" roundingAccuracy="0"/>
+    <property xsi:type="ValueNodeColumn" name="Used Object Count" filterExpression="name=='UsedObjectCount'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" roundingAccuracy="0"/>
+    <property xsi:type="ValueNodeColumn" name="Free Object Count" filterExpression="name=='FreeObjectCount'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" roundingAccuracy="0"/>
+    <property xsi:type="ValueNodeColumn" name="Total Raw Capacity" filterExpression="name=='TotalRawCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Used Raw Capacity" filterExpression="name=='UsedRawCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Free Raw Capacity" filterExpression="name=='FreeRawCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+    <node name="SerialNumbers" singleNodeId="cd188f45">
+      <property xsi:type="NodeExpansion" expandOn="serialnb"/>
+      <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+      <report-layout hspan=".-a9d64e30-481c5789=2,.-4d6cee42-e7f4562a=2,.-7d2cabe5-5a13b28e=2,.-bbbd616c-f3cb7b06=2,.-4d6cee42-64ca1d39=2,.-a9d64e30-54225da3=2,.-bbbd616c-56c46bc3=2"/>
+      <report-rendering>
+        <charts mode="dynamic"/>
+      </report-rendering>
+      <node name="Used Raw Capacity Break Down" order="0" singleNodeId="a9d64e30">
+        <property xsi:type="NodeFilter" filterExpression="!(parttype)"/>
+        <property xsi:type="ReportPreferences" displayMode="1" defaultMode="mix"/>
+        <customization filter="@node=='sys resources'"/>
+        <customization filter="@node=='offline'"/>
+        <customization filter="@node=='spare'"/>
+        <customization filter="@node=='used'"/>
+        <node name="Used Raw Capacity (Chart)" order="0" singleNodeId="481c5789">
+          <property xsi:type="NodeFilter" filterExpression="!(parttype)"/>
+          <property xsi:type="ReportPreferences" displayMode="1" defaultMode="hsb" legendProperties="unit" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <customization filter="@node=='sys resources'"/>
+          <customization filter="@node=='offline'"/>
+          <customization filter="@node=='spare'"/>
+          <customization filter="@node=='used'"/>
+          <node name="offline" singleNodeId="caa34ec4">
+            <property xsi:type="NodeFilter" filterExpression="name=='OfflineCapacity'"/>
+            <property xsi:type="ReportPreferences" defaultMode="lst" preferredAggregate="last"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+            <property xsi:type="ValueNodeColumn" name="asd" filterExpression="name=='OfflineCapacity'" forcePeriod="never" timeThreshold="600"/>
+          </node>
+          <node name="spare" singleNodeId="d879ef28">
+            <property xsi:type="NodeFilter" filterExpression="name=='SpareCapacity'"/>
+            <property xsi:type="ReportPreferences" defaultMode="lst" preferredAggregate="last"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+          </node>
+          <node name="sys resources" singleNodeId="c0d3519b">
+            <property xsi:type="NodeFilter" filterExpression="name=='SystemResources'"/>
+            <property xsi:type="ReportPreferences" defaultMode="lst"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+            <property xsi:type="ValueNodeColumn" name="System Resources" filterExpression="name=='SystemResources'" forcePeriod="never" timeThreshold="600"/>
+          </node>
+          <node name="used" singleNodeId="aafbd675">
+            <property xsi:type="NodeFilter" filterExpression="name=='UsedCapacity'"/>
+            <property xsi:type="ReportPreferences" defaultMode="lst"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+          </node>
+        </node>
+        <node name="Used Raw Capacity" singleNodeId="54225da3">
+          <property xsi:type="ValueNodeColumn" name="Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Offline Capacity" filterExpression="name=='OfflineCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="System Resources" filterExpression="name=='SystemResources'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Spare Capacity" filterExpression="name=='SpareCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Audit &amp; Meta Data" filterExpression="name=='AuditAndMetadataCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Protected User Data" filterExpression="name=='ProtectedUserData'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <node name="metrics" singleNodeId="97f6409b">
+            <property xsi:type="ReportPreferences" defaultMode="lst"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+          </node>
+        </node>
+      </node>
+      <node name="Pools" order="1" singleNodeId="bbbd616c">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='Storage Pool'"/>
+        <property xsi:type="ReportPreferences" displayMode="1" defaultMode="mix"/>
+        <report-layout hspan=".-f3cb7b06=2"/>
+        <node name="Top 10 Pool Used Capacity" order="0" singleNodeId="9a1e5fcd">
+          <property xsi:type="NodeFilter" filterExpression="name=='UsedCapacity' &amp; !(part=='Total')"/>
+          <property xsi:type="ReportPreferences" displayMode="1" defaultMode="hb" legendProperties="part" paging="-10"/>
+          <property xsi:type="PropertyNodeColumn" name="Pool Name" property="part"/>
+          <property xsi:type="ValueNodeColumn" name="Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <topn-report/>
+          <node name="Centera Overview with Pools" singleNodeId="104bafb2">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" preferredAggregate="last"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+            <property xsi:type="PropertyNodeColumn" name="Pool Name" sortMode="asc" property="part"/>
+            <property xsi:type="ValueNodeColumn" name="Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Hard Stop Quota" filterExpression="name=='HardStopCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last"/>
+            <property xsi:type="ValueNodeColumn" name="Alert Quota" filterExpression="name=='AlertQuotaCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last"/>
+            <node name="metrics" singleNodeId="74d8d15b"/>
+          </node>
+        </node>
+        <node name="Top 10 Pool C-Clip Count" order="1" singleNodeId="e24eda47">
+          <property xsi:type="NodeFilter" filterExpression="name=='CClips' &amp; !(part=='Total')"/>
+          <property xsi:type="ReportPreferences" displayMode="1" defaultMode="hb" legendProperties="part" paging="-25"/>
+          <property xsi:type="PropertyNodeColumn" name="Pool Name" property="part"/>
+          <property xsi:type="ValueNodeColumn" name="Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <topn-report/>
+          <node name="Centera Overview with Pools" singleNodeId="104bafb2">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" preferredAggregate="last"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+            <node name="metrics" singleNodeId="74d8d15b"/>
+          </node>
+        </node>
+        <node name="Top 10 Pool File Count" order="2" singleNodeId="56c46bc3">
+          <property xsi:type="NodeFilter" filterExpression="name=='Files' &amp; !(part=='Total')"/>
+          <property xsi:type="ReportPreferences" displayMode="1" defaultMode="hb" legendProperties="part" paging="-10"/>
+          <property xsi:type="PropertyNodeColumn" name="Pool Name" property="part"/>
+          <property xsi:type="ValueNodeColumn" name="Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <topn-report/>
+          <node name="Centera Overview with Pools" singleNodeId="104bafb2">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx" preferredAggregate="last"/>
+          </node>
+        </node>
+        <node name="Pool Summary" singleNodeId="f3cb7b06">
+          <property xsi:type="NodeFilter" filterExpression="!(part=='Total')"/>
+          <property xsi:type="ReportPreferences" legendProperties="part"/>
+          <property xsi:type="PropertyNodeColumn" name="Pool Name" sortMode="asc" property="part"/>
+          <property xsi:type="ValueNodeColumn" name="Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Hard Stop Quota" filterExpression="name=='HardStopCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Alert Quota" filterExpression="name=='AlertQuotaCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Files" filterExpression="name=='Files'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" roundingAccuracy="0"/>
+          <property xsi:type="ValueNodeColumn" name="C-Clips" filterExpression="name=='CClips'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" roundingAccuracy="0"/>
+          <topn-report/>
+          <node name="Pools" singleNodeId="104bafb2">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" defaultMode="imx" duration="l2w" preferredPeriod="86400" preferredAggregate="last"/>
+            <property xsi:type="PropertyNodeColumn" name="Pool Name" sortMode="asc" property="part"/>
+            <property xsi:type="ValueNodeColumn" name="Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Hard Stop Quota" filterExpression="name=='HardStopCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Alert Quota" filterExpression="name=='AlertQuotaCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+            <node name="Pool Usage Trend" singleNodeId="1feb8e24">
+              <property xsi:type="NodeFilter" filterExpression="name=='UsedCapacity' | name=='HardStopCapacity' | name=='AlertQuotaCapacity'"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx" duration="l3M" preferredPeriod="86400" description="HardStopCapacity(GB) = 0 is unlimited capacity" graphInfoDisplayMode="trend"/>
+              <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+              <customization color="#3bd90b" width="2.0" curve="spline" filter="name=='UsedCapacity'"/>
+              <customization color="#fa0a26" width="2.0" curve="spline" filter="name=='HardStopCapacity'"/>
+              <customization color="#f59403" width="2.0" curve="spline" filter="name=='AlertQuotaCapacity'"/>
+            </node>
+          </node>
+        </node>
+      </node>
+      <node name="Node Summary" order="2" singleNodeId="4d6cee42">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='Node'"/>
+        <property xsi:type="ReportPreferences" defaultMode="mix" preferredPeriod="86400" preferredAggregate="last"/>
+        <property xsi:type="ValueNodeColumn" name="Total Capacity" resultName="Total Capacity" forcePeriod="never" timeThreshold="600"/>
+        <property xsi:type="ValueNodeColumn" name="Used Capacity" resultName="Used Capacity" forcePeriod="never" timeThreshold="600"/>
+        <property xsi:type="ValueNodeColumn" name="Free Capacity" resultName="Free Capacity" forcePeriod="never" timeThreshold="600"/>
+        <customization filter="@node=='Node Summary'"/>
+        <node name="Node Capacity Summary" singleNodeId="64ca1d39">
+          <property xsi:type="PropertyNodeColumn" name="Name" sortMode="asc" property="part"/>
+          <property xsi:type="ValueNodeColumn" name="Total Capacity" filterExpression="name=='TotalCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Free Capacity" filterExpression="name=='FreeCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Faulted Capacity" filterExpression="name=='FaultedCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+          <formula formulaId="math.spatial.Sum">
+            <setting name="aggregation" value="DEFAULT"/>
+            <setting name="partial" value="false"/>
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Total Capacity"/>
+            <result name="Total Capacity" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="math.spatial.Sum">
+            <setting name="aggregation" value="DEFAULT"/>
+            <setting name="partial" value="false"/>
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Free Capacity"/>
+            <result name="Free Capacity" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="math.spatial.Sum">
+            <setting name="aggregation" value="DEFAULT"/>
+            <setting name="partial" value="false"/>
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Used Capacity"/>
+            <result name="Used Capacity" default="true" graphable="false"/>
+          </formula>
+          <node name="Nodes" singleNodeId="70d9a9bc">
+            <property xsi:type="NodeFilter" filterExpression="parttype=='Node'"/>
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" defaultMode="imx"/>
+            <property xsi:type="PropertyNodeColumn" name="Name" property="part"/>
+            <property xsi:type="ValueNodeColumn" name="Total Capacity" filterExpression="name=='TotalCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+            <formula formulaId="util.Nop4">
+              <parameter name="First Value" xsi:type="FilterFormulaParameterDefinition" filter="name=='TotalCapacity'"/>
+              <parameter name="Second Value" xsi:type="FilterFormulaParameterDefinition" filter="name=='FreeCapacity'"/>
+              <parameter name="Third Value" xsi:type="FilterFormulaParameterDefinition" filter="name=='UsedCapacity'"/>
+              <parameter name="Fourth Value" xsi:type="FilterFormulaParameterDefinition" filter="name=='FaultedCapacity'"/>
+              <result name="Total Capacity" default="false" graphable="true"/>
+              <result name="Free Capacity" default="false" graphable="true"/>
+              <result name="Used Capacity" default="false" graphable="true"/>
+              <result name="Faulted Capacity" default="false" graphable="true"/>
+            </formula>
+            <node name="Node Usage Trend" singleNodeId="75bb6589">
+              <property xsi:type="NodeFilter" filterExpression="name=='TotalCapacity' | name=='UsedCapacity'"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx" duration="l3M" preferredPeriod="86400" preferredAggregate="last" graphInfoDisplayMode="trend"/>
+              <customization color="#07e33e" width="2.0" curve="spline" filter="name=='UsedCapacity'"/>
+              <customization color="#f50303" width="2.0" curve="spline" filter="name=='TotalCapacity'"/>
+            </node>
+          </node>
+        </node>
+        <node name="Node Configuration Summary" singleNodeId="e7f4562a">
+          <property xsi:type="PropertyNodeColumn" name="Serial Number" property="nodeser"/>
+          <property xsi:type="PropertyNodeColumn" name="Name" sortMode="asc" property="part"/>
+          <property xsi:type="PropertyNodeColumn" name="Roles" property="roles"/>
+          <property xsi:type="PropertyNodeColumn" name="Software Version" property="softver"/>
+          <property xsi:type="PropertyNodeColumn" name="External IP" property="extip"/>
+          <property xsi:type="PropertyNodeColumn" name="Internal IP" property="intip"/>
+          <property xsi:type="PropertyNodeColumn" name="Status" property="status"/>
+          <property xsi:type="PropertyNodeColumn" name="Model" property="ndmodel"/>
+          <node name="nodes" singleNodeId="f932bed0">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" defaultMode="lst"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+          </node>
+        </node>
+      </node>
+      <node name="Profiles" order="3" singleNodeId="7d2cabe5">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='Profile'"/>
+        <property xsi:type="ReportPreferences" defaultMode="mix"/>
+        <property xsi:type="PropertyNodeColumn" name="Profile Name" sortMode="asc" property="part"/>
+        <property xsi:type="PropertyNodeColumn" name="Pool" property="homepool"/>
+        <property xsi:type="ValueNodeColumn" name="Used Capacity" resultName="UsedCapacity" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last"/>
+        <node name="Profile/Home Pool Summary" singleNodeId="5a13b28e">
+          <property xsi:type="ReportPreferences" paging="10"/>
+          <property xsi:type="PropertyNodeColumn" name="Profile Name" property="part"/>
+          <property xsi:type="PropertyNodeColumn" name="Home Pool" sortMode="asc" property="homepool"/>
+          <property xsi:type="ValueNodeColumn" name="Home Pool Used Capacity" resultName="UsedCapacity" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Decimal::GB::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Enabled" filterExpression="name=='Enabled'" forcePeriod="never" formatter="ValueToStringFormatter&lt;key_0=No;key_1=Yes&gt;" useTimeRange="true" valuesAggregationFunc="last" roundingAccuracy="0"/>
+          <node name="Profiles" singleNodeId="9382e589">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+            <property xsi:type="PropertyNodeColumn" name="Home Pool Name" property="homepool"/>
+            <property xsi:type="ValueNodeColumn" name="Home Pool Used Capacity" filterExpression="name=='UsedCapacity'" forcePeriod="never" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::GB::Byte::Storage"/>
+            <property xsi:type="PropertyNodeColumn" name="Profile" property="Part"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="UsedCapacity"/>
+              <result name="UsedCapacity" default="false" graphable="false"/>
+            </formula>
+            <node name="calc" singleNodeId="b09a4498">
+              <property xsi:type="NodeFilter" filterExpression="name=='UsedCapacity'"/>
+              <property xsi:type="NodeExpansion" expandOn="homepool&lt;type=split;properties=part;level-up=3&gt;" filterMode="select"/>
+              <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='UsedCapacity'"/>
+                <result name="UsedCapacity" default="false" graphable="false"/>
+              </formula>
+            </node>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+  <node name="Inventory" singleNodeId="21084493">
+    <property xsi:type="NodePropertyNodeColumn" name="Component" nodeProperty="name"/>
+    <property xsi:type="NodePropertyNodeColumn" name="Description" nodeProperty="reportPreferences.description"/>
+    <property xsi:type="ValueNodeColumn" name="Count" resultName="Count" forcePeriod="never" formatter="BasicFormatter" timeThreshold="600" roundingAccuracy="0"/>
+    <node name="Nodes" singleNodeId="5d1ed5c7">
+      <property xsi:type="NodeFilter" filterExpression="parttype=='Node'"/>
+      <property xsi:type="ReportPreferences" defaultMode="lst" description="Provides the physical storage of data objects and C-Clip Descriptor Files. Provides the means for interaction between the Application Server and the Storage Nodes. Each node executed an instance of CentraStar."/>
+      <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+      <formula formulaId="util.ChildCount">
+        <result name="Count" default="false" graphable="false"/>
+      </formula>
+      <node name="List" singleNodeId="5e014b11">
+        <property xsi:type="NodeExpansion" expandOn="part"/>
+        <property xsi:type="ReportPreferences" defaultMode="lst"/>
+      </node>
+    </node>
+    <node name="Pool" singleNodeId="3fe0fe4f">
+      <property xsi:type="NodeFilter" filterExpression="parttype=='Storage Pool'"/>
+      <property xsi:type="ReportPreferences" defaultMode="lst" description="The communal pool where all data is stored; represents the set of data against which all cluster functions are performed."/>
+      <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+      <formula formulaId="util.ChildCount">
+        <result name="Count" default="false" graphable="false"/>
+      </formula>
+      <node name="List" singleNodeId="b576dacd">
+        <property xsi:type="NodeExpansion" expandOn="part"/>
+        <property xsi:type="ReportPreferences" defaultMode="lst"/>
+      </node>
+    </node>
+    <node name="Profile" singleNodeId="1a1af736">
+      <property xsi:type="NodeFilter" filterExpression="parttype=='Profile'"/>
+      <property xsi:type="ReportPreferences" defaultMode="lst" description="An application profile is an access profile that has an application pool as its home pool."/>
+      <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+      <formula formulaId="util.ChildCount">
+        <result name="Count" default="false" graphable="false"/>
+      </formula>
+      <node name="List" singleNodeId="64b6811c">
+        <property xsi:type="NodeExpansion" expandOn="part"/>
+        <property xsi:type="ReportPreferences" defaultMode="lst"/>
+      </node>
+    </node>
+  </node>
+</node>

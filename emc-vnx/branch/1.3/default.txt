@@ -1,0 +1,8 @@
+vnx.type.default=unified
+vnx.block.userscope.default=global
+vnx.block.username.default=sysadmin
+vnx.block.password.default=sysadmin
+vnx.file.username.default=nasadmin
+vnx.file.password.default=nasadmin
+events.host.default=localhost
+events.port.default=52001

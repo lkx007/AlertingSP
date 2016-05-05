@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.watch4net.com/Collecting/InlineCalculationFilter1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/Collecting/InlineCalculationFilter1 inline-calculation-filter.xsd">
+	<result name="UsedSpace" unit="MB" time-window="120s">
+		<input>UsedSpace</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<jexl-formula><![CDATA[UsedSpace * 1024]]></jexl-formula>
+	</result>
+	<result name="CurrentUtilization" unit="%" time-window="120s">
+		<input>Idle</input>
+		<input>Busy</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-Disk' | datagrp=='VNXBlock-LUN' | datagrp=='VNXBlock-PoolLUN' | datagrp=='VNXBlock-SP-Cache'</filter>
+		<jexl-formula><![CDATA[if (( Idle + Busy ) gt 0) {
+                                        100 * ( Busy / ( Idle + Busy ) );
+                                } else {
+                                        0;
+                                }]]></jexl-formula>
+	</result>
+	<result name="SeekTime" unit="ms" time-window="120s">
+		<input>ReadRequests</input>
+		<input>WriteRequests</input>
+		<input>Latency</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<jexl-formula><![CDATA[if(( ReadRequests + WriteRequests ) gt 0 ){ (1000 / (ReadRequests + WriteRequests)) - Latency;}else{0;}]]></jexl-formula>
+	</result>
+	<result name="ReadThroughput" unit="KB/s" time-window="120s">
+		<input>ReadBlocks</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<jexl-formula><![CDATA[ReadBlocks / 2]]></jexl-formula>
+	</result>
+	<result name="WriteThroughput" unit="KB/s" time-window="120s">
+		<input>WriteBlocks</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<jexl-formula><![CDATA[WriteBlocks / 2]]></jexl-formula>
+	</result>
+	<!-- RAIDGroup metrics from blocks to GB -->
+	<result name="UserCapacity" unit="GB" time-window="10s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}">
+		<input keep="false">UserCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-RAIDGroup'</filter>
+		<jexl-formula><![CDATA[( ( UserCapacity * 512 ) / ( 1024 * 1024 * 1024 ))]]></jexl-formula>
+	</result>
+	<result name="RawCapacity" unit="GB" time-window="10s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}">
+		<input keep="false">RawCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-RAIDGroup'</filter>
+		<jexl-formula><![CDATA[( ( RawCapacity * 512 ) / ( 1024 * 1024 * 1024 ))]]></jexl-formula>
+	</result>
+	<result name="FreeCapacity" unit="GB" time-window="10s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}">
+		<input keep="false">FreeCapacity</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-RAIDGroup'</filter>
+		<jexl-formula><![CDATA[( ( FreeCapacity * 512 ) / ( 1024 * 1024 * 1024 ))]]></jexl-formula>
+	</result>
+	<result name="FreeContiguous" unit="GB" time-window="10s" variable-name-pattern="{serialnb}{ip}{datagrp}{parttype}{part}{name}">
+		<input keep="false">FreeContiguous</input>
+		<group-by>serialnb</group-by>
+		<group-by>ip</group-by>
+		<group-by>part</group-by>
+		<filter>datagrp=='VNXBlock-RAIDGroup'</filter>
+		<jexl-formula><![CDATA[( ( FreeContiguous * 512 ) / ( 1024 * 1024 * 1024 ))]]></jexl-formula>
+	</result>
+</config>

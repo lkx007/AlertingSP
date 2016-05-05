@@ -1,0 +1,968 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns="http://www.watch4net.com/APG/Web/XmlTree1" name="EMC Isilon" singleNodeId="7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <property xsi:type="NodeFilter" filterExpression="datagrp='EMC-ISILON%'"/>
+  <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+  <report-layout hspan=".-24b2e759=1,.-8bf101bb=3,.-b0415c56-fe3ce030=3,.-990b1430=2" order=".-24b2e759=2,.-dc94b07c=3,.-8bf101bb=4,.-e986edfa=5,.-abff0983=2,.-b0415c56-fe3ce030=6,.-990b1430=1"/>
+  <report-rendering>
+    <charts mode="dynamic"/>
+  </report-rendering>
+  <node name="All Clusters Size" order="0" singleNodeId="990b1430">
+    <property xsi:type="NodeFilter" filterExpression="devtype=='Cluster' &amp; parttype=='FileSystem' &amp; (name=='AvailableSpace' | name=='UsedSpace')"/>
+    <property xsi:type="ReportPreferences" defaultMode="hsb" displayedProperties="deviceid[GUID] devstate[Status]" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+    <customization color="#bd474d" filter="@node=='Free'"/>
+    <customization color="#1f8bca" filter="@node=='Used'"/>
+    <node name="Free" singleNodeId="3f6ebe59">
+      <property xsi:type="NodeFilter" filterExpression="name=='AvailableSpace'"/>
+      <property xsi:type="ReportPreferences" defaultMode="mix" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+      <formula formulaId="math.spatial.Sum">
+        <setting name="aggregation" value="DEFAULT"/>
+        <setting name="partial" value="true"/>
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Total"/>
+        <result name=" " default="true" graphable="true"/>
+      </formula>
+      <node name="device" singleNodeId="4d9b4fda">
+        <property xsi:type="NodeExpansion" expandOn="device"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+          <result name="Total" default="true" graphable="true"/>
+        </formula>
+      </node>
+    </node>
+    <node name="Used" singleNodeId="832acee2">
+      <property xsi:type="NodeFilter" filterExpression="name=='UsedSpace'"/>
+      <property xsi:type="ReportPreferences" defaultMode="mix" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+      <formula formulaId="math.spatial.Sum">
+        <setting name="aggregation" value="DEFAULT"/>
+        <setting name="partial" value="true"/>
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Total"/>
+        <result name=" " default="true" graphable="true"/>
+      </formula>
+      <node name="device" singleNodeId="65afa9c4">
+        <property xsi:type="NodeExpansion" expandOn="device"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+          <result name="Total" default="true" graphable="true"/>
+        </formula>
+      </node>
+    </node>
+  </node>
+  <node name="FileSystem Throughput Per Node (/s)" order="1" singleNodeId="24b2e759">
+    <property xsi:type="NodeFilter" filterExpression="devtype=='Array' &amp; parttype=='FileSystem'"/>
+    <property xsi:type="ReportPreferences" defaultMode="ncr" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+    <property xsi:type="DisplayPreferences" displayPolicy="alwaysHide"/>
+    <topn-report/>
+    <node name="device" singleNodeId="edbe58e9">
+      <property xsi:type="NodeExpansion" expandOn="device"/>
+      <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+      <formula formulaId="util.Nop">
+        <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='InOctets'"/>
+        <result name="Inbound" default="false" graphable="true"/>
+      </formula>
+      <formula formulaId="util.Nop">
+        <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='OutOctets'"/>
+        <result name="Outbound" default="false" graphable="true"/>
+      </formula>
+      <formula formulaId="math.Addition">
+        <parameter name="metric1" xsi:type="ResultFormulaParameterDefinition" result="Inbound" from="node"/>
+        <parameter name="metric2" xsi:type="ResultFormulaParameterDefinition" result="Outbound" from="node"/>
+        <result name="Total" default="true" graphable="false"/>
+      </formula>
+    </node>
+  </node>
+  <node name="All Clusters CPU Usage (%)" order="2" singleNodeId="dc94b07c">
+    <property xsi:type="NodeFilter" filterExpression="parttype=='Processor' &amp; devtype=='Cluster' &amp; (name=='CpuSystem' | name=='CpuUser')"/>
+    <property xsi:type="ReportPreferences" defaultMode="ncr" legendProperties="name" legendDisplayPolicy="visible" maxValue="109.0" graphInfoDisplayMode="boxed"/>
+    <threshold name="major" value="60.0" color="#ff8000"/>
+    <threshold name="critical" value="80.0" color="#ff0000"/>
+    <report-rendering>
+      <charts mode="dynamic"/>
+    </report-rendering>
+    <node name="device" order="2" singleNodeId="c522ea1a">
+      <property xsi:type="NodeExpansion" expandOn="device"/>
+      <property xsi:type="ReportPreferences" defaultMode="nrx" legendProperties="name" legendDisplayPolicy="visible" maxValue="109.0" graphInfoDisplayMode="boxed"/>
+      <formula formulaId="math.Addition">
+        <parameter name="metric1" xsi:type="FilterFormulaParameterDefinition" filter="name=='CpuSystem'"/>
+        <parameter name="metric2" xsi:type="FilterFormulaParameterDefinition" filter="name=='CpuUser'"/>
+        <result name="CurrentUtilization" default="true" graphable="true"/>
+      </formula>
+      <customization color="#9e999e" filter="@result=='User'"/>
+      <customization color="#0f7dd1" filter="@result=='System'"/>
+      <report-rendering>
+        <charts mode="dynamic"/>
+      </report-rendering>
+    </node>
+  </node>
+  <node name="All Clusters FileSystem Throughput (Mb/s)" order="3" singleNodeId="abff0983">
+    <property xsi:type="NodeFilter" filterExpression="devtype=='Cluster' &amp; (name=='InOctets' | name=='OutOctets') &amp; parttype=='FileSystem'"/>
+    <property xsi:type="ReportPreferences" defaultMode="ncr" legendProperties="" legendDisplayPolicy="visible" graphScaleFactor="1.0E-6" graphInfoDisplayMode="boxed"/>
+    <customization color="#555a61" filter="@node=='Inbound'"/>
+    <customization color="#1447e0" filter="@node=='Outbound'"/>
+    <report-rendering>
+      <charts mode="dynamic"/>
+    </report-rendering>
+    <node name="Inbound" singleNodeId="aa8b8ec3">
+      <property xsi:type="NodeFilter" filterExpression="name=='InOctets'"/>
+      <property xsi:type="ReportPreferences" defaultMode="mix"/>
+      <formula formulaId="math.spatial.Sum">
+        <setting name="aggregation" value="DEFAULT"/>
+        <setting name="partial" value="true"/>
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Inbound (Mbps)"/>
+        <result name=" " default="true" graphable="true"/>
+      </formula>
+      <node name="device" singleNodeId="a03c0552">
+        <property xsi:type="NodeExpansion" expandOn="device"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx" legendDisplayPolicy="visible" graphScaleFactor="1.0E-6"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+          <result name="Inbound (Mbps)" default="false" graphable="true"/>
+        </formula>
+      </node>
+    </node>
+    <node name="Outbound" singleNodeId="3f58e80f">
+      <property xsi:type="NodeFilter" filterExpression="name=='OutOctets'"/>
+      <property xsi:type="ReportPreferences" defaultMode="mix"/>
+      <formula formulaId="math.spatial.Sum">
+        <setting name="aggregation" value="DEFAULT"/>
+        <setting name="partial" value="true"/>
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Outbound (Mbps)"/>
+        <result name=" " default="true" graphable="true"/>
+      </formula>
+      <node name="device" singleNodeId="a03c0552">
+        <property xsi:type="NodeExpansion" expandOn="device"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx" legendDisplayPolicy="visible" graphScaleFactor="1.0E-6"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+          <result name="Outbound (Mbps)" default="false" graphable="true"/>
+        </formula>
+      </node>
+    </node>
+  </node>
+  <node name="Clusters Summary" order="4" singleNodeId="8bf101bb">
+    <property xsi:type="NodeFilter" filterExpression="devtype=='Cluster'"/>
+    <property xsi:type="PropertyNodeColumn" name="Cluster" property="device"/>
+    <property xsi:type="ValueNodeColumn" name="Total Nodes" resultName="Nodes" forcePeriod="never" formatter="PerformanceSparkLineFormatter" timeThreshold="600" roundingAccuracy="0"/>
+    <property xsi:type="ValueNodeColumn" name="Inbound (/s)" filterExpression="name=='InOctets'" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Outbound (/s)" filterExpression="name=='OutOctets'" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Total (/s)" resultName="TotalBytes" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Storage Used" filterExpression="name=='UsedSpace'" forcePeriod="never" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Storage Size" resultName="TotalSpace" forcePeriod="never" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+    <property xsi:type="ValueNodeColumn" name="Used (%)" majorLevel="80.0" criticalLevel="90.0" resultName="Used%" forcePeriod="never" timeThreshold="600"/>
+    <formula formulaId="math.Addition">
+      <parameter name="metric1" xsi:type="FilterFormulaParameterDefinition" filter="name=='AvailableSpace'"/>
+      <parameter name="metric2" xsi:type="FilterFormulaParameterDefinition" filter="name=='UsedSpace'"/>
+      <result name="TotalSpace" default="false" graphable="false"/>
+    </formula>
+    <node name="device(cluster)" singleNodeId="3a2f655d">
+      <property xsi:type="NodeExpansion" expandOn="device"/>
+      <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+      <formula formulaId="util.Nop">
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Nodes"/>
+        <result name="Nodes" default="false" graphable="false"/>
+      </formula>
+      <formula formulaId="math.Addition">
+        <parameter name="metric1" xsi:type="FilterFormulaParameterDefinition" filter="name=='InOctets'"/>
+        <parameter name="metric2" xsi:type="FilterFormulaParameterDefinition" filter="name=='OutOctets'"/>
+        <result name="TotalBytes" default="false" graphable="false"/>
+      </formula>
+      <formula formulaId="math.Division">
+        <setting name="scale" value="100"/>
+        <parameter name="numerator" xsi:type="FilterFormulaParameterDefinition" filter="name=='UsedSpace'"/>
+        <parameter name="denominator" xsi:type="ResultFormulaParameterDefinition" result="TotalSpace" from="node"/>
+        <result name="Used%" default="false" graphable="false"/>
+      </formula>
+      <formula formulaId="math.Addition">
+        <parameter name="metric1" xsi:type="FilterFormulaParameterDefinition" filter="name=='AvailableSpace'"/>
+        <parameter name="metric2" xsi:type="FilterFormulaParameterDefinition" filter="name=='UsedSpace'"/>
+        <result name="TotalSpace" default="false" graphable="false"/>
+      </formula>
+      <report-layout hspan=".-202342f8=3,.-990b1430=2" order=".-dc94b07c=3,.-2ad1c03c=2,.-202342f8=4,.-990b1430=1"/>
+      <report-rendering>
+        <charts mode="dynamic"/>
+      </report-rendering>
+      <node name="Cluster Size" order="0" singleNodeId="990b1430">
+        <property xsi:type="NodeFilter" filterExpression="devtype=='Cluster' &amp; parttype=='FileSystem' &amp; (name=='AvailableSpace' | name=='UsedSpace')"/>
+        <property xsi:type="ReportPreferences" defaultMode="hsb" displayedProperties="deviceid[GUID] devstate[Status]" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <customization color="#bc474d" filter="@node=='Free'"/>
+        <customization color="#1f8bca" filter="@node=='Used'"/>
+        <node name="Free" singleNodeId="3f6ebe59">
+          <property xsi:type="NodeFilter" filterExpression="name=='AvailableSpace'"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+            <result name=" " default="true" graphable="true"/>
+          </formula>
+        </node>
+        <node name="Used" singleNodeId="832acee2">
+          <property xsi:type="NodeFilter" filterExpression="name=='UsedSpace'"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+            <result name=" " default="true" graphable="true"/>
+          </formula>
+        </node>
+      </node>
+      <node name="CPU Usage (%)" order="1" singleNodeId="dc94b07c">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='Processor' &amp; devtype=='Cluster' &amp; (name=='CpuSystem' | name=='CpuUser')"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx" legendProperties="name" legendDisplayPolicy="visible" maxValue="109.0" graphInfoDisplayMode="boxed"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name='%System%'"/>
+          <result name="System" default="false" graphable="true"/>
+        </formula>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name='%User%'"/>
+          <result name="User" default="false" graphable="true"/>
+        </formula>
+        <customization color="#9e999e" filter="@result=='User'"/>
+        <customization color="#0f7dd1" filter="@result=='System'"/>
+        <threshold name="major" value="60.0" color="#ff8000"/>
+        <threshold name="critical" value="80.0" color="#ff0000"/>
+        <report-rendering>
+          <charts mode="dynamic"/>
+        </report-rendering>
+      </node>
+      <node name="Cluster FileSystem Throughput (/s)" order="2" singleNodeId="2ad1c03c">
+        <property xsi:type="NodeFilter" filterExpression="devtype=='Cluster' &amp; (name=='InOctets' | name=='OutOctets') &amp; parttype=='FileSystem'"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx" legendProperties="name" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::B::Byte::Storage" graphInfoDisplayMode="boxed"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name='In%'"/>
+          <result name="Inbound" default="false" graphable="true"/>
+        </formula>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name='Out%'"/>
+          <result name="Outbound" default="false" graphable="true"/>
+        </formula>
+        <customization color="#747678" filter="@result=='Outbound'"/>
+        <customization color="#2071d4" filter="@result=='Inbound'"/>
+      </node>
+      <node name="Nodes Details" order="3" singleNodeId="202342f8">
+        <property xsi:type="NodeExpansion" expandOn="device&lt;type=split;properties=memberof;level-up=99&gt;"/>
+        <property xsi:type="PropertyNodeColumn" name="Node" sortMode="asc" property="device"/>
+        <property xsi:type="PropertyNodeColumn" name="ip" property="ip"/>
+        <property xsi:type="ValueNodeColumn" name="Status" majorLevel="99.0" criticalLevel="98.0" filterExpression="name=='Status' &amp; !(part)" forcePeriod="never" formatter="BlankFormatter" timeThreshold="600" roundingAccuracy="0"/>
+        <property xsi:type="ValueNodeColumn" name="Inbound (/s)" resultName="SumInOctets" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Outbound (/s)" resultName="SumOutOctets" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Total (/s)" resultName="SumTotalOctets" forcePeriod="true" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <formula formulaId="util.ChildCount">
+          <result name="Nodes" default="false" graphable="false"/>
+        </formula>
+        <link singleNodeId="9034f6c5" linkID=".-..-..-..-..-f69010ff-d34c41db"/>
+      </node>
+      <node name="Summaries" order="5" singleNodeId="404a2b57">
+        <property xsi:type="NodePropertyNodeColumn" name="Reports" nodeProperty="name"/>
+        <node name="License Summary" order="4" singleNodeId="58140bf3">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='License'"/>
+          <property xsi:type="ReportPreferences" description="Expire On = December 31, 1969 means the license is permanent" paging="5"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Cluster" nodeProperty="expandedNames[0]"/>
+          <property xsi:type="NodePropertyNodeColumn" name="License Name" nodeProperty="expandedNames[1]"/>
+          <property xsi:type="PropertyNodeColumn" name="License Status" property="partstat"/>
+          <property xsi:type="ValueNodeColumn" name="Expire On" filterExpression="name=='ExpirationDate'" forcePeriod="never" formatter="DateTimeFormatter" timeThreshold="600" roundingAccuracy="-1"/>
+          <node name="License" singleNodeId="4fec7fe9">
+            <property xsi:type="NodeExpansion" expandOn="device,partname"/>
+            <property xsi:type="ReportPreferences" description="&quot;Expire On&quot; equals &quot;December 31, 1969&quot;  means the license is permanent"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+          </node>
+        </node>
+        <node name="SnapShot Summary" order="5" singleNodeId="1ff6d18b">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='Snapshot' &amp; active=='true'"/>
+          <property xsi:type="ReportPreferences" paging="10"/>
+          <property xsi:type="PropertyNodeColumn" name="SnapShot Name" property="snapname"/>
+          <property xsi:type="PropertyNodeColumn" name="Path" property="path"/>
+          <property xsi:type="PropertyNodeColumn" name="Alias For" property="aliasfor"/>
+          <property xsi:type="ValueNodeColumn" name="Created On" filterExpression="name=='Created'" forcePeriod="never" formatter="DateTimeFormatter" aggregationFunc="inherit" useTimeRange="true" valuesAggregationFunc="last"/>
+          <property xsi:type="PropertyNodeColumn" name="IsLocked" property="locked"/>
+          <property xsi:type="ValueNodeColumn" name="Size" filterExpression="name=='Size'" forcePeriod="never" formatter="BasicFormatter" aggregationFunc="inherit" useTimeRange="true" valuesAggregationFunc="last" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <node name="snapshot" singleNodeId="ada7b784">
+            <property xsi:type="NodeExpansion" expandOn="snapname"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+            <formula formulaId="math.spatial.Sum">
+              <setting name="aggregation" value="DEFAULT"/>
+              <setting name="partial" value="true"/>
+              <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="SnapShotSize"/>
+              <result name="TotalSumSnapShot" default="false" graphable="false"/>
+            </formula>
+          </node>
+        </node>
+        <node name="Quota Summary" order="6" singleNodeId="3335cb2a">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='Quota'"/>
+          <property xsi:type="PropertyNodeColumn" name="Cluster" property="device"/>
+          <property xsi:type="PropertyNodeColumn" name="Path" property="qtapath"/>
+          <property xsi:type="PropertyNodeColumn" name="Quota Type" property="partform"/>
+          <property xsi:type="PropertyNodeColumn" name="SnaphShot Usage included" property="qtasnap"/>
+          <property xsi:type="ValueNodeColumn" name="Quota Hard Threshold" resultName="qtahard" forcePeriod="never" formatter="BasicFormatter" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Quota Soft Threshold" resultName="qtasoft" forcePeriod="never" formatter="BasicFormatter" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Quota Usage" filterExpression="name=='Usage'" forcePeriod="never" formatter="BasicFormatter" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Quota Usage with Overhead" filterExpression="name=='UsageWithOverhead'" forcePeriod="never" formatter="BasicFormatter" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <property xsi:type="ValueNodeColumn" name="Number Inodes Covered" filterExpression="name=='NumberOfFiles'" forcePeriod="never" formatter="BasicFormatter" timeThreshold="600"/>
+          <node name="Quota" singleNodeId="67498904">
+            <property xsi:type="NodeExpansion" expandOn="qtapath"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfBrowsing"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="PropertyFormulaParameterDefinition" property="qtasoft"/>
+              <result name="qtasoft" default="false" graphable="false"/>
+            </formula>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="PropertyFormulaParameterDefinition" property="qtahard"/>
+              <result name="qtahard" default="false" graphable="false"/>
+            </formula>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+  <node name="Performance Scorecards" order="5" singleNodeId="e986edfa">
+    <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+    <link singleNodeId="bceb196a" linkID=".-..-..-f69010ff-d34c41db-cdd2c800-2bcdad34" order="0"/>
+    <link singleNodeId="2894316d" linkID=".-..-..-f69010ff-d34c41db-cdd2c800-4f184be8" order="1"/>
+  </node>
+  <node name="&lt;&lt;TEMPLATES&gt;&gt;" order="6" singleNodeId="f69010ff">
+    <property xsi:type="ReportPreferences" defaultMode="lst"/>
+    <property xsi:type="DisplayPreferences" displayPolicy="alwaysHide"/>
+    <node name="memberof,device" singleNodeId="d34c41db">
+      <property xsi:type="NodeExpansion" expandOn="memberof,device"/>
+      <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix" displayedProperties="ip[List of IPs] devdesc devclass[Node type]"/>
+      <property xsi:type="PropertyNodeColumn" name="Address" property="ip"/>
+      <formula formulaId="util.Nop">
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="IPs"/>
+        <result name="IPs" default="false" graphable="false"/>
+      </formula>
+      <formula formulaId="math.Division">
+        <setting name="scale" value="1"/>
+        <parameter name="numerator" xsi:type="ResultFormulaParameterDefinition" result="SumInOctets"/>
+        <parameter name="denominator" xsi:type="ResultFormulaParameterDefinition" result="IPs"/>
+        <result name="SumInOctets" default="false" graphable="false"/>
+      </formula>
+      <formula formulaId="math.Division">
+        <setting name="scale" value="1"/>
+        <parameter name="numerator" xsi:type="ResultFormulaParameterDefinition" result="SumOutOctets"/>
+        <parameter name="denominator" xsi:type="ResultFormulaParameterDefinition" result="IPs"/>
+        <result name="SumOutOctets" default="false" graphable="false"/>
+      </formula>
+      <formula formulaId="math.Division">
+        <setting name="scale" value="1"/>
+        <parameter name="numerator" xsi:type="ResultFormulaParameterDefinition" result="SumTotalOctets"/>
+        <parameter name="denominator" xsi:type="ResultFormulaParameterDefinition" result="IPs"/>
+        <result name="SumTotalOctets" default="false" graphable="false"/>
+      </formula>
+      <formula formulaId="util.Nop">
+        <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="InterfaceCount"/>
+        <result name="interfaceIPs" default="false" graphable="false"/>
+      </formula>
+      <report-layout hspan=".-39594f3=1,.-bcaa94b=2,.-2d0d5938=2" order=".-39594f3=5,.-cdd2c800=6,.-b2695e3b-bdc4b9a7=6,.-271503ea=1,.-b2695e3b=7,.-b2695e3b-37cea3b9=3,.-bcaa94b=4,.-10e42195=2,.-2d0d5938=3"/>
+      <node name="Node FileSystem Throughput (/s)" order="0" singleNodeId="271503ea">
+        <property xsi:type="NodeFilter" filterExpression="devtype=='Array' &amp; (name=='InOctets' | name=='OutOctets') &amp; parttype=='FileSystem'"/>
+        <property xsi:type="ReportPreferences" defaultMode="stk" legendProperties="" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::B::Byte::Storage" graphInfoDisplayMode="boxed"/>
+        <customization color="#555a61" filter="@node=='Inbound'"/>
+        <customization color="#1447e0" filter="@node=='Outbound'"/>
+        <report-rendering>
+          <charts mode="dynamic"/>
+        </report-rendering>
+        <node name="Inbound" singleNodeId="aa8b8ec3">
+          <property xsi:type="NodeFilter" filterExpression="name='In%'"/>
+          <property xsi:type="ReportPreferences" defaultMode="mix"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Inbound (Mbps)"/>
+            <result name=" " default="true" graphable="true"/>
+          </formula>
+          <node name="ip" singleNodeId="a03c0552">
+            <property xsi:type="NodeExpansion" expandOn="ip"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+              <result name="Inbound (/s)" default="false" graphable="true"/>
+            </formula>
+          </node>
+        </node>
+        <node name="Outbound" singleNodeId="3f58e80f">
+          <property xsi:type="NodeFilter" filterExpression="name='Out%'"/>
+          <property xsi:type="ReportPreferences" defaultMode="mix"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Outbound (/s)"/>
+            <result name="  " default="true" graphable="true"/>
+          </formula>
+          <node name="ip" singleNodeId="a03c0552">
+            <property xsi:type="NodeExpansion" expandOn="ip"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+              <result name="Outbound (/s)" default="false" graphable="true"/>
+            </formula>
+          </node>
+        </node>
+      </node>
+      <node name="Node CPU Usage (%)" order="1" singleNodeId="10e42195">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='Processor' &amp; devtype=='Array' &amp; name=='CpuIdle'"/>
+        <property xsi:type="ReportPreferences" defaultMode="nrx" legendProperties="name" legendDisplayPolicy="visible" maxValue="109.0" graphInfoDisplayMode="boxed"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name='%System%'"/>
+          <result name="System" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name='%User%'"/>
+          <result name="User" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='CpuIdle'"/>
+          <result name="CPUIDLE" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="math.Subtraction">
+          <parameter name="base metric" xsi:type="ConstantFormulaParameterDefinition" value="100.0"/>
+          <parameter name="subtract metric" xsi:type="ResultFormulaParameterDefinition" result="CPUIdelNormalized" from="node"/>
+          <result name="CPUUsage" default="false" graphable="true"/>
+        </formula>
+        <formula formulaId="math.Division">
+          <setting name="scale" value="1"/>
+          <parameter name="numerator" xsi:type="ResultFormulaParameterDefinition" result="CPUIDLE" from="node"/>
+          <parameter name="denominator" xsi:type="ConstantFormulaParameterDefinition" value="1.0"/>
+          <result name="CPUIdelNormalized" default="false" graphable="false"/>
+        </formula>
+        <customization color="#9e999e" filter="@result=='User'"/>
+        <customization color="#0f7dd1" filter="@result=='System'"/>
+        <threshold name="major" value="60.0" color="#ff8000"/>
+        <threshold name="critical" value="80.0" color="#ff0000"/>
+        <report-rendering>
+          <charts mode="dynamic"/>
+        </report-rendering>
+      </node>
+      <node name="FileSystem Summary" order="2" singleNodeId="bcaa94b">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='FileSystem' &amp; part='/%'"/>
+        <property xsi:type="PropertyNodeColumn" name="Name" property="part"/>
+        <property xsi:type="ValueNodeColumn" name="Size" filterExpression="name=='StorageSize'" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Used" filterExpression="name=='StorageUsed'" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Used (%)" majorLevel="70.0" criticalLevel="80.0" resultName="Used%" forcePeriod="never" timeThreshold="600" roundingAccuracy="1"/>
+        <node name="part" singleNodeId="135bcd9">
+          <property xsi:type="NodeExpansion" expandOn="part"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <formula formulaId="math.Division">
+            <setting name="scale" value="100"/>
+            <parameter name="numerator" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageUsed'"/>
+            <parameter name="denominator" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageSize'"/>
+            <result name="Used%" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageSize'"/>
+            <result name="StorageSize" default="false" graphable="true"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageUsed'"/>
+            <result name="StorageUsed" default="false" graphable="true"/>
+          </formula>
+        </node>
+      </node>
+      <node name="Total Throughput by Bay (kbps)" order="3" singleNodeId="2d0d5938">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='Disk'"/>
+        <property xsi:type="ReportPreferences" defaultMode="st" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <threshold name="critical" value="1.28E9" scaled="false" color="#ff0000"/>
+        <threshold name="major" value="8.0E8" scaled="false" color="#ff8000"/>
+        <threshold name="good" value="0.0" scaled="false" color="#22e33f"/>
+        <status-report>
+          <value show="true" rounding="1"/>
+          <marker type="circle" size="large"/>
+        </status-report>
+        <node name="diskbay" singleNodeId="cacaacba">
+          <property xsi:type="NodeExpansion" expandOn="diskbay"/>
+          <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+          <formula formulaId="math.Addition">
+            <parameter name="metric1" xsi:type="FilterFormulaParameterDefinition" filter="name=='ReadThroughput'"/>
+            <parameter name="metric2" xsi:type="FilterFormulaParameterDefinition" filter="name=='WriteThroughput'"/>
+            <result name="Throughput (/s)" default="true" graphable="true"/>
+          </formula>
+        </node>
+      </node>
+      <node name="Interfaces Traffic" order="4" singleNodeId="39594f3">
+        <property xsi:type="NodeFilter" filterExpression="parttype=='Interface' &amp; !(part=='All') &amp; !(part=='lo0')"/>
+        <property xsi:type="NodeExpansion" expandOn="device&lt;type=split;properties=device;level-up=5;name-override=Interfaces Traffic&gt;" filterMode="select"/>
+        <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <property xsi:type="PropertyNodeColumn" name="interface IP" property="ifaceip"/>
+        <property xsi:type="ValueNodeColumn" name="In (Mbps)" resultName="Incoming (Mbits/sec)" forcePeriod="true" period="3600" useTimeRange="true" roundingAccuracy="1"/>
+        <property xsi:type="ValueNodeColumn" name="Out (Mbps)" resultName="Outgoing (Mbits/sec)" forcePeriod="true" period="3600" useTimeRange="true" roundingAccuracy="1"/>
+        <property xsi:type="ValueNodeColumn" name="Usage (%)" sortMode="desc" majorLevel="60.0" criticalLevel="80.0" resultName="Utilization (%)" forcePeriod="true" formatter="SparkLineFormatter" useTimeRange="true"/>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Availability (%)"/>
+          <result name="Availability (%)" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Incoming (Mbits/sec)"/>
+          <result name="Incoming (Mbits/sec)" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="util.Nop">
+          <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Outgoing (Mbits/sec)"/>
+          <result name="Outgoing (Mbits/sec)" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="util.ChildCount">
+          <result name="InterfaceCount" default="false" graphable="false"/>
+        </formula>
+        <node name="Interface" order="0" singleNodeId="15d83b48">
+          <property xsi:type="NodeExpansion" expandOn="part"/>
+          <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix" displayedProperties="device maxspeed ifalias[Interface Description]"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Current Utilization (%)"/>
+            <result name="Utilization (%)" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Availability (%)"/>
+            <result name="Availability (%)" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Incoming (Mbits/sec)"/>
+            <result name="Incoming (Mbits/sec)" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Outgoing (Mbits/sec)"/>
+            <result name="Outgoing (Mbits/sec)" default="false" graphable="false"/>
+          </formula>
+          <report-layout hspan=".-fe067802=1,.-ab4bff01=3" order=".-fe067802=2,.-ac2de70c=6,.-f588d36a=4,.-e66736a6=5,.-ab4bff01=1"/>
+          <node name="Interface Utilization % (In &amp; Out)" order="0" singleNodeId="fe067802">
+            <property xsi:type="ReportPreferences" defaultMode="nrx" duration="l1w" preferredPeriod="3600" maxValue="109.0" graphInfoDisplayMode="boxed"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+            <formula formulaId="utilization.BandwidthUtilization">
+              <setting name="duplex" value="FULLDUPLEX"/>
+              <setting name="ifOctets scale" value="8"/>
+              <setting name="ifSpeed scale" value="1"/>
+              <setting name="threshold" value="100"/>
+              <parameter name="ifInOctets" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifInOctets'"/>
+              <parameter name="ifOutOctets" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifOutOctets'"/>
+              <parameter name="ifSpeed" xsi:type="PropertyFormulaParameterDefinition" property="maxspeed"/>
+              <result name="bandwidth (Mb/s)" default="false" graphable="false"/>
+              <result name="speed (Mb/s)" default="false" graphable="false"/>
+              <result name="Current Utilization (%)" default="false" graphable="true"/>
+            </formula>
+            <threshold name="major" value="70.0" color="#ff8000"/>
+            <threshold name="critical" value="90.0" color="#ff0000"/>
+          </node>
+          <node name="Availability (%)" order="1" singleNodeId="5a893eff" type="entity">
+            <property xsi:type="NodeFilter" filterExpression="name=='Availability'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrb" duration="l1w" preferredPeriod="3600" legendProperties="device part unit" maxValue="109.0" graphInfoDisplayMode="boxed"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+            <property xsi:type="PropertyNodeColumn" name="Device or part" property="device part"/>
+            <property xsi:type="PropertyNodeColumn" name="Name" property="name"/>
+            <property xsi:type="ValueNodeColumn" name="Last value" timeThreshold="1000"/>
+            <threshold name="major" value="99.0" color="#ff8000"/>
+            <threshold name="critical" value="95.0" color="#ff0000"/>
+          </node>
+          <node name="Bandwidth (Mbits/s)" order="2" singleNodeId="ab4bff01">
+            <property xsi:type="ReportPreferences" defaultMode="nrx" duration="l1w" preferredPeriod="3600"/>
+            <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='Availability'"/>
+              <result name="Availability (%)" default="false" graphable="false"/>
+            </formula>
+            <formula formulaId="math.Division">
+              <setting name="scale" value="1"/>
+              <parameter name="numerator" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifInOctets'"/>
+              <parameter name="denominator" xsi:type="ConstantFormulaParameterDefinition" value="125000.0"/>
+              <result name="Incoming (Mbits/sec)" default="false" graphable="true"/>
+            </formula>
+            <formula formulaId="math.Division">
+              <setting name="scale" value="1"/>
+              <parameter name="numerator" xsi:type="FilterFormulaParameterDefinition" filter="name=='ifOutOctets'"/>
+              <parameter name="denominator" xsi:type="ConstantFormulaParameterDefinition" value="125000.0"/>
+              <result name="Outgoing (Mbits/sec)" default="false" graphable="true"/>
+            </formula>
+          </node>
+          <node name="Broadcast Received (Pkts/sec)" singleNodeId="e66736a6">
+            <property xsi:type="NodeFilter" filterExpression="name=='ifInNUcastPkts'"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+            <property xsi:type="PropertyNodeColumn" name="Name" property="name"/>
+            <property xsi:type="ValueNodeColumn" name="Last value" timeThreshold="1000"/>
+          </node>
+          <node name="Broadcast Sent (Pkts/sec)" singleNodeId="ac2de70c">
+            <property xsi:type="NodeFilter" filterExpression="name=='ifOutNUcastPkts'"/>
+            <property xsi:type="ReportPreferences" defaultMode="stk"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+            <property xsi:type="PropertyNodeColumn" name="Name" property="name"/>
+            <property xsi:type="ValueNodeColumn" name="Last value" timeThreshold="1000"/>
+          </node>
+          <node name="Errors (Pkts/sec)" singleNodeId="f588d36a">
+            <property xsi:type="NodeFilter" filterExpression="name='if%rror%' | name='if%iscard%'"/>
+            <property xsi:type="ReportPreferences" defaultMode="stk"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="hideIfEmpty"/>
+            <property xsi:type="PropertyNodeColumn" name="Name" property="name"/>
+            <property xsi:type="ValueNodeColumn" name="Last value" timeThreshold="1000"/>
+          </node>
+        </node>
+      </node>
+      <node name="Summary View" order="5" singleNodeId="e9ebbbdf">
+        <property xsi:type="ReportPreferences" displayedProperties="device[Node name]"/>
+        <property xsi:type="PropertyNodeColumn" name="IP" property="ip"/>
+        <property xsi:type="PropertyNodeColumn" name="Description" property="devdesc"/>
+        <property xsi:type="ValueNodeColumn" name="Inbound (/s)" resultName="InOctets" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Outbound (/s)" resultName="OutOctets" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Total (/s)" resultName="TotalOctets" forcePeriod="never" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Storage Used" resultName="UsedSpace" forcePeriod="never" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Storage Size" resultName="StorageSize" forcePeriod="never" timeThreshold="600" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+        <property xsi:type="ValueNodeColumn" name="Used (%)" majorLevel="70.0" criticalLevel="80.0" resultName="Used%" forcePeriod="never" formatter="BackgroundFormatter" timeThreshold="600"/>
+        <formula formulaId="math.spatial.Sum">
+          <setting name="aggregation" value="DEFAULT"/>
+          <setting name="partial" value="true"/>
+          <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="InOctets"/>
+          <result name="SumInOctets" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="math.spatial.Sum">
+          <setting name="aggregation" value="DEFAULT"/>
+          <setting name="partial" value="true"/>
+          <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="OutOctets"/>
+          <result name="SumOutOctets" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="math.spatial.Sum">
+          <setting name="aggregation" value="DEFAULT"/>
+          <setting name="partial" value="true"/>
+          <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="TotalOctets"/>
+          <result name="SumTotalOctets" default="false" graphable="false"/>
+        </formula>
+        <formula formulaId="util.ChildCount">
+          <result name="IPs" default="false" graphable="false"/>
+        </formula>
+        <node name="ip" singleNodeId="899218d1">
+          <property xsi:type="NodeExpansion" expandOn="ip"/>
+          <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='InOctets'"/>
+            <result name="InOctets" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='OutOctets'"/>
+            <result name="OutOctets" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="math.Addition">
+            <parameter name="metric1" xsi:type="ResultFormulaParameterDefinition" result="InOctets" from="node"/>
+            <parameter name="metric2" xsi:type="ResultFormulaParameterDefinition" result="OutOctets" from="node"/>
+            <result name="TotalOctets" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageSize'"/>
+            <result name="StorageSize" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="util.Nop">
+            <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='StorageUsed'"/>
+            <result name="UsedSpace" default="false" graphable="false"/>
+          </formula>
+          <formula formulaId="math.Division">
+            <setting name="scale" value="100"/>
+            <parameter name="numerator" xsi:type="ResultFormulaParameterDefinition" result="UsedSpace" from="node"/>
+            <parameter name="denominator" xsi:type="ResultFormulaParameterDefinition" result="StorageSize" from="node"/>
+            <result name="Used%" default="false" graphable="false"/>
+          </formula>
+          <link singleNodeId="164804bf" linkID=".-..-..-..-..-..-..-0-7-f69010ff-d34c41db-10e42195" order="0"/>
+          <link singleNodeId="6f6f2fba" linkID=".-..-..-..-..-..-..-0-7-f69010ff-d34c41db-271503ea" order="1"/>
+          <link singleNodeId="ae53a0bc" linkID=".-..-..-..-..-..-..-0-7-f69010ff-d34c41db-bcaa94b" order="2"/>
+          <link singleNodeId="86e5ede1" linkID=".-..-..-..-..-..-..-0-7-f69010ff-d34c41db-39594f3" order="3"/>
+          <link singleNodeId="b97c1e68" linkID=".-..-..-..-..-..-..-0-7-f69010ff-d34c41db-37cea3b9"/>
+          <link singleNodeId="28069631" linkID=".-..-..-..-..-..-..-0-7-f69010ff-d34c41db-bdc4b9a7"/>
+        </node>
+      </node>
+      <node name="Performance Scorecards" order="6" singleNodeId="cdd2c800">
+        <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+        <node name="Disks Performance" singleNodeId="2bcdad34">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='Disk'"/>
+          <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+          <property xsi:type="PropertyNodeColumn" name="Node" property="device"/>
+          <property xsi:type="PropertyNodeColumn" name="Protocol" property="part"/>
+          <property xsi:type="ValueNodeColumn" name="IOPS" filterExpression="name=='IOPS'" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600"/>
+          <property xsi:type="ValueNodeColumn" name="Latency" filterExpression="name=='Latency'" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600"/>
+          <property xsi:type="ValueNodeColumn" name="Inbound (/s)" resultName="InBits" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Bit::SI::b::Bit::SI"/>
+          <property xsi:type="ValueNodeColumn" name="Outbound (/s)" resultName="OutBits" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Bit::SI::b::Bit::SI"/>
+          <property xsi:type="ValueNodeColumn" name="Total (/s)" resultName="TotalBits" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Bit::SI::b::Bit::SI"/>
+          <report-layout hspan=".-bd16cb5=2"/>
+          <node name="Throughput by Disks (kbps)" order="0" singleNodeId="b679a040">
+            <property xsi:type="NodeFilter" filterExpression="name=='WriteThroughput' | name=='ReadThroughput'"/>
+            <property xsi:type="ReportPreferences" defaultMode="pie" graphScaleFactor="0.0010"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="alwaysHide"/>
+            <node name="part" singleNodeId="629e64f5">
+              <property xsi:type="NodeExpansion" expandOn="part"/>
+              <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix" preferredPeriod="3600"/>
+              <formula formulaId="math.spatial.Sum">
+                <setting name="aggregation" value="DEFAULT"/>
+                <setting name="partial" value="false"/>
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="Total"/>
+                <result name=" " default="true" graphable="false"/>
+              </formula>
+              <node name="device" singleNodeId="99505114">
+                <property xsi:type="NodeExpansion" expandOn="device"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="0.0010"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='WriteThroughput'"/>
+                  <result name="InBits" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='ReadThroughput'"/>
+                  <result name="OutBits" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="math.Addition">
+                  <parameter name="metric1" xsi:type="ResultFormulaParameterDefinition" result="InBits" from="node"/>
+                  <parameter name="metric2" xsi:type="ResultFormulaParameterDefinition" result="OutBits" from="node"/>
+                  <result name="Total" default="false" graphable="true"/>
+                </formula>
+              </node>
+            </node>
+          </node>
+          <node name="Top Disks IOPS" order="1" singleNodeId="9c3538f">
+            <property xsi:type="NodeFilter" filterExpression="name=='IOPS'"/>
+            <property xsi:type="ReportPreferences" defaultMode="hb"/>
+            <property xsi:type="DisplayPreferences" displayPolicy="alwaysHide"/>
+            <node name="part" singleNodeId="629e64f5">
+              <property xsi:type="NodeExpansion" expandOn="part"/>
+              <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+              <formula formulaId="math.spatial.Sum">
+                <setting name="aggregation" value="DEFAULT"/>
+                <setting name="partial" value="true"/>
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="IOPS"/>
+                <result name=" " default="true" graphable="false"/>
+              </formula>
+              <node name="device" singleNodeId="99505114">
+                <property xsi:type="NodeExpansion" expandOn="device"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='IOPS'"/>
+                  <result name="IOPS" default="false" graphable="true"/>
+                </formula>
+              </node>
+            </node>
+          </node>
+          <node name="Disks Summary" order="2" singleNodeId="bd16cb5">
+            <property xsi:type="NodeFilter" filterExpression="parttype=='Disk'"/>
+            <property xsi:type="PropertyNodeColumn" name="Node" property="device"/>
+            <property xsi:type="PropertyNodeColumn" name="Disk" property="part"/>
+            <property xsi:type="PropertyNodeColumn" name="Bay" property="diskbay"/>
+            <property xsi:type="PropertyNodeColumn" name="Status" property="partstat"/>
+            <property xsi:type="ValueNodeColumn" name="IOPS" filterExpression="name=='IOPS'" forcePeriod="never" formatter="BasicFormatter" aggregationFunc="inherit" useTimeRange="true" valuesAggregationFunc="last" roundingAccuracy="-1"/>
+            <property xsi:type="ValueNodeColumn" name="Inbound (/s)" resultName="InBytes" forcePeriod="never" formatter="BasicFormatter" useTimeRange="true" scaleOperation="unit" scaleFactor="Bit::Storage::b::Bit::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Outbound (/s)" resultName="OutBytes" forcePeriod="never" formatter="BasicFormatter" useTimeRange="true" scaleOperation="unit" scaleFactor="Bit::Storage::b::Bit::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Total (/s)" resultName="Total" forcePeriod="never" formatter="BasicFormatter" useTimeRange="true" scaleOperation="unit" scaleFactor="Bit::Storage::b::Bit::Storage"/>
+            <node name="device,part" singleNodeId="23ff5b26">
+              <property xsi:type="NodeExpansion" expandOn="device,part"/>
+              <property xsi:type="ReportPreferences" displayMode="2" defaultMode="dmx"/>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='WriteThroughput'"/>
+                <result name="InBytes" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='ReadThroughput'"/>
+                <result name="OutBytes" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="math.Addition">
+                <parameter name="metric1" xsi:type="ResultFormulaParameterDefinition" result="InBytes" from="node"/>
+                <parameter name="metric2" xsi:type="ResultFormulaParameterDefinition" result="OutBytes" from="node"/>
+                <result name="Total" default="false" graphable="false"/>
+              </formula>
+              <report-rendering>
+                <charts mode="dynamic"/>
+              </report-rendering>
+              <node name="IOPS" singleNodeId="b2bce568">
+                <property xsi:type="NodeFilter" filterExpression="name=='IOPS'"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrx" legendDisplayPolicy="visible"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+                  <result name="IOPS" default="false" graphable="true"/>
+                </formula>
+              </node>
+              <node name="Throughput (/s)" singleNodeId="ee36f8b2">
+                <property xsi:type="NodeFilter" filterExpression="name=='WriteThroughput' | name=='ReadThroughput'"/>
+                <property xsi:type="ReportPreferences" defaultMode="stk" legendProperties="" legendDisplayPolicy="visible" graphScaleFactor="Bit::Storage::b::Bit::Storage"/>
+                <node name="Inbound" singleNodeId="db4dd490">
+                  <property xsi:type="NodeFilter" filterExpression="name=='WriteThroughput'"/>
+                  <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Bit::Storage::b::Bit::Storage"/>
+                </node>
+                <node name="Outbound" singleNodeId="77e9ef08">
+                  <property xsi:type="NodeFilter" filterExpression="name=='ReadThroughput'"/>
+                  <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Bit::Storage::b::Bit::Storage"/>
+                </node>
+              </node>
+            </node>
+          </node>
+        </node>
+        <node name="Protocols Performance" singleNodeId="4f184be8">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='Protocol'"/>
+          <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+          <property xsi:type="PropertyNodeColumn" name="Node" property="device"/>
+          <property xsi:type="PropertyNodeColumn" name="Protocol" property="part"/>
+          <property xsi:type="ValueNodeColumn" name="IOPS" filterExpression="name=='IOPS'" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600"/>
+          <property xsi:type="ValueNodeColumn" name="Latency" filterExpression="name=='Latency'" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600"/>
+          <property xsi:type="ValueNodeColumn" name="Inbound (/s)" resultName="InBits" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Bit::SI::b::Bit::SI"/>
+          <property xsi:type="ValueNodeColumn" name="Outbound (/s)" resultName="OutBits" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Bit::SI::b::Bit::SI"/>
+          <property xsi:type="ValueNodeColumn" name="Total (/s)" resultName="TotalBits" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Bit::SI::b::Bit::SI"/>
+          <report-layout hspan=".-bd16cb5=2"/>
+          <node name="Throughput by Protocol (/s)" order="0" singleNodeId="b679a040">
+            <property xsi:type="NodeFilter" filterExpression="name=='InOctets' | name=='OutOctets'"/>
+            <property xsi:type="ReportPreferences" defaultMode="pie" legendDisplayPolicy="visible" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <node name="part" singleNodeId="629e64f5">
+              <property xsi:type="NodeExpansion" expandOn="part"/>
+              <property xsi:type="ReportPreferences" defaultMode="ncr" preferredPeriod="3600" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+              <formula formulaId="math.spatial.Sum">
+                <setting name="aggregation" value="DEFAULT"/>
+                <setting name="partial" value="true"/>
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="TotalBytes"/>
+                <result name=" " default="true" graphable="true"/>
+              </formula>
+              <node name="device" singleNodeId="99505114">
+                <property xsi:type="NodeExpansion" expandOn="device"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrx" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='InOctets'"/>
+                  <result name="InBytes" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='OutOctets'"/>
+                  <result name="OutBytes" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="math.Addition">
+                  <parameter name="metric1" xsi:type="ResultFormulaParameterDefinition" result="InBytes" from="node"/>
+                  <parameter name="metric2" xsi:type="ResultFormulaParameterDefinition" result="OutBytes" from="node"/>
+                  <result name="TotalBytes" default="true" graphable="true"/>
+                </formula>
+              </node>
+            </node>
+          </node>
+          <node name="Top Protocols IOPS" order="1" singleNodeId="9c3538f">
+            <property xsi:type="NodeFilter" filterExpression="name=='IOPS'"/>
+            <property xsi:type="ReportPreferences" defaultMode="hb" legendDisplayPolicy="visible"/>
+            <topn-report/>
+            <node name="part" singleNodeId="629e64f5">
+              <property xsi:type="NodeExpansion" expandOn="part"/>
+              <property xsi:type="ReportPreferences" displayMode="2" defaultMode="mix"/>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="ResultFormulaParameterDefinition" result="IOPS"/>
+                <result name=" " default="true" graphable="false"/>
+              </formula>
+              <node name="device" singleNodeId="99505114">
+                <property xsi:type="NodeExpansion" expandOn="device"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='IOPS'"/>
+                  <result name="IOPS" default="false" graphable="true"/>
+                </formula>
+              </node>
+            </node>
+          </node>
+          <node name="Top Protocols Latency" order="2" singleNodeId="bd16cb5">
+            <property xsi:type="NodeFilter" filterExpression="parttype=='Protocol'"/>
+            <property xsi:type="PropertyNodeColumn" name="Node" property="device"/>
+            <property xsi:type="PropertyNodeColumn" name="Protocol" property="part"/>
+            <property xsi:type="ValueNodeColumn" name="IOPS" filterExpression="name=='IOPS'" forcePeriod="never" timeThreshold="600"/>
+            <property xsi:type="ValueNodeColumn" name="Latency (ms)" sortMode="desc" filterExpression="name=='Latency'" forcePeriod="never" timeThreshold="600"/>
+            <property xsi:type="ValueNodeColumn" name="Inbound (/s)" resultName="InBytes" forcePeriod="never" formatter="SparkLineFormatter" useTimeRange="true" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Outbound (/s)" resultName="OutBytes" forcePeriod="never" formatter="SparkLineFormatter" useTimeRange="true" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <property xsi:type="ValueNodeColumn" name="Total (/s)" resultName="TotalBits" forcePeriod="never" formatter="SparkLineFormatter" useTimeRange="true" scaleOperation="unit" scaleFactor="Byte::Storage::B::Byte::Storage"/>
+            <node name="device,part" singleNodeId="23ff5b26">
+              <property xsi:type="NodeExpansion" expandOn="device,part"/>
+              <property xsi:type="ReportPreferences" displayMode="3" defaultMode="mix" preferredPeriod="3600"/>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='InOctets'"/>
+                <result name="InBytes" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="util.Nop">
+                <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='OutOctets'"/>
+                <result name="OutBytes" default="false" graphable="false"/>
+              </formula>
+              <formula formulaId="math.Addition">
+                <parameter name="metric1" xsi:type="ResultFormulaParameterDefinition" result="InBytes" from="node"/>
+                <parameter name="metric2" xsi:type="ResultFormulaParameterDefinition" result="OutBytes" from="node"/>
+                <result name="TotalBits" default="false" graphable="false"/>
+              </formula>
+              <report-rendering>
+                <charts mode="dynamic"/>
+              </report-rendering>
+              <node name="IOPS" singleNodeId="b2bce568">
+                <property xsi:type="NodeFilter" filterExpression="name=='IOPS'"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+                  <result name="IOPS" default="false" graphable="true"/>
+                </formula>
+              </node>
+              <node name="Latency (ms)" singleNodeId="e580224e">
+                <property xsi:type="NodeFilter" filterExpression="name=='Latency'"/>
+                <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+                  <result name="Latency" default="false" graphable="true"/>
+                </formula>
+              </node>
+              <node name="Throughput (/s)" singleNodeId="ee36f8b2">
+                <property xsi:type="NodeFilter" filterExpression="name=='InOctets' | name=='OutOctets'"/>
+                <property xsi:type="ReportPreferences" defaultMode="stk" legendProperties="" graphScaleFactor="Byte::Storage::B::Byte::Storage"/>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='InOctets'"/>
+                  <result name="InBytes" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="util.Nop">
+                  <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter="name=='OutOctets'"/>
+                  <result name="OutBytes" default="false" graphable="false"/>
+                </formula>
+                <formula formulaId="math.Addition">
+                  <parameter name="metric1" xsi:type="ResultFormulaParameterDefinition" result="InBytes" from="node"/>
+                  <parameter name="metric2" xsi:type="ResultFormulaParameterDefinition" result="OutBytes" from="node"/>
+                  <result name="Total" default="false" graphable="false"/>
+                </formula>
+                <node name="Inbound" singleNodeId="db4dd490">
+                  <property xsi:type="NodeFilter" filterExpression="name=='InOctets'"/>
+                  <property xsi:type="ReportPreferences" defaultMode="lst"/>
+                </node>
+                <node name="Outbound" singleNodeId="77e9ef08">
+                  <property xsi:type="NodeFilter" filterExpression="name=='OutOctets'"/>
+                  <property xsi:type="ReportPreferences" defaultMode="lst"/>
+                </node>
+              </node>
+            </node>
+          </node>
+        </node>
+      </node>
+      <node name="Environment" order="7" singleNodeId="b2695e3b">
+        <property xsi:type="NodePropertyNodeColumn" name="Report" nodeProperty="name"/>
+        <node name="Fan Speed" order="6" singleNodeId="37cea3b9">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='Fan'"/>
+          <property xsi:type="ReportPreferences" paging="5"/>
+          <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+          <property xsi:type="PropertyNodeColumn" name="Number" property="partid"/>
+          <property xsi:type="PropertyNodeColumn" name="Description" property="partdesc"/>
+          <property xsi:type="ValueNodeColumn" name="Speed (rpm)" sortMode="desc" resultName="Speed" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="0"/>
+          <node name="part" singleNodeId="eec6fe8c">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" defaultMode="nrx"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+              <result name="Speed" default="false" graphable="true"/>
+            </formula>
+          </node>
+        </node>
+        <node name="Sensors" order="7" singleNodeId="bdc4b9a7">
+          <property xsi:type="NodeFilter" filterExpression="parttype=='Sensor'"/>
+          <property xsi:type="ReportPreferences" paging="5"/>
+          <property xsi:type="PropertyNodeColumn" name="Name" property="part"/>
+          <property xsi:type="PropertyNodeColumn" name="Number" property="partid"/>
+          <property xsi:type="PropertyNodeColumn" name="Description" property="partdesc"/>
+          <property xsi:type="ValueNodeColumn" name="Sensor Current Value" resultName="Value" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600"/>
+          <node name="part" singleNodeId="f0bc8c71">
+            <property xsi:type="NodeExpansion" expandOn="part"/>
+            <property xsi:type="ReportPreferences" defaultMode="lst"/>
+            <formula formulaId="util.Nop">
+              <parameter name="metric" xsi:type="FilterFormulaParameterDefinition" filter=""/>
+              <result name="Value" default="false" graphable="true"/>
+            </formula>
+          </node>
+        </node>
+      </node>
+    </node>
+  </node>
+  <node name="Inventory" singleNodeId="b0415c56">
+    <property xsi:type="DisplayPreferences" displayPolicy="alwaysHide"/>
+    <property xsi:type="NodePropertyNodeColumn" name="Report" nodeProperty="name"/>
+    <node name="Nodes Summary" order="0" singleNodeId="fe3ce030">
+      <property xsi:type="DisplayPreferences" displayPolicy="alwaysHide"/>
+      <property xsi:type="PropertyNodeColumn" name="Cluster" property="memberof"/>
+      <property xsi:type="PropertyNodeColumn" name="Node" sortMode="asc" property="device"/>
+      <property xsi:type="ValueNodeColumn" name="Total IPs" resultName="IPs" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="0"/>
+      <property xsi:type="ValueNodeColumn" name="Status" scaledLevels="false" majorLevel="99.0" criticalLevel="98.0" filterExpression="name=='Status' &amp; !(part)" forcePeriod="never" formatter="BlankFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="0"/>
+      <property xsi:type="ValueNodeColumn" name="Inbound (/s)" resultName="SumInBits" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Bit::SI::b::Bit::SI"/>
+      <property xsi:type="ValueNodeColumn" name="Outbound (/s)" resultName="SumOutBits" forcePeriod="never" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Bit::SI::b::Bit::SI"/>
+      <property xsi:type="ValueNodeColumn" name="Total (/s)" resultName="SumTotalBits" forcePeriod="true" formatter="GraphFormatter&lt;&gt;" timeThreshold="600" roundingAccuracy="1" scaleOperation="unit" scaleFactor="Bit::SI::b::Bit::SI"/>
+      <formula formulaId="util.ChildCount">
+        <result name="Nodes" default="false" graphable="false"/>
+      </formula>
+      <link singleNodeId="b658c782" linkID=".-..-..-..-f69010ff-d34c41db"/>
+    </node>
+  </node>
+</node>

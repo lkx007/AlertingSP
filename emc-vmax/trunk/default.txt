@@ -1,0 +1,12 @@
+#collect
+symapi.connect_type.default=remote
+unisphere.port.default=8443
+unisphere.username.default=smc
+unisphere.password.default=smc
+emcvmax.want.default=true
+topology.pollingperiod.default=1200
+emcvmax.perf.pollingperiod.default=7200
+smi.smiperf.pollingperiod.default=900
+#alerts
+emcvmax.alerts.directorutilization.enable.default=false
+emcvmax.alerts.directorportutilization.enable.default=false

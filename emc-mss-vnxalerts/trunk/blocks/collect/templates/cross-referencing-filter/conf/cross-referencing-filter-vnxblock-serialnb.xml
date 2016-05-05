@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013-2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xmlns="http://www.watch4net.com/CrossReferencingFilter"
+			   xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<match-on>deviceid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>serialnb</get-property>
+	</reference>
+	<reference>
+		<match-on>source</match-on>
+		<match-on>sstype</match-on>
+		<match-on>host</match-on>
+		<match-on>deviceid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>serialnb</get-property>
+	</reference>
+
+</configuration>

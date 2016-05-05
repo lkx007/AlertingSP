@@ -1,0 +1,24 @@
+[+msotscd.data]
+thirdpartyflag = string
+tag1 = string
+tag2 = string
+
+[+msotsdr.timeseries.socketconnector]
+rport = port
+host = hostname
+port = port
+
+[+gateway]
+host = hostname
+port = port
+username = string
+password = password
+
+[main]
+# use_failover is defined in storage to avoid redefining timeseries which would fail
+msotsdr.failover = boolean
+# use this only if you want to use SRM Health alerting SP with MSS alerting SP
+msotsdr.srmhealth = boolean
+msotsdr.timeseries.socketconnector
+msotscd.data
+

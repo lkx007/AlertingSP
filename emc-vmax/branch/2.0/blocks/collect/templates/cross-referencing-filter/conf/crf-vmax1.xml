@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns="http://www.watch4net.com/CrossReferencingFilter" xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>device</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>sgname</get-property>
+		<get-property>mvsgname</get-property>
+		<get-property>dgstype</get-property>
+		<get-property>config</get-property>
+		<get-property>director</get-property>
+		<!-- get the name of the pool (for reports under pool, to allow drilldown to devices) -->
+		<get-property>poolname</get-property>
+	</reference>
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">Storage Pool</condition>
+		<match-on>device</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>dgname</get-property>
+		<get-property>tiertype</get-property>
+		<get-property>tiername</get-property>
+	</reference>
+	<!-- get the part from topo, to enrich perf data -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">Disk</condition>
+		<match-on>device</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>part</get-property>
+		<get-property>partmode</get-property>
+		<get-property>director</get-property>
+	</reference>
+	<!-- get the director real name, to enrich LUN (device) data -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<match-on>device</match-on>
+		<match-on>directid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>director</get-property>
+	</reference>
+	<!-- get the director id, to enrich director data, and link devices with directors -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<match-on>device</match-on>
+		<match-on>director</match-on>
+		<include-properties>true</include-properties>
+		<get-property>directid</get-property>
+	</reference>
+</configuration>

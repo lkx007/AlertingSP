@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><translations>
+  <variable-specific-translations>
+    <variable-value-translation name="OperStatus">
+      <value-match value="online" rename="100"/>
+      <value-match value="offline" rename="0"/>
+      <value-match value="testing" rename="NaN"/>
+      <value-match value="faulty" rename="0"/>
+    </variable-value-translation>
+    <variable-value-translation name="fcFxPortPhysOperStatus">
+      <value-match value="testing" rename="NaN"/>
+      <value-match value="offline" rename="0"/>
+      <value-match value="offline " rename="0"/>
+      <value-match value="offline  " rename="0"/>
+      <value-match value="offline   " rename="0"/>
+      <value-match value="offline    " rename="0"/>
+      <value-match value="offline     " rename="0"/>
+      <value-match value="offline      " rename="0"/>
+      <value-match value="linkFailure" rename="0"/>
+      <value-match value="online" rename="100"/>
+      <value-match value="online " rename="100"/>
+      <value-match value="online  " rename="100"/>
+      <value-match value="online   " rename="100"/>
+      <value-match value="online    " rename="100"/>
+      <value-match value="online     " rename="100"/>
+      <value-match value="online      " rename="100"/>
+      <value-match value="online       " rename="100"/>
+    </variable-value-translation>
+    <variable-value-translation name="Availability">
+      <value-match value="testing" rename="NaN"/>
+      <value-match value="up" rename="100"/>
+      <value-match value="down" rename="0"/>
+	 <value-match value="testing" rename="NaN"/>
+	 <value-match value="testing " rename="NaN"/>
+	 <value-match value="testing  " rename="NaN"/>
+	 <value-match value="testing   " rename="NaN"/>
+	 <value-match value="testing    " rename="NaN"/>
+	 <value-match value="testing     " rename="NaN"/>
+      <value-match value="faulty" rename="0"/>
+      <value-match value="faulty " rename="0"/>
+      <value-match value="faulty  " rename="0"/>
+      <value-match value="faulty   " rename="0"/>
+      <value-match value="faulty    " rename="0"/>
+      <value-match value="faulty     " rename="0"/>
+      <value-match value="faulty      " rename="0"/>
+      <value-match value="offline" rename="0"/>
+      <value-match value="offline " rename="0"/>
+      <value-match value="offline  " rename="0"/>
+      <value-match value="offline   " rename="0"/>
+      <value-match value="offline    " rename="0"/>
+      <value-match value="offline     " rename="0"/>
+      <value-match value="offline" rename="0"/>
+      <value-match value="online" rename="100"/>
+      <value-match value="online " rename="100"/>
+      <value-match value="online  " rename="100"/>
+      <value-match value="online   " rename="100"/>
+      <value-match value="online    " rename="100"/>
+      <value-match value="online     " rename="100"/>
+	 <value-match value="unknown           " rename="NaN"/>
+	 <value-match value="unknown" rename="NaN"/>
+      <value-match value="unused            " rename="NaN"/>
+      <value-match value="ready             " rename="100"/>
+	 <value-match value="warning           " rename="50"/>
+	 <value-match value="warning" rename="50"/>
+	 <value-match value="failure           " rename="0"/>
+	 <value-match value="notparticipating  " rename="0"/>
+	 <value-match value="initializing      " rename="50"/>
+	 <value-match value="bypass            " rename="NaN"/>
+	 <value-match value="ols               " rename="0"/>
+      <value-match value="other" rename="0"/>
+      <value-match value="ok" rename="100"/>
+	 <value-match value="failed" rename="0"/>
+    </variable-value-translation>
+  </variable-specific-translations>
+</translations>

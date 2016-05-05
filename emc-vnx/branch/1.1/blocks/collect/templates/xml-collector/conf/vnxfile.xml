@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration xmlns="http://www.watch4net.com/XMLCollector" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/XMLCollector xmlcollector.xsd ">
+	<simultaneous-collecting>1</simultaneous-collecting>
+	<polling-interval>300</polling-interval>
+	<collecting-group>group</collecting-group>
+	<source>VNXFile-Collector</source>
+	<refresh>3600</refresh>
+	<collecting-configuration id="System" max-threads="1" timeout="300" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="serialnb datagrp parttype partid deviceid qpath name">
+		<data>
+			<include-contexts>conf/context-file.xml</include-contexts>
+			<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.SOAPXmlRequestExecutor</data-accessor>
+			<input type="string">https://(host)/servlets/CelerraManagementServices [P,FC]</input>
+			<input type="string">https://(host)/Login?user=@fileurlusername&amp;password=@filepassword&amp;Login=Login [G,SC,CC]</input>
+			<input type="string">https://(host)/servlets/CelerraManagementServices</input>
+			<host>@csprimary</host>
+			<parameter name="input-file">
+				<value>conf/system.xml</value>
+			</parameter>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+			<parameter name="data-timeout">
+				<value>240</value>
+			</parameter>
+			<parameter name="data-retry">
+				<value>1</value>
+			</parameter>
+		</data>
+		<timestamp type="use-system-time" />
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/CelerraSystem/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>PropertiesCelerraSystem</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/MoverStatus[@mover='1']/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>Properties1</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/MoverStatus[@mover='2']/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>Properties2</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/MoverStatus[@mover='3']/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>Properties3</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/MoverStatus[@mover='4']/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>Properties4</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/MoverStatus[@mover='5']/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>Properties5</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/MoverStatus[@mover='6']/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>Properties6</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/MoverStatus[@mover='7']/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>Properties7</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/MoverStatus[@mover='8']/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>Properties8</property-set>
+		</value>
+		<value name="Uptime" type="counter" unit="s" value="/ResponsePacket/Response/MoverStatus[@mover='1']/@uptime">
+			<property-set>Properties1</property-set>
+		</value>
+		<value name="Uptime" type="counter" unit="s" value="/ResponsePacket/Response/MoverStatus[@mover='2']/@uptime">
+			<property-set>Properties2</property-set>
+		</value>
+		<value name="Uptime" type="counter" unit="s" value="/ResponsePacket/Response/MoverStatus[@mover='3']/@uptime">
+			<property-set>Properties3</property-set>
+		</value>
+		<value name="Uptime" type="counter" unit="s" value="/ResponsePacket/Response/MoverStatus[@mover='4']/@uptime">
+			<property-set>Properties4</property-set>
+		</value>
+		<value name="Uptime" type="counter" unit="s" value="/ResponsePacket/Response/MoverStatus[@mover='5']/@uptime">
+			<property-set>Properties5</property-set>
+		</value>
+		<value name="Uptime" type="counter" unit="s" value="/ResponsePacket/Response/MoverStatus[@mover='6']/@uptime">
+			<property-set>Properties6</property-set>
+		</value>
+		<value name="Uptime" type="counter" unit="s" value="/ResponsePacket/Response/MoverStatus[@mover='7']/@uptime">
+			<property-set>Properties7</property-set>
+		</value>
+		<value name="Uptime" type="counter" unit="s" value="/ResponsePacket/Response/MoverStatus[@mover='8']/@uptime">
+			<property-set>Properties8</property-set>
+		</value>
+		<value name="Capacity" type="counter" unit="MB" value="/ResponsePacket/Response[@clientHandle='Volume']/Volume/@size">
+			<property-set>PropertiesVolume</property-set>
+		</value>
+		<value name="FreeSpace" type="counter" unit="MB" value="/ResponsePacket/Response[@clientHandle='Volume']/Volume/FreeSpace/@size">
+			<property-set>PropertiesVolumeFreeSpace</property-set>
+		</value>
+		<value name="null" type="counter" unit="" value="/ResponsePacket/Response[@clientHandle='FileSystem']/FileSystem/@fileSystem">
+			<property-set>PropertiesFileSystem</property-set>
+		</value>
+		<value name="StorageUsed" type="counter" unit="MB" value="/ResponsePacket/Response[@clientHandle='StoragePoolQueryParams']/StoragePool/@usedSize">
+			<property-set>PropertiesStoragePool</property-set>
+		</value>
+		<value name="StorageSize" type="counter" unit="MB" value="/ResponsePacket/Response[@clientHandle='StoragePoolQueryParams']/StoragePool/@size">
+			<property-set>PropertiesStoragePool</property-set>
+		</value>
+		<value name="StorageAutoSize" type="counter" unit="MB" value="/ResponsePacket/Response[@clientHandle='StoragePoolQueryParams']/StoragePool/@autoSize">
+			<property-set>PropertiesStoragePool</property-set>
+		</value>
+		<!-- FIXME -->
+		<value name="PotentialSize" type="counter" unit="MB" value="/ResponsePacket/Response[@clientHandle='StoragePoolQueryParams']/StoragePool/SystemStoragePoolData/@potentialAdditionalSize">
+			<property-set>PropertiesStoragePool</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response[@clientHandle='Vdm']/Vdm/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>PropertiesVdm</property-set>
+		</value>
+		<value name="Availability" type="counter" unit="%" value="/ResponsePacket/Response/ControlStation/Status/@maxSeverity">
+			<replace value="warning" by="50"/>
+			<replace value="ok" by="100"/>
+			<replace value="info" by="100"/>
+			<replace value="error" by="0"/>
+			<replace value="critical" by="5"/>
+			<replace value="emergency" by="10"/>
+			<replace value="critical" by="5"/>
+			<property-set>PropertiesControlStation</property-set>
+		</value>
+		<value name="CheckPointSize" type="counter" unit="MB" value="/ResponsePacket/Response[@clientHandle='Checkpoint']/Checkpoint/@fileSystemSize">
+			<property-set>PropertiesCheckpoint</property-set>
+		</value>
+		<value name="null" type="counter" unit="" value="/ResponsePacket/Response[@clientHandle='CifsShare']/CifsShare/@fileSystem">
+			<property-set>PropertiesCifsShare</property-set>
+		</value>
+		<value name="null" type="counter" unit="" value="/ResponsePacket/Response[@clientHandle='NfsExport']/NfsExport/@fileSystem">
+			<property-set>PropertiesNfsExport</property-set>
+		</value>
+		<property-set name="PropertiesCelerraSystem">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-CelerraSystem" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/ControlStation/@slot" />
+			<property name="device" type="hard-coded" value="@friendlyname" />
+			<property name="devdesc" type="data" value="../../@version" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="model" type="data" value="../../@productName" />
+			<property name="ip" type="host" value="" />
+		</property-set>
+		<property-set name="Properties1">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="partstat" type="data" value="/ResponsePacket/Response/MoverStatus[@mover='1']/Status/@maxSeverity" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="device" type="data" value="/ResponsePacket/Response/Mover[@mover='1']/@name" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/Mover[@mover='1']/@mover" />
+			<property name="partdesc" type="data" value="/ResponsePacket/Response/Mover[@mover='1']/@role" />
+			<property name="movers" type="data" value="/ResponsePacket/Response/Mover[@mover='1']/@mover" />
+			<property name="moversvd" type="hard-coded" value="false" />
+			<property name="moversna" type="data" value="/ResponsePacket/Response/Mover[@mover='1']/@name" />
+			<property name="ip" type="data" value="string-join(/ResponsePacket/Response[@clientHandle='Mover']/MoverInterface[@mover='1']/@ipAddress, ',')" />
+		</property-set>
+		<property-set name="Properties2">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="partstat" type="data" value="/ResponsePacket/Response/MoverStatus[@mover='2']/Status/@maxSeverity" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="device" type="data" value="/ResponsePacket/Response/Mover[@mover='2']/@name" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/Mover[@mover='2']/@mover" />
+			<property name="partdesc" type="data" value="/ResponsePacket/Response/Mover[@mover='2']/@role" />
+			<property name="movers" type="data" value="/ResponsePacket/Response/Mover[@mover='2']/@mover" />
+			<property name="moversvd" type="hard-coded" value="false" />
+			<property name="moversna" type="data" value="/ResponsePacket/Response/Mover[@mover='2']/@name" />
+			<property name="ip" type="data" value="string-join(/ResponsePacket/Response[@clientHandle='Mover']/MoverInterface[@mover='2']/@ipAddress, ',')" />
+		</property-set>
+		<property-set name="Properties3">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="partstat" type="data" value="/ResponsePacket/Response/MoverStatus[@mover='3']/Status/@maxSeverity" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="device" type="data" value="/ResponsePacket/Response/Mover[@mover='3']/@name" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/Mover[@mover='3']/@mover" />
+			<property name="partdesc" type="data" value="/ResponsePacket/Response/Mover[@mover='3']/@role" />
+			<property name="movers" type="data" value="/ResponsePacket/Response/Mover[@mover='3']/@mover" />
+			<property name="moversvd" type="hard-coded" value="false" />
+			<property name="moversna" type="data" value="/ResponsePacket/Response/Mover[@mover='3']/@name" />
+			<property name="ip" type="data" value="string-join(/ResponsePacket/Response[@clientHandle='Mover']/MoverInterface[@mover='3']/@ipAddress, ',')" />
+		</property-set>
+		<property-set name="Properties4">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="partstat" type="data" value="/ResponsePacket/Response/MoverStatus[@mover='4']/Status/@maxSeverity" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="device" type="data" value="/ResponsePacket/Response/Mover[@mover='4']/@name" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/Mover[@mover='4']/@mover" />
+			<property name="partdesc" type="data" value="/ResponsePacket/Response/Mover[@mover='4']/@role" />
+			<property name="movers" type="data" value="/ResponsePacket/Response/Mover[@mover='4']/@mover" />
+			<property name="moversvd" type="hard-coded" value="false" />
+			<property name="moversna" type="data" value="/ResponsePacket/Response/Mover[@mover='4']/@name" />
+			<property name="ip" type="data" value="string-join(/ResponsePacket/Response[@clientHandle='Mover']/MoverInterface[@mover='4']/@ipAddress, ',')" />
+		</property-set>
+		<property-set name="Properties5">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="partstat" type="data" value="/ResponsePacket/Response/MoverStatus[@mover='5']/Status/@maxSeverity" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="device" type="data" value="/ResponsePacket/Response/Mover[@mover='5']/@name" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/Mover[@mover='5']/@mover" />
+			<property name="partdesc" type="data" value="/ResponsePacket/Response/Mover[@mover='5']/@role" />
+			<property name="movers" type="data" value="/ResponsePacket/Response/Mover[@mover='5']/@mover" />
+			<property name="moversvd" type="hard-coded" value="false" />
+			<property name="moversna" type="data" value="/ResponsePacket/Response/Mover[@mover='5']/@name" />
+			<property name="ip" type="data" value="string-join(/ResponsePacket/Response[@clientHandle='Mover']/MoverInterface[@mover='5']/@ipAddress, ',')" />
+		</property-set>
+		<property-set name="Properties6">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="partstat" type="data" value="/ResponsePacket/Response/MoverStatus[@mover='6']/Status/@maxSeverity" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="device" type="data" value="/ResponsePacket/Response/Mover[@mover='6']/@name" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/Mover[@mover='6']/@mover" />
+			<property name="partdesc" type="data" value="/ResponsePacket/Response/Mover[@mover='6']/@role" />
+			<property name="movers" type="data" value="/ResponsePacket/Response/Mover[@mover='6']/@mover" />
+			<property name="moversvd" type="hard-coded" value="false" />
+			<property name="moversna" type="data" value="/ResponsePacket/Response/Mover[@mover='6']/@name" />
+			<property name="ip" type="data" value="string-join(/ResponsePacket/Response[@clientHandle='Mover']/MoverInterface[@mover='6']/@ipAddress, ',')" />
+		</property-set>
+		<property-set name="Properties7">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="partstat" type="data" value="/ResponsePacket/Response/MoverStatus[@mover='7']/Status/@maxSeverity" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="device" type="data" value="/ResponsePacket/Response/Mover[@mover='7']/@name" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/Mover[@mover='7']/@mover" />
+			<property name="partdesc" type="data" value="/ResponsePacket/Response/Mover[@mover='7']/@role" />
+			<property name="movers" type="data" value="/ResponsePacket/Response/Mover[@mover='7']/@mover" />
+			<property name="moversvd" type="hard-coded" value="false" />
+			<property name="moversna" type="data" value="/ResponsePacket/Response/Mover[@mover='7']/@name" />
+			<property name="ip" type="data" value="string-join(/ResponsePacket/Response[@clientHandle='Mover']/MoverInterface[@mover='7']/@ipAddress, ',')" />
+		</property-set>
+		<property-set name="Properties8">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="partstat" type="data" value="/ResponsePacket/Response/MoverStatus[@mover='8']/Status/@maxSeverity" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="device" type="data" value="/ResponsePacket/Response/Mover[@mover='8']/@name" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/Mover[@mover='8']/@mover" />
+			<property name="partdesc" type="data" value="/ResponsePacket/Response/Mover[@mover='8']/@role" />
+			<property name="movers" type="data" value="/ResponsePacket/Response/Mover[@mover='8']/@mover" />
+			<property name="moversvd" type="hard-coded" value="false" />
+			<property name="moversna" type="data" value="/ResponsePacket/Response/Mover[@mover='8']/@name" />
+			<property name="ip" type="data" value="string-join(/ResponsePacket/Response[@clientHandle='Mover']/MoverInterface[@mover='8']/@ipAddress, ',')" />
+		</property-set>
+		<property-set name="PropertiesVolume">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-Volume" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="device" type="hard-coded" value="@friendlyname" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/ControlStation/@slot" />
+			<property name="parttype" type="data" value="../@type" />
+			<!-- TODO FIXME -->
+			<property name="part" type="data" value="../@name" />
+			<property name="virt" type="data" value="../@virtualProvisioning">
+				<replace value="true" by="1"/>
+				<replace value="false" by="0"/>
+			</property>
+			<property name="partdesc" type="data" value="../@clientVolumes" />
+			<property name="partid" type="data" value="../@volume" />
+			<!-- for disk -->
+			<property name="movers" type="data" value="../DiskVolumeData/@movers" />
+			<property name="storlun" type="data" value="../DiskVolumeData/@lun" />
+			<!-- for meta -->
+			<property name="vols" type="data" value="../MetaVolumeData/@memberVolumes" />
+			<property name="clientfs" type="data" value="../MetaVolumeData/@clientFileSystems" />
+			<!-- for stripe -->
+			<property name="vols" type="data" value="../StripeVolumeData/@stripedVolumes" />
+			<property name="strisize" type="data" value="../StripeVolumeData/@stripeSize" />
+			<property name="storpool" type="data" value="../@storagePool" />
+			<!-- for slice -->
+			<property name="vols" type="data" value="../SliceVolumeData/@slicedVolume" />
+			<!-- for pool -->
+			<property name="vols" type="data" value="../PoolVolumeData/@memberVolumes" />
+		</property-set>
+		<property-set name="PropertiesVolumeFreeSpace">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-Volume" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="device" type="hard-coded" value="@friendlyname" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/ControlStation/@slot" />
+			<property name="parttype" type="data" value="../../@type" />
+			<!-- TODO FIXME -->
+			<property name="part" type="data" value="../../@name" />
+			<property name="virt" type="data" value="../../@virtualProvisioning">
+				<replace value="true" by="1"/>
+				<replace value="false" by="0"/>
+			</property>
+			<property name="partdesc" type="data" value="../../@clientVolumes" />
+			<property name="partid" type="data" value="../../@volume" />
+			<!-- for stripe -->
+			<property name="vols" type="data" value="../../StripeVolumeData/@stripedVolumes" />
+			<property name="strisize" type="data" value="../../StripeVolumeData/@stripeSize" />
+		</property-set>
+		<property-set name="PropertiesFileSystem">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-FileSystem" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="device" type="hard-coded" value="@friendlyname" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/ControlStation/@slot" />
+			<property name="movers" type="data" value="../*/@mover" />
+			<property name="moversvd" type="data" value="../*/@moverIdIsVdm" />
+			<property name="storpool" type="data" value="../@storagePools" />
+			<property name="vols" type="data" value="../@volume" />
+			<property name="partdesc" type="data" value="../@internalUse" />
+			<property name="parttype" type="hard-coded" value="FileSystem" />
+			<property name="part" type="data" value="../@name" />
+			<property name="partid" type="data" value="." />
+		</property-set>
+		<property-set name="PropertiesStoragePool">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-StoragePool" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="device" type="hard-coded" value="@friendlyname" />
+			<property name="deviceid" type="data" value="/ResponsePacket/Response/ControlStation/@slot" />
+			<property name="part" type="data" value="../@name" />
+			<property name="movers" type="data" value="../@movers" />
+			<property name="partid" type="data" value="../@pool" />
+			<property name="vols" type="data" value="../@memberVolumes" />
+			<property name="partdesc" type="data" value="../@description" />
+			<property name="virt" type="data" value="../@virtualProvisioning">
+				<replace value="true" by="1"/>
+				<replace value="false" by="0"/>
+			</property>
+		</property-set>
+		<property-set name="PropertiesVdm">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-VDM" />
+			<property name="partstat" type="data" value="." />
+			<property name="devtype" type="hard-coded" value="VirtualDataMover" />
+			<property name="device" type="data" value="../../@name" />
+			<property name="deviceid" type="data" value="../../@vdm" />
+			<property name="movers" type="data" value="../../@mover" />
+			<property name="ip" type="data" value="../../Interfaces/li" />
+			<property name="movers" type="data" value="../../@vdm" />
+			<property name="moversvd" type="hard-coded" value="true" />
+			<property name="moversna" type="data" value="../../@name" />
+		</property-set>
+		<property-set name="PropertiesControlStation">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-ControlStation" />
+			<property name="deviceid" type="data" value="../../@slot" />
+			<property name="device" type="data" value="../../@hostname" />
+			<property name="devdesc" type="data" value="../../@version" />
+			<property name="devtype" type="hard-coded" value="ControlStation" />
+			<property name="status" type="data" value="." />
+		</property-set>
+		<property-set name="PropertiesCheckpoint">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-Checkpoint" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="parttype" type="hard-coded" value="Checkpoint" />
+			<property name="part" type="data" value="../@name" />
+			<property name="movers" type="data" value="../*/@mover" />
+			<property name="partid" type="data" value="../@checkpoint" />
+			<property name="vols" type="data" value="../@checkpointOf" />
+			<property name="cptime" type="data" value="../@time" />
+			<property name="state" type="data" value="../@state" />
+		</property-set>
+		<property-set name="PropertiesCifsShare">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-CIFSShare" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="parttype" type="hard-coded" value="CifsShare" />
+			<property name="part" type="data" value="../@name" />
+			<property name="movers" type="data" value="../@mover" />
+			<property name="partid" type="data" value="." />
+			<property name="partdesc" type="data" value="../@path" />
+			<property name="maxusers" type="data" value="../@maxUsers" />
+			<property name="clientfs" type="data" value="../*/li" />
+			<property name="device" type="hard-coded" value="@friendlyname" />
+		</property-set>
+		<property-set name="PropertiesNfsExport">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-NFSExport" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="parttype" type="hard-coded" value="NfsExport" />
+			<property name="part" type="data" value="../@path" />
+			<property name="movers" type="data" value="../@mover" />
+			<property name="partid" type="data" value="." />
+			<property name="partdesc" type="data" value="../@path" />
+			<property name="clientfs" type="data" value="../*/li" />
+			<property name="device" type="hard-coded" value="@friendlyname" />
+		</property-set>
+		<property-set name="PropertiesUserQuota">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-UserQuotas" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="parttype" type="hard-coded" value="FileSystem" />
+			<property name="qpath" type="data" value="../../@path" />
+			<property name="userid" type="data" value="../../@uid" />
+			<property name="partid" type="data" value="../../@fileSystem" />
+		</property-set>
+		<property-set name="PropertiesUserQuotaUsed">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-UserQuotas" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="parttype" type="hard-coded" value="FileSystem" />
+			<property name="qpath" type="data" value="../@path" />
+			<property name="userid" type="data" value="../@uid" />
+			<property name="partid" type="data" value="../@fileSystem" />
+		</property-set>
+		<property-set name="PropertiesTreeQuota">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-TreeQuotas" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="parttype" type="hard-coded" value="FileSystem" />
+			<property name="qpath" type="data" value="../../@path" />
+			<property name="partid" type="data" value="../../@fileSystem" />
+		</property-set>
+		<property-set name="PropertiesTreeQuotaUsed">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-TreeQuotas" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="parttype" type="hard-coded" value="FileSystem" />
+			<property name="qpath" type="data" value="../@path" />
+			<property name="partid" type="data" value="../@fileSystem" />
+		</property-set>
+	</collecting-configuration>
+	<collecting-configuration id="DM-Perf" max-threads="1" timeout="300" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="serialnb datagrp deviceid parttype part name">
+		<data>
+			<include-contexts>conf/context-file.xml</include-contexts>
+			<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.SOAPXmlRequestExecutor</data-accessor>
+			<input type="string">https://(host)/servlets/CelerraManagementServices [P,FC]</input>
+			<input type="string">https://(host)/Login?user=@fileurlusername&amp;password=@filepassword&amp;Login=Login [G,SC,CC]</input>
+			
+			<input type="string">https://(host)/servlets/CelerraManagementServices</input>
+			<host>@csprimary</host>
+			
+			<parameter name="input-file">
+				<value>conf/mover_perf.xml</value>
+			</parameter>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+		</data>
+		<timestamp format="s">../@time</timestamp>
+		<value name="CurrentUtilization" type="counter" unit="%" value="/ResponsePacket/Response/MoverResourceUsage[@mover='1']/Sample/@mem">
+			<property-set>PropertiesMemory</property-set>
+		</value>
+		<value name="CurrentUtilization" type="counter" unit="%" value="/ResponsePacket/Response/MoverResourceUsage[@mover='2']/Sample/@mem">
+			<property-set>PropertiesMemory</property-set>
+		</value>
+		<value name="CurrentUtilization" type="counter" unit="%" value="/ResponsePacket/Response/MoverResourceUsage[@mover='1']/Sample/@cpu">
+			<property-set>PropertiesCPU</property-set>
+		</value>
+		<value name="CurrentUtilization" type="counter" unit="%" value="/ResponsePacket/Response/MoverResourceUsage[@mover='2']/Sample/@cpu">
+			<property-set>PropertiesCPU</property-set>
+		</value>
+		<property-set name="PropertiesMemory">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="parttype" type="hard-coded" value="Memory" />
+			<property name="part" type="hard-coded" value="Real Memory" />
+			<property name="deviceid" type="data" value="../../@mover" />
+		</property-set>
+		<property-set name="PropertiesCPU">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="parttype" type="hard-coded" value="Processor" />
+			<property name="part" type="hard-coded" value="CPU/0" />
+			<property name="deviceid" type="data" value="../../@mover" />
+		</property-set>
+	</collecting-configuration>
+	<collecting-configuration id="DM-Perf-Network" max-threads="1" timeout="300" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="serialnb datagrp deviceid parttype part name">
+		<data>
+			<include-contexts>conf/context-file.xml</include-contexts>
+			<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.SOAPXmlRequestExecutor</data-accessor>
+			<input type="string">https://(host)/servlets/CelerraManagementServices [P,FC]</input>
+			<input type="string">https://(host)/Login?user=@fileurlusername&amp;password=@filepassword&amp;Login=Login [G,SC,CC]</input>
+			
+			<input type="string">https://(host)/servlets/CelerraManagementServices</input>
+			<host>@csprimary</host>
+			
+			<parameter name="input-file">
+				<value>conf/mover_perf.xml</value>
+			</parameter>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+		</data>
+		<timestamp format="s">../../@time</timestamp>
+		<value name="ifInOctets" type="ratep" unit="Octets/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/DeviceTraffic/@in">
+			<property-set>Properties</property-set>
+		</value>
+		<value name="ifOutOctets" type="ratep" unit="Octets/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/DeviceTraffic/@out">
+			<property-set>Properties</property-set>
+		</value>
+		<value name="Sent" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Ip/@sent">
+			<property-set>PropertiesIP</property-set>
+		</value>
+		<value name="Received" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Ip/@received">
+			<property-set>PropertiesIP</property-set>
+		</value>
+		<value name="NotForwarded" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Ip/@notForw">
+			<property-set>PropertiesIP</property-set>
+		</value>
+		<value name="Delivered" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Ip/@deliv">
+			<property-set>PropertiesIP</property-set>
+		</value>
+		<value name="Sent" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Tcp/@sent">
+			<property-set>PropertiesTCP</property-set>
+		</value>
+		<value name="Retransmit" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Tcp/@retransm">
+			<property-set>PropertiesTCP</property-set>
+		</value>
+		<value name="Resets" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Tcp/@resets">
+			<property-set>PropertiesTCP</property-set>
+		</value>
+		<value name="Received" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Tcp/@received">
+			<property-set>PropertiesTCP</property-set>
+		</value>
+		<value name="ConnReq" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Tcp/@connReq">
+			<property-set>PropertiesTCP</property-set>
+		</value>
+		<value name="ConnLing" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Tcp/@connLing">
+			<property-set>PropertiesTCP</property-set>
+		</value>
+		<value name="Sent" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Udp/@sent">
+			<property-set>PropertiesUDP</property-set>
+		</value>
+		<value name="IncompleteHdrs" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Udp/@incomplHdrs">
+			<property-set>PropertiesUDP</property-set>
+		</value>
+		<value name="BadPorts" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Udp/@badPorts">
+			<property-set>PropertiesUDP</property-set>
+		</value>
+		<value name="Delivered" type="ratep" unit="Pkts/s" value="/ResponsePacket/Response[@clientHandle='Network-All']/MoverNetStats/Sample/Udp/@deliv">
+			<property-set>PropertiesUDP</property-set>
+		</value>
+		<value name="openConnections" type="counter" unit="Nb" value="/ResponsePacket/Response[@clientHandle='CIFS-State']/MoverCifsStats/Sample/State/@openConnections">
+			<property-set>PropertiesCIFS</property-set>
+		</value>
+		<value name="openFiles" type="counter" unit="Nb" value="/ResponsePacket/Response[@clientHandle='CIFS-State']/MoverCifsStats/Sample/State/@openFiles">
+			<property-set>PropertiesCIFS</property-set>
+		</value>
+		<value name="Write" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@write">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Wrcache" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@wrcache">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Symlink" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@symlink">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Setattr" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@setattr">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Root" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@root">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Rmdir" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@rmdir">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Remove" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@remove">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Readlink" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@readlink">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Readdir" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@readdir">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Read" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@read">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Null" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@null">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Mkdir" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@mkdir">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Lookup" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@lookup">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Link" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@link">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Getattr" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@getattr">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Fsstat" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@fsstat">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Create" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@create">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Write" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3write">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Symlink" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3symlink">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Setattr" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3setattr">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Rmdir" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3rmdir">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Rename" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3rename">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Remove" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3remove">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Readlink" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3readlink">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Readdirplus" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3readdirplus">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Readdir" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3readdir">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Read" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3read">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Pathconf" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3pathconf">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Null" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3null">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Mknod" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3mknod">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Mkdir" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3mkdir">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Lookup" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3lookup">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Link" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3link">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Getattr" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3getattr">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Fsstat" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3fsstat">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Fsinfo" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3fsinfo">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Create" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3create">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Commit" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3commit">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Access" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@v3access">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="NonExistent" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@nonExistent">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Misses" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@misses">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Hits" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@hits">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Adds" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@adds">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Resends" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@resends">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Dupl" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@dupl">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="Calls" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@calls">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="BadData" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@badData">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<value name="BadAuth" type="ratep" unit="" value="/ResponsePacket/Response[@clientHandle='NFS-All']/MoverNfsStats/Sample/*/@badAuth">
+			<property-set>PropertiesNFS</property-set>
+		</value>
+		<property-set name="Properties">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="parttype" type="hard-coded" value="Interface" />
+			<property name="part" type="data" value="../@device" />
+			<property name="deviceid" type="data" value="../../../@mover" />
+		</property-set>
+		<property-set name="PropertiesIP">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="parttype" type="hard-coded" value="TCP/IP" />
+			<property name="part" type="hard-coded" value="IP" />
+			<property name="deviceid" type="data" value="../../../@mover" />
+		</property-set>
+		<property-set name="PropertiesTCP">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="parttype" type="hard-coded" value="TCP/IP" />
+			<property name="part" type="hard-coded" value="TCP" />
+			<property name="deviceid" type="data" value="../../../@mover" />
+		</property-set>
+		<property-set name="PropertiesUDP">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="parttype" type="hard-coded" value="TCP/IP" />
+			<property name="part" type="hard-coded" value="UDP" />
+			<property name="deviceid" type="data" value="../../../@mover" />
+		</property-set>
+		<property-set name="PropertiesCIFS">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="parttype" type="hard-coded" value="FileServer" />
+			<property name="part" type="hard-coded" value="CIFS" />
+			<property name="deviceid" type="data" value="../../../@mover" />
+		</property-set>
+		<property-set name="PropertiesNFS">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="parttype" type="hard-coded" value="FileServer" />
+			<property name="part" type="data" value="node-name(..)" />
+			<property name="deviceid" type="data" value="../../../@mover" />
+		</property-set>
+	</collecting-configuration>
+	<collecting-configuration id="Volume-Perf" max-threads="1" timeout="300" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="serialnb datagrp deviceid partid name">
+		<data>
+			<include-contexts>conf/context-file.xml</include-contexts>
+			<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.SOAPXmlRequestExecutor</data-accessor>
+			<input type="string">https://(host)/servlets/CelerraManagementServices [P,FC]</input>
+			<input type="string">https://(host)/Login?user=@fileurlusername&amp;password=@filepassword&amp;Login=Login [G,SC,CC]</input>
+			<input type="string">https://(host)/servlets/CelerraManagementServices</input>
+			<host>@csprimary</host>
+			<parameter name="input-file">
+				<value>conf/volume_perf.xml</value>
+			</parameter>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+		</data>
+		<timestamp format="s">../../@time</timestamp>
+		<value name="BytesRead" type="ratep" unit="Octets/s" value="/ResponsePacket/Response/VolumeSetStats/Sample/Item/@bytesRead">
+			<property-set>Properties</property-set>
+		</value>
+		<value name="BytesWrite" type="ratep" unit="Octets/s" value="/ResponsePacket/Response/VolumeSetStats/Sample/Item/@bytesWritten">
+			<property-set>Properties</property-set>
+		</value>
+		<value name="ReadRequests" type="ratep" unit="Nb/s" value="/ResponsePacket/Response/VolumeSetStats/Sample/Item/@reqsRead">
+			<property-set>Properties</property-set>
+		</value>
+		<value name="WriteRequests" type="ratep" unit="Nb/s" value="/ResponsePacket/Response/VolumeSetStats/Sample/Item/@reqsWritten">
+			<property-set>Properties</property-set>
+		</value>
+		<value name="BytesRead" type="ratep" unit="Octets/s" value="/ResponsePacket/Response/VolumeSetStats/Sample/Totals/@bytesRead">
+			<property-set>PropertiesTotals</property-set>
+		</value>
+		<value name="BytesWrite" type="ratep" unit="Octets/s" value="/ResponsePacket/Response/VolumeSetStats/Sample/Totals/@bytesWritten">
+			<property-set>PropertiesTotals</property-set>
+		</value>
+		<value name="ReadRequests" type="ratep" unit="Nb/s" value="/ResponsePacket/Response/VolumeSetStats/Sample/Totals/@reqsRead">
+			<property-set>PropertiesTotals</property-set>
+		</value>
+		<value name="WriteRequests" type="ratep" unit="Nb/s" value="/ResponsePacket/Response/VolumeSetStats/Sample/Totals/@reqsWritten">
+			<property-set>PropertiesTotals</property-set>
+		</value>
+		<property-set name="Properties">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-Volume" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="deviceid" type="data" value="../../../@mover" />
+			<property name="partid" type="data" value="../@volume" />
+		</property-set>
+		<property-set name="PropertiesTotals">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-DM" />
+			<property name="devtype" type="hard-coded" value="DataMover" />
+			<property name="deviceid" type="data" value="../../../@mover" />
+		</property-set>
+	</collecting-configuration>
+	<collecting-configuration id="FS-Perf" max-threads="1" timeout="300" xml-job="com.watch4net.apg.v2.collector.plugins.xmlcollector.engine.NuxXmlJob" variable="serialnb datagrp deviceid parttype partid name">
+		<data>
+			<include-contexts>conf/context-file.xml</include-contexts>
+			<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.soap.SOAPXmlRequestExecutor</data-accessor>
+			<input type="string">https://(host)/servlets/CelerraManagementServices [P,FC]</input>
+			<input type="string">https://(host)/Login?user=@fileurlusername&amp;password=@filepassword&amp;Login=Login [G,SC,CC]</input>
+			<input type="string">https://(host)/servlets/CelerraManagementServices</input>
+			<host>@csprimary</host>
+			<parameter name="input-file">
+				<value>conf/fs_perf.xml</value>
+			</parameter>
+			<parameter name="disable-ssl-authentication">
+				<value>true</value>
+			</parameter>
+		</data>
+		<timestamp format="s">../../@time</timestamp>
+		<value name="StorageUsed" type="counter" unit="KB" value="/ResponsePacket/Response/FileSystemSetUsageStats/Item/@spaceUsed">
+			<property-set>Properties</property-set>
+		</value>
+		<value name="StorageSize" type="counter" unit="KB" value="/ResponsePacket/Response/FileSystemSetUsageStats/Item/@spaceTotal">
+			<property-set>Properties</property-set>
+		</value>
+		<value name="FilesUsed" type="counter" unit="Nb" value="/ResponsePacket/Response/FileSystemSetUsageStats/Item/@filesUsed">
+			<property-set>Properties</property-set>
+		</value>
+		<value name="FilesTotal" type="counter" unit="Nb" value="/ResponsePacket/Response/FileSystemSetUsageStats/Item/@filesTotal">
+			<property-set>Properties</property-set>
+		</value>
+		<property-set name="Properties">
+			<property name="serialnb" type="hard-coded" value="@fileserial" />
+			<property name="datagrp" type="hard-coded" value="VNXFile-FileSystem" />
+			<property name="devtype" type="hard-coded" value="Array" />
+			<property name="parttype" type="hard-coded" value="FileSystem" />
+			<property name="partid" type="data" value="../@fileSystem" />
+		</property-set>
+	</collecting-configuration>
+</configuration>

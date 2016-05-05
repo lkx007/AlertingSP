@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+	targetNamespace="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter"
+	elementFormDefault="qualified">
+
+    <xsd:annotation>
+        <xsd:documentation>
+            The property tagging filter configuration file. Copyright
+            2008 Watch4Net Solutions. All rights reserved.
+        </xsd:documentation>
+    </xsd:annotation>
+
+	<xsd:element name="property-tagging-filter-config">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="refresh" type="refresh-type" maxOccurs="1" minOccurs="1" />
+				<xsd:element name="files" maxOccurs="1" minOccurs="1" type="files-type" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="refresh-type">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:nonNegativeInteger">
+				<xsd:attribute name="unit" type="refresh-unit-enum" use="required" />
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="refresh-unit-enum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="days" />
+			<xsd:enumeration value="hours" />
+			<xsd:enumeration value="minutes" />
+			<xsd:enumeration value="seconds" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:complexType name="files-type">
+		<xsd:sequence>
+			<xsd:element name="text-file" maxOccurs="unbounded" minOccurs="0" type="text-file-type" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="text-file-type">
+		<xsd:sequence>
+			<xsd:element name="accessor" type="accessor-type" maxOccurs="unbounded" minOccurs="0" />
+			<xsd:element name="field-separator" type="string1" maxOccurs="1" minOccurs="1" />
+			<xsd:element name="field-quoting" maxOccurs="1" minOccurs="0" type="char" />
+			<xsd:element name="default-symbol" type="string1" maxOccurs="1" minOccurs="1" />
+			<xsd:element name="null-symbol" type="string1" maxOccurs="1" minOccurs="0" />
+			<xsd:element name="property-insertion" maxOccurs="1" minOccurs="0" >
+				<xsd:complexType>
+					<xsd:attribute name="start" use="required" />
+					<xsd:attribute name="end" use="required" />
+				</xsd:complexType>					
+			</xsd:element>
+			<xsd:element name="key-properties" type="key-properties-type" maxOccurs="1" minOccurs="1" />
+			<xsd:element name="new-properties" type="new-properties-type" maxOccurs="1" minOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="path" type="xsd:string" use="required" />
+		<xsd:attribute name="encoding" type="xsd:string" use="optional" />
+	</xsd:complexType>
+
+	<xsd:complexType name="accessor-type">
+		<xsd:sequence>
+			<xsd:element name="parameter" type="parameter-type"
+				minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="accessor-class" type="string1"  use="required" />
+	</xsd:complexType>
+	
+	<xsd:complexType name="parameter-type">
+		<xsd:simpleContent>
+			<xsd:extension base="string1">
+				<xsd:attribute name="name" type="string1"  use="required" />	
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+	
+	<xsd:complexType name="key-properties-type">
+		<xsd:sequence>
+			<xsd:element name="key-property" maxOccurs="unbounded" minOccurs="0">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="property-name-type">
+							<xsd:attribute name="string-type" type="string-type-enum" default="string" />
+							<xsd:attribute name="delete-after-use" type="xsd:boolean" default="false" />
+							<xsd:attribute name="decoder" type="xsd:string" use="optional"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="new-properties-type">
+		<xsd:sequence>
+			<xsd:element name="new-property" maxOccurs="unbounded" minOccurs="1">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="property-name-type">
+						  <xsd:attribute name="encoder" type="xsd:string" use="optional"/>
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="property-name-type">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value=".+" />
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="string-type-enum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="string" />
+			<xsd:enumeration value="regex" />
+			<xsd:enumeration value="sqlpattern" />
+			<xsd:enumeration value="range" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="char">
+		<xsd:restriction base="xsd:string">
+			<xsd:length value="1" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	
+	<xsd:simpleType name="string1">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1" />
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>

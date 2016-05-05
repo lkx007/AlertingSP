@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler ./property-extraction-handler.xsd" xmlns="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler">
+	<properties>
+		<regex-property name="partsn" keep="true">
+			<regex>(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..)</regex>
+			<!-- WWN required only the last 8bytes: -->
+			<part name="portwwn" value="${9}${10}${11}${12}${13}${14}${15}${16}" />
+		</regex-property>
+		<regex-property name="partsn" keep="true">
+			<regex>(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..):(..)</regex>
+			<!-- WWN required only the last 8bytes (alex): -->
+			<part name="partsn" value="${9}${10}${11}${12}${13}${14}${15}${16}" />
+		</regex-property>
+	</properties>
+</config>

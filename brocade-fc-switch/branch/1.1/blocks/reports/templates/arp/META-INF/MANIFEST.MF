@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Built-By: Watch4Net
+Description: This SolutionPack contains reports that are specifically 
+ designed for the Brocade Fabric Switch devices
+Report-Pack: Brocade FC Switch
+Created-By: Watch4Net
+Version: 1.1
+
+Name: Brocade Fabric Switch
+Hooks: #W4N_SP
+Description: This SolutionPack contains reports that are specifically 
+ designed for the Brocade Fabric Switch devices
+Version: 1.1
+

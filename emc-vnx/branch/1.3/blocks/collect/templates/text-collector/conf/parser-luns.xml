@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>single-line-tree</tree-type>
+		<sub-delimiter>
+			<delimiter>:</delimiter>
+			<condition-list>
+				<suffix depth="1">[0-9]|[A-Z]|[a-z]</suffix>
+				<matches>false</matches>
+			</condition-list>
+		</sub-delimiter>
+		<sub-delimiter>
+			<delimiter>(</delimiter>
+			<condition-list>
+				<suffix depth="7">optimal</suffix>
+				<matches>true</matches>
+			</condition-list>
+		</sub-delimiter>
+		<sub-delimiter>
+			<delimiter> </delimiter>
+			<condition-list>
+				<prefix depth="4">Name</prefix>
+				<matches>true</matches>
+			</condition-list>
+		</sub-delimiter>
+		<tree-schema>
+			<name>LOGICAL UNIT NUMBER .*</name>
+			<leaf><name>Name</name></leaf>
+			<leaf><name>Current owner(\s*)</name></leaf>
+			<leaf><name>UID(\s*)</name></leaf>
+			<leaf><name>RAIDGroup ID(\s*)</name></leaf>
+			<leaf><name>RAID Type(\s*)</name></leaf>
+			<leaf><name>State(\s*)</name></leaf>
+
+			<leaf><name>LUN Capacity\(Megabytes\)(\s*)</name></leaf>
+
+			<leaf><name>Read cache(\s*)</name></leaf>
+			<leaf><name>Read cache hits(\s*)</name></leaf>
+			<leaf><name>Read cache misses(\s*)</name></leaf>
+			<leaf><name>Write cache(\s*)</name></leaf>
+			<leaf><name>Write cache hits(\s*)</name></leaf>
+
+			<leaf><name>Stripe Crossing(\s*)</name></leaf>
+			<leaf><name>Prefetched blocks(\s*)</name></leaf>
+			<leaf><name>Unused prefetched blocks(\s*)</name></leaf>
+			<leaf><name>Forced flushes(\s*)</name></leaf>
+
+                        <leaf><name>Blocks Read SPA(\s*)</name></leaf>
+                        <leaf><name>Blocks Read SPB(\s*)</name></leaf>
+                        <leaf><name>Blocks Written SPA(\s*)</name></leaf>
+                        <leaf><name>Blocks Written SPB(\s*)</name></leaf>
+                        <leaf><name>Read Requests SPA(\s*)</name></leaf>
+                        <leaf><name>Read Requests SPB(\s*)</name></leaf>
+                        <leaf><name>Write Requests SPA(\s*)</name></leaf>
+                        <leaf><name>Write Requests SPB(\s*)</name></leaf>
+                        <leaf><name>LUN Busy Ticks SPA(\s*)</name></leaf>
+                        <leaf><name>LUN Busy Ticks SPB(\s*)</name></leaf>
+                        <leaf><name>LUN Idle Ticks SPA(\s*)</name></leaf>
+                        <leaf><name>LUN Idle Ticks SPB(\s*)</name></leaf>
+                        <leaf><name>Non-zero Request Count Arrivals SPA(\s*)</name></leaf>
+                        <leaf><name>Non-zero Request Count Arrivals SPB(\s*)</name></leaf>
+                        <leaf><name>Sum of Oustanding Requests SPA(\s*)</name></leaf>
+                        <leaf><name>Sum of Oustanding Requests SPB(\s*)</name></leaf>
+
+			<leaf><name>Total Hard Errors(\s*)</name></leaf>
+			<leaf><name>Total Soft Errors(\s*)</name></leaf>
+
+			<leaf><name>Is Private(\s*)</name></leaf>
+
+			<leaf><name>FAST Cache(\s*)</name></leaf>
+			<leaf><name>FAST Cache Read Hits</name></leaf>
+			<leaf><name>FAST Cache Read Misses</name></leaf>
+			<leaf><name>FAST Cache Write Hits</name></leaf>
+			<leaf><name>FAST Cache Write Misses</name></leaf>
+		</tree-schema>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>LUNs</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) getlun -name -owner -uid -rg -type -state -private -capacity -rc -rchm -wc -wch -stripe -bp -upb -ff -brwsp -rwrsp -lunbusytickssp -lunidletickssp -nzrca -sor -fastcache -hrdscsi -sftscsi</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+LOGICAL UNIT NUMBER 1
+Name                        JVOL_1
+Current owner:              SP A
+UID:                        60:06:01:60:4E:10:32:00:C0:33:0A:E2:35:2E:E2:11
+RAIDGroup ID:               0
+RAID Type:                  RAID1/0
+State:                      Bound
+LUN Capacity(Megabytes):    51200
+LUN Capacity(Blocks):       104857600
+Read cache:                 ENABLED
+Read cache hits:            583360
+Read cache misses:          N/A
+Write cache:                ENABLED
+Write cache hits:           2732247
+Stripe Crossing:            1688
+Prefetched blocks:          428960
+Unused prefetched blocks:   0
+Forced flushes:             0
+Blocks Read SPA:            1902487  (optimal)
+Blocks Read SPB:            4
+Blocks Written SPA:         3960621  (optimal)
+Blocks Written SPB:         0
+Read Requests SPA:          587352  (optimal)
+Read Requests SPB:          4
+Write Requests SPA:         2732247  (optimal)
+Write Requests SPB:         0
+LUN Busy Ticks SPA:         56711336  (optimal)
+LUN Busy Ticks SPB:         206588
+LUN Idle Ticks SPA:         1136820822  (optimal)
+LUN Idle Ticks SPB:         1194907172
+Non-zero Request Count Arrivals SPA:           7022  (optimal)
+Non-zero Request Count Arrivals SPB:           0
+Non-zero Request Count Arrivals:              7022
+Sum of Oustanding Requests SPA:    3329704  (optimal)
+Sum of Oustanding Requests SPB:    5
+Sum of Oustanding Requests:      3329709
+Total Hard Errors:          0
+Total Soft Errors:          0
+Bus 1 Enclosure 1  Disk 0  Hard Read Errors:           0
+Bus 1 Enclosure 1  Disk 2  Hard Read Errors:           0
+Bus 1 Enclosure 1  Disk 1  Hard Read Errors:           0
+Bus 1 Enclosure 1  Disk 3  Hard Read Errors:           0
+Bus 1 Enclosure 1  Disk 0  Hard Write Errors:          0
+Bus 1 Enclosure 1  Disk 2  Hard Write Errors:          0
+Bus 1 Enclosure 1  Disk 1  Hard Write Errors:          0
+Bus 1 Enclosure 1  Disk 3  Hard Write Errors:          0
+Bus 1 Enclosure 1  Disk 0  Soft Read Errors:           0
+Bus 1 Enclosure 1  Disk 2  Soft Read Errors:           0
+Bus 1 Enclosure 1  Disk 1  Soft Read Errors:           0
+Bus 1 Enclosure 1  Disk 3  Soft Read Errors:           0
+Bus 1 Enclosure 1  Disk 0  Soft Write Errors:          0
+Bus 1 Enclosure 1  Disk 2  Soft Write Errors:          0
+Bus 1 Enclosure 1  Disk 1  Soft Write Errors:          0
+Bus 1 Enclosure 1  Disk 3  Soft Write Errors:          0
+Is Private:                 NO
+FAST Cache :             Disabled
+FAST Cache Read Hits:    0
+FAST Cache Read Misses:  0
+FAST Cache Write Hits:   0
+FAST Cache Write Misses: 0
+-->

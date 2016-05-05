@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>AGENT_</name>
+			<leaf><name>AgentRev</name>		<group>agent-1</group></leaf>
+			<leaf><name>Name</name>			<group>agent-2</group></leaf>
+			<leaf><name>Desc</name>			<group>agent-3</group></leaf>
+			<leaf><name>Node</name>			<group>agent-4</group></leaf>
+			<leaf><name>Physical Node</name>	<group>agent-5</group></leaf>
+			<leaf><name>Signature</name>		<group>agent-6</group></leaf>
+			<leaf><name>Peer Signature</name>	<group>agent-7</group></leaf>
+			<leaf><name>Revision</name>		<group>agent-8</group></leaf>
+			<leaf><name>SCSI Id</name>		<group>agent-9</group></leaf>
+			<leaf><name>Model</name>		<group>agent-10</group></leaf>
+			<leaf><name>Model Type</name>		<group>agent-11</group></leaf>
+			<leaf><name>Prom Rev</name>		<group>agent-12</group></leaf>
+			<leaf><name>SP Memory</name>		<group>agent-13</group></leaf>
+			<leaf><name>Serial No</name>		<group>agent-14</group></leaf>
+			<leaf><name>SP Identifier</name>	<group>agent-15</group></leaf>
+			<leaf><name>Cabinet</name>		<group>agent-16</group></leaf>
+			<leaf><name>Availability</name>		<group>agent-17</group></leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Agent Rev:(.*?)(?=(Agent Rev:|$))</regex>
+			<sub-regex group="1">
+				<regex name="agent">(?s)(.+)\r*Name:\s+(.*)\nDesc:\s+(.*)\nNode:\s+(.*)\nPhysical Node:\s+(.*)\nSignature:\s+(.*)\nPeer Signature:\s+(.*)\nRevision:\s+(.*)\nSCSI Id:\s+(.*)\nModel:\s+(.*)\nModel Type:\s+(.*)\nProm Rev:\s+(.*)\nSP Memory:\s+(.*)\nSerial No:\s+(.*)\nSP Identifier:\s+(.*)\nCabinet:\s+(.*)$(.*)</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Group</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@navisecclipath -h (host) -user @blockusername -password @blockpassword -scope @userscope getagent</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

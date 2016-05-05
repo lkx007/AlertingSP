@@ -1,0 +1,225 @@
+EMC VMAX
+========
+
+Version 3.0.1.0 (alertconsolidation 3.0, alerts 3.0, collect 3.0.1.0, reports 3.0.1.0)
+ * collect: Fixed XPath expression for RawCapacity metric's rawcap property to address CQ 612679 and 612676
+ * collect: PoolSubscribedCapacity changes to fix CQ 612681, simple PresentedCapacity changes for VDEV/DLDEV
+ * collect: Increased all spatial aggregation handler removal-timeouts to be double the polling interval to fix fluctuations
+ * collect: Added LUN performance collection using SMI Provider
+ * collect: Changed XML configuration-ids to reflect the data source (Solutions Enabler, UniVMAX, SMI) and collection type (topology/performance)
+ * collect: Set time-window of all ICFs to polling-interval
+ * reports: Added Device/LUN level performance reports
+ * collect: Changed SMI collected LUN/device names to be 4 digits to match up with SE collected LUN/device names
+ * collect: Change symdisk call to get all disks instead of only disks from DA director.  It will now return external disks.
+ * collect: Fix for CQ615061 & CQ615064, part is not unique for External Disks
+
+Version 3.0 (alertconsolidation 3.0, alerts 3.0, collect 3.0, reports 3.0)
+ * collect: Support for Discovery Center #562
+ * collect: Added ICF for calculating Array Unusable capacity.
+ * collect: xml-collector-vmax-topo.xml changes:  
+    * VMAX-DISKS Added property symProperties.disksize used by Capacity, FreeCapacity, Availability metrics
+    * VMAX-DEVICES changes:
+        * Added properties: ismapped, dgraid, spindles, symfs, gatekpr, aclx, vcm, savedev, datadev, mainpool, savepool
+        * Fixed bug in roc1 (data disks) XPath expression so that it can now get 2 digit number of data disks/hypers from 
+          protection_level.
+    * VMAX-ACCESS Fixed RemoveMe metric XPath expression to get a value and added new "ismasked"
+    * Removed VMAX-DEVICES-SAVEDEV and VMAX-DEVICES-DATADEV collector configs since these have been combined 
+      into VMAX-DEVICES 
+ * collect: crf-vmax1.xml changes:
+    * Added cross reference LUN with replica LUN properties
+    * Added cross reference StorageGroup and Tier Policy Name
+ * collect: ptf-vmax1.xml changes:
+    * Added static accessor to set LUN metric property ismapped=0 if ismapped is NULL
+    * Added static accessor to set LUN metric property ismasked=0 if ismasked is NULL
+    * Added JDBC accessor to get disk type, disk size from data_property_flat table and then tag the LUN metrics
+    * Added "Service Levels.csv" file to tag LUNs with Service Level based on their RAID level, disk type, and disk size
+ * collect: vmax-vhf1.xml changes:
+    * peh-purpose.xml - Added Purpose to LUN metrics using a PropertyExtractionHandler
+    * pah-consumed.xml - Compute Thin LUN or Snap LUN IsUsed metric based on its ConsumedCapacity using a PropertyArithmeticHandler
+    * pah-isused.xml - Compute LUN IsUsed metric based on IsMasked and IsMapped metrics using a PropertyArithmeticHandler
+    * vhf-vmax-sah.xml using a SpatialAggregationHandler compute Array rollup capacities:  
+        * compute Array RAID Overhead Capacity (RAIDOverheadCapacitY)
+        * compute Array Used Capacity (UsedCapacity) 
+        * compute Array Free Capacity (FreeCapacity)
+        * compute Array Pool Free Capacity (PoolFreeCapacity)
+ * collect: ptf-vmax2.xml added to assume Purpose = "Primary" for LUN metrics with no Purpose property
+ * collect: icf-vmax.xml added
+    * compute Array Configured Raw Capacity (ConfiguredRawCapacity)
+    * compute Array Configured Raw Capacity (ConfiguredUsableCapacity)
+    * compute Array Unusable Capacity (UnusableCapacity)
+ * report: Renamed "Capacity" report to "Raw Capacity Usage" report and add Array Unusable capacity
+ * report: Added "Usable Capacity" report
+ * report: Added "Used Capacity by Purpose" report
+ * report: Fix for CQ 608211
+        * fixed VMAX-TIERS FAST VP report where part was being reported instead of sgname resulting in storage group name not being reported.
+ * report: Fix for CQ 609201 - removed old pools reports for Devices, Tracks, and Response Times
+ * collect: Fix for CQ 608211
+        * changed VMAX-TIER metric ID to include sgname.  
+        * changed VMAX-STORAGE-GROUPS to only return sgname and not mvsgname.  Added new properties to identify Storage Group as Masking View
+          storage group (ismvsg) or FAST storage group (isfastsg) for users that want to know the type of storage group.
+ * collect: Changed VMAX-ACCESS:
+        * changed director and port properties to use string-join to create list
+        * Conditionally set datagrp to VMAX-ACCESS-CHILD based on initiator group
+          being a child initiator group.
+ * collect: Changed VMAX-PORTS - added porttype = 'FA'
+ * config: Added Topology Backend Connector to Collector.xml along with topoconnector.xml.
+ * report: Added "Usable Capacity by Service Level" report
+ * collect: Added support for LocalReplicaUsedCapacity and RemoteReplicaUsedCapacity
+        * Changes to ptf-vmax1.xml:
+            * Tag LUN with Local Replica, Remote Replica, Primary Purpose based on Topology Service replica chain
+            * Tag LUN with System Resource and Pool Contributor Purpose
+            * Tag LUN with Local Replica, Remote Replica, Primary Purpose if Topology Service has not assigned purpose
+            * Tag LUN with default Purpose of Primary if not set
+        * Chanages to ptf-vmax2.xml
+            * Get isused from rootlun when it is different from rootlun
+        * Changes to vhf-vmax-sah.xml
+            * Added Primary LUN LocalReplicaUsedCapacity and RemoteReplicaUsedCapacity
+        * Change to vhf-vmax2.xml
+            * Added peh-replica-props.xml - copy rootlun and rootarry to LUN LocalReplicaUsedCapacity and RemoteReplicaUsedCapacity
+        * Change to vhf-vmax1.xml and ptf-vmax2.xml to remove old LUN Purpose handling
+        * Change to xmlcollector-vmax-topo.xml to removed old purpose property
+ * collect: Change to add port WWN for mapping
+        * Change to crf-vmax1.xml to get the port wwn to enrich LUN (device) data
+        * Changes to xmlcollector-vmax-topo.xml:
+            * added "-v" to "symcfg list ports" call
+            * added more port properties
+ * collect: Added datatype property hardcoded to Block
+ * collect: Added support for PresentedCapcity, LocalReplicaPresentedCapacity and RemoteReplicaPresentedCapacity
+        * Added new filter file icf-vmax-presentedcap.xml to support PresentedCapacity metric calculation
+        * Changes to collecting.xml.ftl
+            * Includes the new filter file icf-vmax-presentedcap.xml.
+        * Changes to vhf-vmax-sah.xml
+            * Added Primary LUN LocalReplicaPresentedCapacity and RemoteReplicaPresentedCapacity
+        * Changes to vhf-vmax2.xml
+            * Updated CopyRootPropsToPart handler to include the LocalReplicaPresentedCapacity and RemoteReplicaPresentedCapcity metrics to pass through
+ * collect: Refine LUN purpose tagging logic in ptf-vmax1.xml
+ * collect: Add parttype="METAMEMBER" if metamember only for LUN Capacity metric to support existing
+            VMAX SP's Inventory/Devices/Distribution by Device Type/Meta Devices report but not affect
+            capacity reports.
+ * collect: Added support to send only necessary metrics to Topology Backend
+        * Added new filter file vhf-topobe.xml to block metrics other than 'Availability', 'Total Memory', 'Capacity', 'StateOfReplica' and 'MappingData' 
+        * Modified collecting.xml.ftl to include the filter file vhf-topobe.xml
+ * collect: Added isfast property to LUN metrics without adding all StorageGroup and FAST Policy properties
+        * Changed xmlcollector-vmax-topo.xml to add FAST policy type (poltype) to VMAX-TIERS metrics
+        * Changed crf-vmax1 cross-reference to:
+            * cross-ref Tier metrics with StorageGroup RemoveMe metric based on sgname to get poltype, polname
+            * cross-ref StorageGroup RemoveMe with other LUN metrics based on parttype LUN to get poltype, polname
+        * Added ptf-vmax-isfast.xml to add isfast property to LUN metrics based on dgstype and poltype
+ * collect: Added CRF to copy arraytyp, devdesc, model, serialnb, and vendor properties to all Array metrics
+ * collect: Remove LocalReplicaUsedCapacity, RemoteReplicaUsedCapacity, LocalReplicaPresentedCapacity, and RemoteReplicaPresentCapacity
+            aggregations since these will now be computed at report time.
+        * Changed vhf-vmax-sah.xml to remove aggregates 
+        * Changed vhf-vmax2.xml to remove peh-replica-props.xml since it is no longer needed 
+ * collect: Add disk-related properties to non-FAST Thin LUNs using ptf-vmax-thindisk.xml
+ * collect: Add "FAST VP" default service level
+ * collect: Add "diskloc" property as the External Indicator for Disk, LUN, and Pool metrics.  Property values are "External", "Internal", and "Encapsulated".
+ * collect: Add ExternalCapacity based on LUN diskloc value of "External" or "Encapsulated".
+ * collect: Add luntagid to LUN metrics
+ * report: CQ 608380 - fix complex expansion on FAST/polname/Tiers/tiername/Pools node
+ * report: CQ 608537 - fix META Devices report since we now use parttype="METAMEMBER" instead of parttype="LUN"
+           for metamember devices.
+ * collect: Added support for DMX masking information and support needed for creating IOPath objects in Topology.
+        * Modified xmlcollector-vmax-topo.xml to include collector configuration for DMX masking using 'symmaskdb' command
+        * Modified xmlcollector-vmax-topo.xml to enhances VMAX-ACCESS collector configuration to produce new metric "MappingData" to simplify creation of IOPath objects.
+        * Modified xmlcollector-vmax-topo.xml to enhances VMAX-ACCESS collector configuration to include 'masked'/'mapped' properties in existing masking rawvalues as 
+          Topology expects them to be 'true/false', rather than '1/0'
+        * Modified vhf-topobe.xml to include 'UsedCapacity' metric to push "isused" property of LUN to TopologBE
+        * Modified vhf-topobe.xml to convert the hexadecimal number into decimal for 'hostlun' - logical unit number
+        * Added new variable handling filter vhf-apgbe.xml to filter out the "MappingData" from pushing to APG TS database
+        * Modified collecting.xml.ftl to include the vhf-apgbe.xml filter
+ * collect: Modified ptf-vmax1.xml.ftl to modify replica-chain.csv query to include 'isused' property and tag it to LUN.
+ * collect: Add FCPort flag properties
+ * collect: Add LUN metric properties for ispolcsu and fix isbound property to be based on tdev_status
+ * collect: Add Storage Pool metric properties for poolname and pooltype.
+ * collect: Add isfast property based on count of LUNs bound to it which are FAST-managed.  Have to do this in several steps to use CRF to copy latest isfast value to
+            all Storage Pool metrics:
+        * Add new SAH to count number of FAST managed LUNs bound to each Storage Pool (FastLunCount) groupby poolname.
+        * If FastLunCount metric does not exist then force metric value to zero using MAX.
+        * PAH logic to base isfast on FastLunCount: if FastLunCount > 0 then set isfast=1 else isfast=0
+        * copy Storage Pool poolname to part on FastLunCount
+        * Add PTF to remove Storage Pool isfast property (reset it to null) so we can rely on CRF.  This is needed in the event that the
+          FAST-managed LUNs are later bound to a different Thin Pool.
+        * Use CRF to copy FastLunCount latest isfast value to other Storage Pool metrics.
+ * collect: add new Storage Pool metrics:  EnabledCapacity, PoolUsableCapacity, PoolSubscribedCapacity, PoolOversubscribedCapacity
+ * collect: Added usedby ("File" | "Block") to LUNs and replica LUNs
+ * collect: Added topology mappings
+ * collect: Removed PTF JDBC accessors for getting Thick and Thin LUN disk characteristics
+        * Added cross-reference in crf-vmax1.xml on disk group to get Thick LUN disk characteristics
+        * Added PTF Property Accessor in ptf-vmax-thindisk.xml to get Thin LUN disk characteristics
+ * collect: Added cross-reference in crf-vmax-pool-diskinfo.xml to cross reference pool contributor disk characteristics with the bound Storage Pool
+ * collect: Removed 'isused-rootlun.csv' PTF file as 'isused' now comes from SPARQL Accessor PTF for replica chain
+            * Added 'ismasked' and 'ismapped' flags for DMXMasking metric for LUN parttype, so UsedCapacity metric can be calculated correctly.
+            * Modified the order of XML Collector commands so the the initial order of arguments are always of the format 'cmd -output xml -sid (host) ....'
+            * Modified vmax.cmd.ftl and vmax.sh.ftl to hide the error and display empty XML for 'symmaskdb' command so that the errors are not shown for this command for
+              VMAX arrays which is expected. For all other commands everything else has to behave the same way. Caveat for this is even if 'symmaskdb' command fails for
+              DMX array for any reason, that wouldn't be caught as an error, rather that has to be troubleshooted with missing data.
+ * collect: Added ThickLunCapacity, ThickLunUsedCapacity, ThickLunFreeCapacity
+ * collect: Changed StorageGroup RemoveMe metric to SGLunCapacity
+ * collect: Fixed problems with SystemUsedCapacity, HotSpareCapacity, PoolSubscribedCapacity, PoolOversubscribedCapacity metrics
+ * collect: Added VDEV and DLDEV UsedCapacity metrics and set to zero
+ * collect: Modified xmlcollector-vmax-topo.xml.ftl to incorporate BNP changes.
+        * Added 'microcode data' and 'patch date' properties to 'devdesc' property for VMAX-ARRAYS configuration
+        * Added meta head and member related properties for VMAX-DEVICES configuration
+        * Added 'feport' property which is concatenated string of director and port to VMAX-PORTS configuration
+        * Included 2 new perl scripts that manipulates Solutions Enabler Event Daemon configuration - Users can download these and run on SE to configure Alerting.
+ * collect: bug fixes
+        * Changed dgraid Xpath expression due to problems when with getting RAID level for remote replicas.
+        * Changed poolname XPath expression so that TDEVs would have a poolname value for Capacity metric
+        * Fixed Array UsedCapacity calculation
+        * Changed BlockUsedCapacity calculation to be based on FileUsedCapacity
+        * Fixed default LUN purpose tagging used when topology service is not present by adding new CRF and changing CRF/PTF filter sequence 
+ * collect: 
+        * Changed VMAX microcode string
+        * Added partid to all LUN metrics
+        * Added Storage Pool UsedFileCapacity and UsedBlockCapacity
+        * Added CRF defaults
+        * Split ptf-vmax1 into separate files but kept logical order the same
+            * ptf-vmax-lun-dgstype.xml
+            * ptf-vmax-lun-purpose.xml
+            * ptf-vmax-lun-usedby.xml
+        * Renamed ptf-vmax2 to ptf-vmax-lun-svclevel.xml
+            * Created UserDefined-Disk-ServiceLevels.csv and UserDefined-FAST-ServiceLevels.csv
+        * Renamed icf-vmax1.xml - icf-vmax-isused.xml
+        * Renamed icf-vmax2.xml - icf-vmax-capacitycalc.xml
+        * Found a bug with FAST VP service level and fixed it
+        * Fixed data accuracy issues
+ * report:
+        * Fixed report timings
+        * Added File Used and Block Used to Usable Capacity Details report
+ * collect:
+        * Fix Other Service Level Used and Free Capacity by excluding VDEVs
+        * Changed LUN Service Level PTF CSV filenames 
+        * Added CRF for pooltype to get it added to LUN metrics
+        * Exclude other DEFAULT_POOL snap pools except for the FBA emulation. No longer need additions to DEFAULT_POOL part property to get unique values.
+ * report:
+        * Fixed FileUsedCapacity in Usable Capacity Details report
+        * Fixed FreeCapacity in Usable Capacity Trend Details report
+ * collect:
+        * Changes to XML collector to support DMX array RawCapacity metric and dgraid
+        * Change to topology mapping to handle child initiator groups
+        * Use regex in user-defined Service Level PTFs
+ * report:
+        * Fix Usable Capacity Details report so that Thick Lun metrics displayed properly
+        * Removed Capacity and Availability metrics from Storage Groups report
+ * report:
+        * Fixed complex expansions in FAST VP reports which prevented Tiers and Pools from displaying
+        * Readded Storage Group LUN Capacity using SGLunCapacity
+
+Version 2.1 (collect 2.1, reports 2.0)
+ * collect: Configurable port for Unisphere (#505)
+ * Incorrect requirements listed in collect SPB.  Should read 1.6
+
+Version 2.0 (collect 2.0, reports 2.0)
+ * Performance collection is now using Unisphere 1.6
+ * Adding parsing for datadev, to have better Usable capacity (#465)
+ * Added devices/pool utilization (#326)
+
+Version 1.1 (collect 1.1, reports 1.1)
+ * collect: Fix for #381. We now pad leading 0 in the serial number.
+ * reports: Fix for #335. Pool capacity unit is now presented correctly.
+ * reports: Minor fix
+ * collect: Fix WWN in caps (f/F)
+ * reports: Fix for #334.  Raw capacity report renamed to Capacity report, and calculation is now more accurate. Offset can still be present, but related to rounding, with error margin of <0.5%
+
+Version 1.0 (collect 1.0, reports 1.0)
+ * Initial release, from ReportPack for VMAX

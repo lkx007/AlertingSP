@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+
+	<!-- Block raw-data from atmos rest calls, this is done because these raw data is processed into W4N standard raw metrics and we don't need these. -->
+	<handling-configuration id="atmos-raw-data-1">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name=='nodesUp' | name=='nodesDown' | name=='avgLoad15' | name=='avgLoad5' | name=='avgLoad1' | name=='nodestatus' | name='cpuSystemUsage' | name='cpuUserUsage' | name='cpuIdle' | name='numberOfprocesses' </parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler" />
+	</handling-configuration>
+	<handling-configuration id="atmos-raw-data-2">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name=='num_objects' | name == 'object_size_user' | name == 'object_size' | name == 'average_object_capacity' | name=='metadata_size' | name=='total_size' | name=='percent_total_size'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler" />
+	</handling-configuration>
+	<handling-configuration id="atmos-raw-data-3">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter"> name=='toremove_freememory' | name=='toremove_usedmemory' |  name=='toremove_currentutil' | name=='total_capacity' | name=='used_capacity' | name=='free_capacity' | name='totalMemory' | name='freeMemory' | name='totalSwapMemory' | name='freeSwapMemory'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler" />
+	</handling-configuration>
+	<handling-configuration id="atmos-raw-data-4">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter"> name=='rawReadsPerSec' | name=='rawWritesPerSec' | name=='rawDeletesPerSec' | name=='rawTransPerSec' | name=='rawMeanReadLatencyMS' | name=='rawMeanWriteLatencyMS' | name=='rawMeanLatencyMS' | name=='rawReads' | name=='rawWrites' | name=='rawDeletes' | name=='rawTotal' | name=='rawReadLatencyMS' | name=='rawWriteLatencyMS' | name=='rawDeleteLatencyMS' | name=='rawUptimeMS' </parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler" />
+	</handling-configuration>
+</configuration>

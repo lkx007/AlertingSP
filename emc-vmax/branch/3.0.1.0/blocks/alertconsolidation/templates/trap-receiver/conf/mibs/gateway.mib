@@ -1,0 +1,197 @@
+
+--------------------------------------------------------------------------
+-- Copyright (c) 2005,2006 All rights reserved by
+--
+-- EMC Corporation
+-- 171 South Street
+-- Hopkinton, MA 01748 USA 
+--
+-- This software is furnished under a license and may be used and copied
+-- inclusion of the above copyright notice. This software or  any  other
+-- only  in  accordance  with  the  terms  of such  license and with the
+-- copies thereof may not be provided or otherwise made available to any
+-- other person. No title to and ownership of  the  software  is  hereby
+-- transferred.
+--
+-- The information in this software is subject to change without notice
+-- and should not be construed as a commitment by EMC Corporation.
+--
+-- EMC Corporation assumes no responsibility for the use or reliability
+-- of this software.
+--
+----------------------------------------------------------------------------
+--
+-- EMC Gateway Management Information Base description
+--
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+-- 
+-- Author Identification
+--
+-- JDS      John D. Sullivan, EMC
+--
+----------------------------------------------------------------------------
+--
+--
+--  000  JDS   09-15-2000     Created Original Module
+--  001  JDS   08-16-2005     incorporated a private event trap
+--                            to expand granularity over the fcmgmt
+--                            event trap format previously used as
+--                            the event trap for the eccGateway enterprise.
+--
+----------------------------------------------------------------------------
+
+EMCGATEWAY-MIB
+
+DEFINITIONS ::= BEGIN
+
+   IMPORTS
+   enterprises
+        FROM RFC1155-SMI
+   connUnitEventId, connUnitEventType, connUnitEventObject,
+   connUnitEventDescr, connUnitEventSeverity, connUnitName,
+   connUnitType, connUnitId, connUnitStatus, connUnitState 
+        FROM FCMGMT-MIB
+   OBJECT-TYPE
+        FROM RFC-1212          
+   TRAP-TYPE
+        FROM RFC-1215;
+
+--Textual conventions for this MIB 
+   
+   DisplayString ::=
+     OCTET STRING
+   -- This data type is used to model textual information taken
+   -- from the NVT ASCII character set.  By convention, objects
+   -- with this syntax are declared as having
+   --
+   --      SIZE (0..255)
+
+   emc                    OBJECT IDENTIFIER ::= { enterprises 1139 }
+
+   eccGateway             OBJECT IDENTIFIER ::= { emc 3 }
+
+   emcAsyncEvent          OBJECT IDENTIFIER ::= { eccGateway 8888 }
+
+   eccGatewayRevision OBJECT-TYPE
+        SYNTAX DisplayString (SIZE (4))
+        ACCESS read-only 
+        STATUS mandatory 
+        DESCRIPTION
+            "This is the revision number for this MIB. The
+            format of the revision value is as follows
+                (0) = high order major revision number
+                (1) = low order major revision number
+                (2) = high order minor revision number
+                (3) = low order minor revision number
+            The value will be stored as an ASCII value. The
+            following is the current value of this object.
+                (0) = '0'
+                (1) = '1'
+                (2) = '0'
+                (3) = '1'
+            This defines a revision of 01.01
+            "
+        ::= { eccGateway 1 }
+
+
+    emcAsyncEventSource OBJECT-TYPE
+        SYNTAX INTEGER { 
+            unknown(0),
+            event-subsystem(1),
+            symmetrix(2),
+            clariion(3)
+        } 
+        ACCESS read-only 
+        STATUS mandatory 
+
+        DESCRIPTION 
+            "This is the top-level classification of the entity 
+            type from where the event is sourced.
+            " 
+        ::= { emcAsyncEvent 1 } 
+
+    emcAsyncEventCode OBJECT-TYPE
+        SYNTAX INTEGER  (0..2147483647)
+        ACCESS read-only 
+        STATUS mandatory 
+
+        DESCRIPTION 
+            "the unique event code for the event.
+            Symmetrix events will be in the range of 1000-1999, inclusive
+            Clariion events will be in the range of 2000-2999, inclusive
+            OSL events will be in the range of 9900-9999, inclusive
+            " 
+        ::= { emcAsyncEvent 2 } 
+
+
+    emcAsyncEventComponentType OBJECT-TYPE 
+        SYNTAX INTEGER  (0..2147483647)
+        ACCESS read-only 
+        STATUS mandatory 
+        DESCRIPTION 
+            "the unique component identifier that generated the event.
+            Symmetrix events will be in the range of 1024-1047, inclusive
+            Clariion events will be in the range of 2048-3071, inclusive
+            OSL events will be in the range of 3072-4095, inclusive
+            "
+        ::= { emcAsyncEvent 3 } 
+
+
+    emcAsyncEventComponentName OBJECT-TYPE 
+        SYNTAX DisplayString (SIZE (0..79)) 
+        ACCESS read-only 
+        STATUS mandatory 
+        DESCRIPTION 
+            "Identifies the component that generated this event"
+        ::= { emcAsyncEvent 4 } 
+
+
+
+-- Related traps 
+
+    eccGatewayStatusChange TRAP-TYPE 
+        ENTERPRISE eccGateway 
+        VARIABLES { connUnitStatus, 
+                    connUnitState,
+                    connUnitName,
+                    connUnitType } 
+        DESCRIPTION 
+            "The overall status of the connectivity unit has 
+            changed.
+            Recommended severity level (for filtering): alert" 
+        ::= 1
+
+    eccGatewayDeletedTrap TRAP-TYPE
+        ENTERPRISE eccGateway
+        VARIABLES { connUnitId,
+                    connUnitName,
+                    connUnitType }
+        DESCRIPTION
+            "A connUnit has been deleted from this agent.
+            Recommended severity level (for filtering): warning" 
+        ::= 3
+
+    eccGatewayEventTrap TRAP-TYPE 
+        ENTERPRISE eccGateway 
+        VARIABLES { connUnitEventId, 
+                    connUnitEventType,
+                    connUnitEventObject,
+                    connUnitEventDescr, 
+                    connUnitEventSeverity,
+                    connUnitName,
+                    connUnitType,
+                    emcAsyncEventSource,
+                    emcAsyncEventCode,
+                    emcAsyncEventComponentType,
+                    emcAsyncEventComponentName
+                    } 
+        DESCRIPTION 
+            "An event has been generated by the 
+            connectivity unit specified in the fcmgmt.mib.
+            Recommended severity level (for filtering): info" 
+        ::= 4                                            
+
+
+END
+

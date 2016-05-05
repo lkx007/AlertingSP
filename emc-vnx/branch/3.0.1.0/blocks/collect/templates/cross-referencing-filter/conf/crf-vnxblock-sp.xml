@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/CrossReferencingFilter" xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<!-- Propagate the 'part' property for storage pool-->
+	<reference>
+		<condition property="source">VNXBlock-Collector</condition>
+		<condition property="parttype">Storage Pool</condition>
+		<match-on>serialnb</match-on>
+		<match-on>parttype</match-on>
+		<match-on>pooltype</match-on>
+		<match-on>poolname</match-on>
+		<include-properties>true</include-properties>
+		<get-property>part</get-property>
+	</reference>
+
+	<!-- Copy LUN related properties for usedby from primary LUNs to replicas -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition type="filter">parttype=='LUN'</condition>
+		<match-on>device</match-on>
+		<match-on>rootwwn</match-on>
+		<include-properties>true</include-properties>
+		<expiration>1800</expiration>
+		<get-property default="N/A">usedby</get-property>
+	</reference>
+	
+	<!-- Copy thin LUN isused, ismapped and ismasked properties -->
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition type="filter">parttype=='LUN'</condition>
+		<match-on>serialnb</match-on>
+		<match-on>parttype</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>isused</get-property>
+		<get-property>ismasked</get-property>
+		<get-property>ismapped</get-property>
+	</reference>
+	
+</configuration>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RequestPacket xmlns="http://www.emc.com/schemas/celerra/xml_api">
+	<Request clientHandle="FileSystemUsage">
+		<QueryStats>
+			<FileSystemUsage />
+		</QueryStats>
+	</Request>
+	<Request clientHandle='FileSystemCapacityInfo'>
+		<Query>
+			<FileSystemQueryParams>
+				<AspectSelection  fileSystemCapacityInfos="true" />
+			</FileSystemQueryParams>
+		</Query>
+	</Request>
+	<Request clientHandle='FileSystemCheckpointInfo'>
+		<Query>
+			<FileSystemQueryParams>
+				<AspectSelection  fileSystemCheckpointInfos="true" />
+			</FileSystemQueryParams>
+		</Query>
+	</Request>
+</RequestPacket>

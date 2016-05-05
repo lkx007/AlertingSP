@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013-2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			   xmlns="http://www.watch4net.com/CrossReferencingFilter"
+			   xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<reference>
+		<condition property="source">VNXUnity-Collector</condition>
+		<match-on>host</match-on>
+		<include-properties>true</include-properties>
+		<get-property>serialnb</get-property>
+		<get-property>model</get-property>
+		<get-property>device</get-property>
+		<get-property>devdesc</get-property>
+		<get-property>ip</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXUnity-Collector</condition>
+		<condition property="parttype">Disk</condition>
+		<match-on>host</match-on>
+		<match-on>crf</match-on>
+		<include-properties>true</include-properties>
+		<get-property>part</get-property>
+		<get-property>partstat</get-property>
+		<get-property>partid</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXUnity-Collector</condition>
+		<condition property="parttype">Interface</condition>
+		<match-on>host</match-on>
+		<match-on>crf</match-on>
+		<include-properties>true</include-properties>
+		<get-property>part</get-property>
+		<get-property>partid</get-property>
+		<get-property>maxspeed</get-property>
+		<get-property>ifacemac</get-property>
+		<get-property>iftype</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXUnity-Collector</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>host</match-on>
+		<match-on>crf</match-on>
+		<include-properties>true</include-properties>
+		<get-property>part</get-property>
+		<get-property>partsn</get-property>
+		<get-property>dgid</get-property>
+		<get-property>partdesc</get-property>
+		<get-property>dgstype</get-property>
+		<get-property>storesid</get-property>
+		<get-property>partid</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXUnity-Collector</condition>
+		<match-on>host</match-on>
+		<match-on>storesid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>stores</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXUnity-Collector</condition>
+		<match-on>host</match-on>
+		<match-on>fsid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>fsname</get-property>
+	</reference>
+	<reference>
+		<condition property="source">VNXUnity-Collector</condition>
+		<condition property="parttype">VirtualDataMover</condition>
+		<match-on>host</match-on>
+		<match-on>partid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>ifaceip</get-property>
+	</reference>
+</configuration>

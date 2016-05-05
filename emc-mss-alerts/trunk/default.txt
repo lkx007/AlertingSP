@@ -1,0 +1,15 @@
+msotsdt.alerts2.destPortNo.default=162
+msotsdt.alerts2.destComStr.default=public
+msotsdt.alerts2.destGenID.default=6
+msotsdt.alerts2.destEntID.default=2
+
+msotsdr.failover.default=true
+msotsdr.timeseries.socketconnector.rport.default=62010
+msotsdr.timeseries.socketconnector.host.default=localhost
+msotsdr.timeseries.socketconnector.port.default=2010
+
+msotscd.data.thirdpartyflag.default=-
+msotscd.data.tag1.default=Tag data 1
+msotscd.data.tag2.default=Tag data 2			 
+
+msotsdr.srmhealth.default=false

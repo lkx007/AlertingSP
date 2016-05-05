@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-611 -->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+                <max-threads>2</max-threads>
+                <parser-config>
+                                <parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+                                <tree-type>regex-group-tree</tree-type>
+                                <tree-schema>
+                                                <name>SNAPSHOT_</name>
+                                                <leaf><name>Name</name>                                   <group>block-1</group></leaf>
+                                                <leaf><name>Description</name>                        <group>block-2</group></leaf>
+                                                <leaf><name>Creation time</name>   <group>block-3</group></leaf>
+                                                <leaf><name>Last modify time</name>             <group>block-4</group></leaf>
+                                                <leaf><name>Last modified by</name>              <group>block-5</group></leaf>
+                                                <leaf><name>Source LUNs</name>                     <group>block-6</group></leaf>
+                                                <leaf><name>Source CG</name>                          <group>block-7</group></leaf>
+                                                <leaf><name>Primary LUNs</name>                    <group>block-8</group></leaf>
+                                                <leaf><name>State</name>                    <group>block-9</group></leaf>
+                                                <leaf><name>Status</name>                  <group>block-10</group></leaf>
+                                                <leaf><name>Allow ReadWrite</name>             <group>block-11</group></leaf>
+                                                <leaf><name>Modified</name>                            <group>block-12</group></leaf>
+                                                <leaf><name>Attached LUNs</name> <group>block-13</group></leaf>
+                                                <leaf><name>Allow auto delete</name>           <group>block-14</group></leaf>
+                                                <leaf><name>Expiration date</name>                <group>block-15</group></leaf>
+                                </tree-schema>
+                                <regex-group-config group="-1">
+                                                <regex name="main">(?s)Name:(.*?)(?=(Name:|$))</regex>
+                                                <sub-regex group="1">
+                                                                <regex name="block">(?s)(.+)\r*Description:\s+(.*)Creation time:\s+(.*)Last modify time:\s+(.*)Last modified by:\s+(.*)Source LUN\(s\):\s+(.*)Source CG:\s+(.*)Primary LUN\(s\):\s+(.*)State:\s+(.*)Status:\s+(.*)Allow Read\/Write:\s+(.*)Modified:\s+(.*)Attached LUN\(s\):\s+(.*)Allow auto delete:\s+(.*)Expiration date:\s+(.*).*</regex>
+                                                </sub-regex>
+                                </regex-group-config>
+                </parser-config>
+                <data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+                <data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+		<include-contexts>conf/context-block.xml</include-contexts>
+                <data-config>
+                                <data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+                                <stop-on-first-result>true</stop-on-first-result>
+                                <host-group-config>
+                                                <custom-group>
+                                                                <group-name>Snapshots</group-name>
+                                                                <host-config>
+                                                                                <host-list>@spa</host-list>
+                                                                                <host-list>@spb</host-list>
+                                                                </host-config>
+                                                </custom-group>
+                                </host-group-config>
+                                <command-configuration>
+                                                <command-list>
+                                                                <command>@command -h (host) snap -list -detail</command>
+                                                </command-list>
+                                </command-configuration>
+                </data-config>
+</configuration>
+

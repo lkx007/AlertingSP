@@ -1,0 +1,328 @@
+#!/bin/bash
+# -*- mode:sh -*-
+
+## double include guard
+[ -z "${__BUILD_NG_UTILS}" ] && __BUILD_NG_UTILS="1" || return 0
+
+##
+# Retrives full env variable names
+##
+getFullEnv() {
+    env | while read line
+      do
+      echo "${line}" | sed -e 's-^\([^=]*\)=.*$-\1-'
+    done
+}
+
+## save env
+__INITIAL_ENV="$(getFullEnv)"
+__EXCLUDES="
+OLDPWD"
+
+##
+# Returns variables names not in initial env (env when this file has been sourced first)
+# or excluded with excludeEnv, or starting with _
+##
+getEnv() {
+    for var in $(getFullEnv | grep -v "^_")
+    do
+        if echo -e "${__INITIAL_ENV}${__EXCLUDES}" | grep -q "^${var}$"
+        then
+            echo -n
+        else
+            echo "${var}"
+        fi
+    done
+}
+
+##
+# Excludes a variable from env
+##
+excludeEnv() {
+    for exc in $@
+    do
+        __EXCLUDES="${__EXCLUDES}
+${exc}"
+    done
+}
+
+##
+# Writes an error and exit
+##
+die() {
+    err "${@}"
+    local cpt=0
+    print "Stacktrace:"
+    while [ -n "$(caller $cpt)" ]
+    do
+        print "\t$(caller $cpt)"
+        cpt=$((cpt + 1))
+    done
+    exit 1
+}
+
+##
+# Check that every variable is non empty
+##
+requires() {
+    for var in ${@}
+    do
+        if [ -z "${!var}" ]
+        then
+            die "${0}: ${var} not set"
+        fi
+    done
+}
+
+##
+# Prints something in bold green, accept -n
+##
+print() {
+    colorize "0" "${@}" >&2
+}
+
+##
+# Prints something in bold green, accept -n
+##
+info() {
+    colorize "1;32" "${@}"
+}
+
+##
+# Prints something in bold yellow, accept -n
+##
+warn() {
+    colorize "1;33" "${@}"
+}
+
+##
+# Prints something in bold red, accept -n
+##
+err() {
+    colorize "1;31" "${@}"
+}
+
+##
+# Echo a string using the color supplied in first argument
+##
+colorize() {
+    local color="${1}"
+    shift
+    local nl=''
+    if [ "-n" = "${1}" ]
+    then
+        nl='-n'
+        shift
+    fi
+    if [ -z "${NO_COLOR}" ]
+    then
+        echo -e ${nl} "\033[${color}m""${@}""\033[0m" >&2
+    else
+        echo -e ${nl} "${@}" >&2
+    fi
+}
+
+##
+# Test whether $1 is in $2
+#
+# - the value to look for
+# - the list (will be splitted on IFS)
+##
+isInList() {
+    [ -z "${1}" -o -z "${2}" ] && return 1
+    for val in ${2}
+    do
+        [ "${1}" = "${val}" ] && return 0
+    done
+    return 1
+}
+
+##
+# Test whether $1 is NOT in $2
+#
+# - the value to look for
+# - the list (will be splitted on IFS)
+##
+isNotInList() {
+    isInList "${1}" "${2}" || return 0 && return 1
+}
+
+##
+# Tries to unpack an archive into a directory, guessing its type.
+#
+# Parameters:
+# - the archive
+# - the destination directory
+##
+unpack() {
+    [ \! -f "${1}" ] && die "usage: unpack archive out-dir"
+    [ -z "${2}" ] && die "usage: unpack archive out-dir"
+
+    if [ \! -d "${2}" ]
+    then
+        mkdir -p "${2}" || die
+    fi
+
+    local type=$(file -bi "${1}")
+    case "${type}" in
+        application/x-zip|application/zip)
+            unzip "${1}" -d "${2}"
+            ;;
+        application/x-bzip2)
+            tar xjvf "${1}" -C "${2}"
+            ;;
+        application/x-gzip)
+            tar xzvf "${1}" -C "${2}"
+            ;;
+        *)
+            die "unpack: ${1} has an unknown archive type ${type}"
+            ;;
+    esac
+}
+
+##
+# Fetch an archive to the specified direectory
+#
+# Parameters:
+# - the archive uri
+# - the destination directory
+##
+fetch() {
+    [ -z "${1}" ] && die "usage: fetch uri out-file"
+    [ -z "${2}" ] && die "usage: fetch uri out-file"
+
+    if [ \! -d "$(dirname "${2}")" ]
+    then
+        mkdir -p "$(dirname "${2}")" || die
+    fi
+
+    wget "${1}" -O "${2}"
+}
+
+##
+# Download and unpack a package.
+#
+# Expects variable:
+# - PKG_name_arch: the package url
+#
+# Paramaters
+# - package name
+# - arch
+# - output directory
+##
+unpack-redist() {
+    [ -z "${1}" -o -z "${2}" -o -z "${3}" ] \
+        && die "usage: merge-redist package arch out-dir"
+    
+    local arch_pkg="PKG_$(echo ${1} | tr '-' '_')_$(echo ${2} | tr '-' '_')"
+    local archive="${TMPDIR:=/tmp}/${1}-${2}.archive"
+
+    [ -z "${!arch_pkg}" ] \
+        && die "merge-redist: can't find archive for ${1}-${2}"
+
+    # create dir
+    if [ \! -d "${3}" ]
+    then
+        mkdir -p "${3}" || die
+    fi
+   
+    # fetch and unpack stuff
+    local error=''
+    for a in ${!arch_pkg}
+    do
+        fetch "${a}" "${archive}" || error="${a}"
+        unpack "${archive}" "${3}" || error="${a}"
+        rm -f "${archive}"
+    done
+    [ -n "${error}" ] && die "merge-redist: error unpacking ${error}" || return 0
+}
+
+##
+# Apply multiple patches
+#
+# Parameters
+# - patches directory
+# - the working directory
+##
+patch-redist() {
+    [ \! -d "${1}" -o \! -d "${2}" ] \
+        && die "usage: patch-redist patch-dir work-dir"
+
+    find "${1}" -name '*.patch' | sort | while read p
+    do
+        info -n "** Applying patch: "
+        print "${p}"
+        patch --no-backup-if-mismatch -s -f -p0 -d "${2}" < "${p}" || die "${p} failed !"
+    done
+}
+
+##
+# Lists the default JVM for each version. These constants are used
+# by the WANT_JAVA_* macros.
+##
+export JAVA_6="${JAVA_6:-sun-jdk-1.6}"
+export JAVA_5="${JAVA_5:-sun-jdk-1.5}"
+export JAVA_4="${JAVA_4:-sun-jdk-1.4}"
+
+##
+# Setups JAVA_HOME, GENTOO_VM to the desired Java version. It expects
+# jvms to be located in /usr/lib/jvm/${1}.
+#
+# Parameters:
+# - the desired JVM (sun-jdk-1.4, sun-jdk-1.5, sun-jdk-1.6)
+##
+WANT_JAVA() {
+    [ -z "${1}" ] && die "want-java: jvm expected"
+    export JVM="${1}"
+    export GENTOO_VM="${1}"
+    if [ -x "/usr/bin/java-config" ]
+    then
+        export JAVA_HOME="$(java-config -g JAVA_HOME)"
+    else
+        export JAVA_HOME="/usr/lib/jvm/${JVM}"
+    fi
+    alias java="${JAVA_HOME}/bin/java"
+}
+
+##
+# Selects sun-jdk-1.6 jvm.
+##
+WANT_JAVA_6() {
+    WANT_JAVA "${JAVA_6}"
+}
+
+##
+# Selects sun-jdk-1.5 jvm.
+##
+WANT_JAVA_5() {
+    WANT_JAVA "${JAVA_5}"
+}
+
+##
+# Selects sun-jdk-1.4 jvm.
+##
+WANT_JAVA_4() {
+    WANT_JAVA "${JAVA_4}"
+}
+
+##
+# A simple helper to skip a project if TESTING is not set.
+##
+TESTING() {
+    if [ -z "${TESTING}" ]
+    then
+        export SKIP=1
+    else
+        unset SKIP
+    fi
+}
+
+##
+# A couple of aliases for TESTING
+##
+NOT_RELEASED() {
+    TESTING
+}
+LIBRARY() {
+    TESTING
+}

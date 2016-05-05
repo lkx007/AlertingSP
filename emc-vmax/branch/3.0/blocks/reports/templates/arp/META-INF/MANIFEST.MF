@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Built-By: EMC Trial
+Description: Watch4net Solutions ReportPack for EMC VMAX (formerly Sym
+ metrix)
+Report-Pack: EMC VMAX
+Created-By: EMC Trial
+Version: 3.0
+
+Name: Hook-to-W4N-EXPLORE-ALL-DEVICE-SUMMARY
+Hooks: #W4N-DEVICE-SUMMARY-ARRAY
+
+Name: EMC VMAX
+Hooks: #W4N_SP
+Description: Watch4net Solutions ReportPack for EMC VMAX (formerly Sym
+ metrix)
+Version: 3.0
+

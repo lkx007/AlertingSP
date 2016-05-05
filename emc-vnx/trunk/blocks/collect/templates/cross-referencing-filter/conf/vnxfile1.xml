@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			   xmlns="http://www.watch4net.com/CrossReferencingFilter"
+			   xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+    <data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<reference>
+		<condition property="datatype">File</condition>
+		<match-on>deviceid</match-on>
+		<include-properties>true</include-properties>
+		<get-property>serialnb</get-property>
+		<get-property>ip</get-property>
+		<get-property>model</get-property>
+		<get-property>devdesc</get-property>
+		<get-property>vendor</get-property>
+	</reference>
+</configuration>

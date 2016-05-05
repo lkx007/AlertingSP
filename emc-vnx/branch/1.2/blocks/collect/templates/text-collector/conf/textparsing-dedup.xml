@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 	xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>1</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>DEDUP_</name>
+			<leaf>
+				<name>ID</name>
+				<group>dedup-1</group>
+			</leaf>
+			<leaf>
+				<name>Name</name>
+				<group>dedup-2</group>
+			</leaf>
+			<leaf>
+				<name>Deduplication</name>
+				<group>dedup-3</group>
+			</leaf>
+			<leaf>
+				<name>Status</name>
+				<group>dedup-4</group>
+			</leaf>
+			<leaf>
+				<name>LastScan</name>
+				<group>dedup-5</group>
+			</leaf>
+			<leaf>
+				<name>FilesScanned</name>
+				<group>dedup-6</group>
+			</leaf>
+			<leaf>
+				<name>FilesDeduped</name>
+				<group>dedup-7</group>
+			</leaf>
+			<leaf>
+				<name>FSCapacity</name>
+				<group>dedup-8</group>
+			</leaf>
+			<leaf>
+				<name>Originaldatasize</name>
+				<group>dedup-9</group>
+			</leaf>
+			<leaf>
+				<name>SpaceSaved</name>
+				<group>dedup-10</group>
+			</leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Id\s+= (.*?)(?=(Id\s+= |$))</regex>
+			<sub-regex group="1">
+				<regex name="dedup">(?s)(.+)\r*Name\s+= (.*)\r*\nDeduplication\s+= (.*)\nStatus\s+= (.*)\nAs of the last file system scan \((.*)\):\n\s+Files scanned\s+= (\d+)\n\s+Files deduped\s+= (\d+).*File system capacity\s+= (\d+).*Original data size\s+= (\d+).*Space saved\s+= (\d+)(.*)</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-file.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.cli.RemoteCLICommandExecutor</data-accessor>
+		<stop-on-first-result>false</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>VNXFile-group</group-name>
+				<host-config>
+					<connection-type>ssh</connection-type>
+					<host-list>@csprimary</host-list>
+					<parameter name="auth-method">
+						<value>password</value>
+					</parameter>
+					<parameter name="username">
+						<value>@fileusername</value>
+					</parameter>
+					<parameter name="password">
+						<value>@filepassword</value>
+					</parameter>
+					<parameter name="hardcoded-os">
+						<value>vnxfile-dedup</value>
+					</parameter>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<group-name>VNXFile-group</group-name>
+			<command-list>
+				<command type="defined">VNXFile dedupe</command>
+				<argument/>
+				<result-must-be-parsed>true</result-must-be-parsed>
+			</command-list>
+		</command-configuration>
+		<parameter name="command-definition-directory">
+			<value>./conf</value>
+		</parameter>
+	</data-config>
+</configuration>

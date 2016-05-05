@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+	<handling-configuration id="VNXe2-CAPACITY-GB">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name='%Capacity' | name=='OriginalDataSize' | name=='SpaceSaved') &amp; (source=='VNXUnity-Collector')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-vnxe2-pah1.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="VNXe2-scale-Throughput">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name='%Throughput' &amp; (source=='VNXUnity-Collector')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-vnxe2-pah2.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="VNXe2-scale-ResponseTime-ServiceTime">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='ResponseTime' | name=='ServiceTime') &amp; (source=='VNXUnity-Collector')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/vhf-vnxe2-pah3.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<handling-configuration id="Variable-Blocker-RemoveMe">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">name=='RemoveMe' | !(device | serialnb) | ((parttype=='Disk' | parttype=='LUN') &amp; !partid &amp; (name='%Requests' | name='%Throughput' | name='Avg%Size' | name=='QueueLength' | name=='ResponseTime' | name=='TotalCalls'))</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler"/>
+	</handling-configuration>
+	<handling-configuration id="SAH1">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">*</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.SpatialAggregationHandler">
+			<parameter name="file" type="file">conf/vhf-vnxe2-sah1.xml</parameter>
+		</handler>
+	</handling-configuration>
+	<!--Scale disksize from bytes to GB for parttype Disk-->
+	<handling-configuration id="VNXe2-scale-property">
+		<matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">source=='VNXUnity-Collector' &amp; parttype=='Disk' &amp; disksize</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.PropertyArithmeticHandler">
+			<parameter name="file" type="file">conf/pah-scale-disksize-VNXe2.xml</parameter>
+		</handler>
+	</handling-configuration>
+</configuration>

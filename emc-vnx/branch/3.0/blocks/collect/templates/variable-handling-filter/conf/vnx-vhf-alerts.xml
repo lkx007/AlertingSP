@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/VariableHandlingFilter"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilter variable-handling-filter.xsd ">
+	<handling-configuration id="VNXAlerts">
+		<matcher>
+			<parameter name="filter">! (name=='VNXBlockAlerts' |  name=='VNXFileAlerts')</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.BlockAllHandler" />
+	</handling-configuration>
+
+    <handling-configuration id="Replace0">
+        <matcher>
+         <parameter name="filter">source=='VNXFile-Collector' &amp; name=='VNXFileAlerts' &amp; devtype=='Array'</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+        <parameter name="property">fullmsg</parameter>
+        <parameter name="regex">^\$</parameter>
+        <parameter name="replacement"> </parameter>
+    </handler>
+    </handling-configuration>
+
+	 <handling-configuration id="Replace1">
+		<matcher>
+			<parameter name="filter">source=='VNXFile-Collector' &amp; name=='VNXFileAlerts' &amp; devtype=='Array'</parameter>
+		</matcher>
+		<handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+		<parameter name="property">fullmsg</parameter>
+		<parameter name="regex">(.)\$</parameter>
+		<parameter name="replacement">$1</parameter>
+	</handler>
+	</handling-configuration>
+
+ <handling-configuration id="ParamReplacment1">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='VNXBlockAlerts' |  name=='VNXFileAlerts') </parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">          
+	     <parameter name="property">fullmsg</parameter>
+		  <parameter name="mode">property</parameter>
+            <parameter name="regex">paramname1</parameter>
+            <parameter name="replacement">paramvalue1</parameter>
+        </handler>
+    </handling-configuration>
+
+    <handling-configuration id="ParamReplacment2">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='VNXBlockAlerts' |  name=='VNXFileAlerts')</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+	     <parameter name="property">fullmsg</parameter>
+	     <parameter name="mode">property</parameter>
+            <parameter name="regex">paramname2</parameter>
+            <parameter name="replacement">paramvalue2</parameter>
+        </handler>
+    </handling-configuration>
+
+    <handling-configuration id="ParamReplacment3">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='VNXBlockAlerts' |  name=='VNXFileAlerts')</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+	     <parameter name="property">fullmsg</parameter>
+	     <parameter name="mode">property</parameter>
+            <parameter name="regex">paramname3</parameter>
+            <parameter name="replacement">paramvalue3</parameter>          
+        </handler>
+    </handling-configuration>
+
+    <handling-configuration id="ParamReplacment4">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='VNXBlockAlerts' |  name=='VNXFileAlerts')</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">          
+	     <parameter name="property">fullmsg</parameter>
+	     <parameter name="mode">property</parameter>
+            <parameter name="regex">paramname4</parameter>
+            <parameter name="replacement">paramvalue4</parameter>
+        </handler>
+    </handling-configuration>
+
+   <handling-configuration id="ParamReplacment5">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='VNXBlockAlerts' |  name=='VNXFileAlerts')</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+	     <parameter name="property">fullmsg</parameter>
+	     <parameter name="mode">property</parameter>
+            <parameter name="regex">paramname5</parameter>
+            <parameter name="replacement">paramvalue5</parameter>
+        </handler>
+    </handling-configuration>
+
+   <handling-configuration id="ParamReplacment6">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='VNXBlockAlerts' |  name=='VNXFileAlerts')</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+	     <parameter name="property">fullmsg</parameter>
+	     <parameter name="mode">property</parameter>
+            <parameter name="regex">paramname6</parameter>
+            <parameter name="replacement">paramvalue6</parameter>
+        </handler>
+    </handling-configuration> 
+
+   <handling-configuration id="ParamReplacment7">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='VNXBlockAlerts' |  name=='VNXFileAlerts')</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+	     <parameter name="property">fullmsg</parameter>
+	     <parameter name="mode">property</parameter>
+            <parameter name="regex">paramname7</parameter>
+            <parameter name="replacement">paramvalue7</parameter>          
+        </handler>
+    </handling-configuration>
+
+   <handling-configuration id="ParamReplacment8">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='VNXBlockAlerts' |  name=='VNXFileAlerts')</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">
+	     <parameter name="property">fullmsg</parameter>
+	     <parameter name="mode">property</parameter>
+            <parameter name="regex">paramname8</parameter>
+            <parameter name="replacement">paramvalue8</parameter>          
+        </handler>
+    </handling-configuration>
+
+    <handling-configuration id="ParamReplacment9">
+        <matcher class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.matchers.APGFilterMatcher">
+			<parameter name="filter">(name=='VNXBlockAlerts' |  name=='VNXFileAlerts')</parameter>
+        </matcher>
+        <handler class="com.watch4net.apg.v2.collector.plugins.variablehandlingfilter.handlers.ReplaceRegexHandler">          
+	     <parameter name="property">fullmsg</parameter>
+	     <parameter name="mode">property</parameter>
+            <parameter name="regex">paramname9</parameter>
+            <parameter name="replacement">paramvalue9</parameter>
+        </handler>
+    </handling-configuration>
+
+</configuration>

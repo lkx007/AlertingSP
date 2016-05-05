@@ -1,0 +1,33 @@
+query=PREFIX srm:<http://ontologies.emc.com/2013/08/srm#>
+SELECT DISTINCT ?rcpathid ?device ?part ?rep1arry ?rep1lun ?rep2arry ?rep2lun ?rep3arry ?rep3lun ?capacity
+WHERE
+{
+	?srclun a srm:StorageVolume.
+	OPTIONAL{?srclun srm:replicatedFrom ?temp}.
+	FILTER(!BOUND(?temp))
+	?srclun srm:displayName ?part.
+	?srclun srm:residesOnStorageArray ?srcarry.
+	?srcarry a srm:StorageArray.
+	?srcarry srm:displayName ?device.
+	?srcarry srm:model ?devmodel.
+	FILTER(STRSTARTS(?devmodel,"VMAX"))
+	?srclun srm:replicatedTo ?replica1.
+	?replica1 srm:displayName ?rep1lun.
+	?replica1 srm:residesOnStorageArray /srm:displayName ?rep1arry.
+	OPTIONAL{
+		?replica1 srm:replicatedTo ?replica2.
+		?replica2 srm:displayName ?rep2lun.
+		?replica2 srm:residesOnStorageArray /srm:displayName ?rep2arry.
+		OPTIONAL{
+			?replica2 srm:replicatedTo ?replica3.
+			?replica3 srm:displayName ?rep3lun.
+			?replica3 srm:residesOnStorageArray /srm:displayName ?rep3arry.
+		}
+	}
+	LET(?rep2arry := IF(!BOUND(?rep2arry),"",?rep2arry))
+	LET(?rep2lun := IF(!BOUND(?rep2lun),"",?rep2lun))
+	LET(?rep3arry := IF(!BOUND(?rep3arry),"",?rep3arry))
+	LET(?rep3lun := IF(!BOUND(?rep3lun),"",?rep3lun))
+	LET(?capacity := "0")
+	BIND(CONCAT(STR(?device),STR(?part),STR(?rep1arry),STR(?rep1lun),STR(?rep2arry),STR(?rep2lun),STR(?rep3arry),STR(?rep3lun)) AS ?rcpathid)
+}

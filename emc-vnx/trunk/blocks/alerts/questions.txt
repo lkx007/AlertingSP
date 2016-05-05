@@ -1,0 +1,22 @@
+[+gateway]
+host = hostname
+port = port
+username = string
+password = password
+
+[alert.webservice]
+gateway
+category = string
+module = string
+instance = string
+
+[alerts]
+sputilization.enable = boolean
+dirtypagesutilization.enable = boolean
+
+[emcvnx]
+alerts
+
+[main]
+alert.webservice
+emcvnx

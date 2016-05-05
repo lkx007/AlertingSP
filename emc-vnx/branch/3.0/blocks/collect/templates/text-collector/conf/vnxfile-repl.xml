@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<os-command-definition xmlns="http://www.watch4net.com/OutputParsingLibrary"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary commanddefinition.xsd ">
+	<base-command>
+		<command-list>
+			<name>VNXFile repl</name>
+			<command>./w4n_nas_replicate.sh</command>
+			<file always-overwrite="false" exec="true">conf/w4n_nas_replicate.sh</file>
+		</command-list>
+	</base-command>
+</os-command-definition>

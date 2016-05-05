@@ -1,0 +1,25 @@
+Cisco MDS/Nexus
+===============
+
+Version 3.0.1.0 (alertconsolidation 3.0.1.0, alerts 3.0.1.0, reports 3.0.1.0, snmp 3.0.1.0)
+ * Modifying datagrp to GENERIC-INTERFACES at the entry point in Cisco alert-definitions.xml.ftl
+
+Version 3.0 (alertconsolidation 3.0, alerts 3.0, reports 3.0, snmp 3.0)
+ * Adding alert collection
+ * reports: added requirement section and specified devtype = FabricSwitch
+ * snmp: modified SNMP capability CISCO-FCFE-NPV-discovery-actions.xml: removed OID .1.3.6.1.4.1.9.9.289.1.1.6.1.2, added OID .1.3.6.1.4.1.9.9.289.1.1.2.1.1
+ * snmp: renamed metrics in snmp mask (to align with other solution packs):
+		- fcIfSigLosses into SigLosses
+		- fcIfSyncLosses into SyncLosses
+		- fcIfLinkFailures into LinkFailures
+		- fcIfCreditLoss into CreditLost
+		- fcIfInvalidCrcs into InCrcs
+ * snmp: renamed property name status into partstat for mask CISCO-FCFE and CISCO-FCFE-NPV
+ * snmp: renamed property name fcoper into porttype for mask CISCO-FCFE-NPV
+ * snmp: modify partphys property OID in mask CISCO-FCFE-NPV to: fcIfOperStatusCauseDescr (.1.3.6.1.4.1.9.9.289.1.1.2.1.8)
+ * report: updated property and metric names after changes in snmp block
+
+
+
+Version 1.0 (reports 1.0, snmp 1.0)
+ * Initial release, from ReportPack for Cisco MDS

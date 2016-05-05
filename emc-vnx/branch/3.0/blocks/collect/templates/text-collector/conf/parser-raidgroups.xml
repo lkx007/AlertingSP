@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>RAIDGROUP_INFO_</name>
+			<leaf>
+				<name>RaidID</name>
+				<group>raidInfo-1</group>
+			</leaf>
+			<leaf>
+				<name>RaidType</name>
+				<group>raidInfo-2</group>
+			</leaf>
+			<leaf>
+				<name>RawCapacity</name>
+				<group>raidInfo-3</group>
+			</leaf>
+			<leaf>
+				<name>LogicalCapacity</name>
+				<group>raidInfo-4</group>
+			</leaf>
+			<leaf>
+				<name>FreeCapacity</name>
+				<group>raidInfo-5</group>
+			</leaf>
+			<leaf>
+				<name>FreeContiguousGroup</name>
+				<group>raidInfo-6</group>
+			</leaf>
+			<leaf>
+				<name>PercentDefragmented</name>
+				<group>raidInfo-7</group>
+			</leaf>
+			<leaf>
+				<name>DriveType</name>
+				<group>raidInfo-8</group>
+			</leaf>
+			<leaf>
+				<name>LunList</name>
+				<group>raidInfo-9</group>
+			</leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)RaidGroup ID(.*?)(?=(RaidGroup ID|$))</regex>
+			<sub-regex group="1">
+				<regex name="raidInfo">(?s):\s+([\w\s\d]+).*RaidGroup Type:\s+([\w]+).*Raw Capacity \(Blocks\):\s+(\d+).*Logical Capacity \(Blocks\):\s+(\d+).*Free Capacity \(Blocks,non-contiguous\):\s+(\d+).*Free contiguous group of unbound segments:\s+(\d+).*Percent defragmented:\s+(\d+|N\/A).*Drive Type:\s+([\w ]+).*List of luns:\s+([\d\s]+).*</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>     
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>RAIDGROUPS</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) getrg -type -tcap -ucap -lusc -prcntdf -drivetype -lunlist</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+RaidGroup ID:                              0
+RaidGroup Type:                            r5
+Raw Capacity (Blocks):                     5613383680
+Logical Capacity (Blocks):                 4490706944
+Free Capacity (Blocks,non-contiguous):     0
+Free contiguous group of unbound segments: 0
+Percent defragmented:                      100
+Drive Type:                                SAS
+List of luns:                              4 5 6 7 12 13 14 15 16 17 18 19 20 21 22 23 24 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 105 107 108 200 114 115 116 128 1000 1001 1002 1003 1004 998 999 8 9 0 1 2 3 10 11 25 26 27
+-->

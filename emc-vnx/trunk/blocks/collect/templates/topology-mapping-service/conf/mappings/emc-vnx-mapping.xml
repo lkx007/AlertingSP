@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topology-mapping xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="mappings.xsd">
+	<idpatterns>
+		<idpattern type="StorageArray">
+			<key index="1">serialNumber</key>
+		</idpattern>
+		<idpattern type="StorageFrontEndAdapter">
+			<key index="1">serialNumber</key>
+			<key index="2">displayName</key>
+		</idpattern>
+		<idpattern type="StorageFrontEndPort">
+			<key index="1">serialNumber</key>
+			<key index="2">adapterName</key>
+			<key index="3">portNumber</key>
+		</idpattern>
+		<idpattern type="ProtocolEndpoint">
+			<key index="1">wwn</key>
+		</idpattern>
+		<idpattern type="StorageVolume">
+			<key index="1">serialNumber</key>
+			<key index="2">displayName</key>
+		</idpattern>
+		<idpattern type="StorageVolumeGroup">
+           <key index="1">serialNumber</key>
+           <key index="2">displayName</key>
+		</idpattern>
+		 <idpattern type="InitiatorPortGroup">
+            <key index="1">serialNumber</key>
+            <key index="2">displayName</key>
+         </idpattern>
+         <idpattern type="TargetPortGroup">
+            <key index="1">serialNumber</key>
+            <key index="2">displayName</key>
+         </idpattern>
+         <idpattern type="MaskingView">
+            <key index="1">serialNumber</key>
+            <key index="2">viewName</key>
+         </idpattern>
+		 <idpattern type="NASDisk">
+            <key index="1">serialNumber</key>
+            <key index="2">displayName</key>
+         </idpattern>
+		 <idpattern type="StorageSystem">
+			<key index="1">serialNumber</key>
+		</idpattern>
+		<idpattern type="NasServer">
+			<key index="1">serialNumber</key>
+		</idpattern>
+		<idpattern type="DataMover">
+			<key index="1">serialNumber</key>
+			<key index="2">dataMoverID</key>
+		</idpattern>
+		<idpattern type="DataMoverPort">
+			<key index="1">serialNumber</key>
+			<key index="2">dataMoverID</key>
+			<key index="3">portId</key>
+		</idpattern>
+	</idpatterns>
+	
+	<mapping>
+		<conditions>
+			<condition value="Array" property="devtype"/>
+			<condition value="Controller" property="parttype"/>
+			<condition value="VNXBlock-Collector" property="source"/>
+			<condition value="TotalMemory" property="name"/>
+		</conditions>
+  		<object type="StorageFrontEndAdapter">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+				<id key="displayName" expression="{part}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{part}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnStorageArray" type="StorageArray" inverseOf="containsStorageFrontEndAdapter">
+					<id key="serialNumber" expression="{device}"/>
+				</relation>
+			</relations>
+		</object>
+		<object type="StorageArray">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{device}" type="xsd:string"/>
+				<attribute name="model" expression="VNXBlock" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="containsStorageFrontEndAdapter" type="StorageFrontEndAdapter"  
+						inverseOf="residesOnStorageArray">
+					<id key="serialNumber" expression="{device}"/>
+					<id key="displayName" expression="{part}"/>
+				</relation>
+			</relations>
+		</object>
+	</mapping>
+
+	<mapping>
+		<conditions>
+			<condition value="Array" property="devtype"/>
+			<condition value="VNXBlock-Collector" property="source"/>
+			<condition value="WriteCacheEnabled" property="name"/>
+		</conditions>
+		<object type="StorageArray">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{device}" type="xsd:string"/>
+				<attribute name="model" expression="VNXBlock" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnStorageSystem" type="StorageSystem" inverseOf="containsStorageArray">
+					<id key="serialNumber" expression="{device}"/>
+				</relation>
+			</relations>
+		</object>
+		<object type="StorageSystem">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{device}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="containsStorageArray" type="StorageArray"  
+						inverseOf="residesOnStorageSystem">
+					<id key="serialNumber" expression="{device}"/>
+				</relation>
+			</relations>
+		</object>
+	</mapping>
+
+	<mapping>
+		<conditions>
+			<condition value="Array" property="devtype"/>
+			<condition value="Port" property="parttype"/>
+			<condition value="VNXBlock-Collector" property="source"/>
+			<condition value="Availability" property="name"/>
+		</conditions>
+		<object type="StorageFrontEndPort">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+				<id key="adapterName" expression="{memberof}"/>
+				<id key="portNumber" expression="{portid}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{portid}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnStorageFrontEndAdapter" type="StorageFrontEndAdapter" 
+					 inverseOf="containsStorageFrontEndPort">
+					<id key="serialNumber" expression="{device}"/>
+					<id key="displayName" expression="{memberof}"/>
+				</relation>
+				<relation name="containsProtocolEndpoint" type="ProtocolEndpoint" inverseOf="residesOnStorageFrontEndPort">
+					<id key="wwn" expression="{partsn}"/>
+				</relation>
+			</relations>
+		</object> 
+		
+		<object type="ProtocolEndpoint">
+			<idmapping>
+				<id key="wwn" expression="{partsn}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="wwn" expression="{partsn}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnStorageFrontEndPort" type="StorageFrontEndPort" inverseOf="containsProtocolEndpoint">
+					<id key="serialNumber" expression="{device}"/>
+					<id key="adapterName" expression="{memberof}"/>
+					<id key="portNumber" expression="{portid}"/>
+				</relation>
+			</relations>
+		</object> 
+		
+		  <object type="StorageFrontEndAdapter">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+				<id key="displayName" expression="{memberof}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{memberof}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnStorageArray" type="StorageArray" inverseOf="containsStorageFrontEndAdapter">
+					<id key="serialNumber" expression="{device}"/>
+				</relation>
+				<relation name="containsStorageFrontEndPort" type="StorageFrontEndPort" inverseOf="residesOnStorageFrontEndAdapter">
+					<id key="serialNumber" expression="{device}"/>
+					<id key="adapterName" expression="{memberof}"/>
+					<id key="portNumber" expression="{portid}"/>
+				</relation>
+			</relations>
+		</object>
+	</mapping>
+
+	<mapping>
+		<conditions>
+			<condition value="Array" property="devtype"/>
+			<condition value="LUN" property="parttype"/>
+			<condition value="VNXBlock-Collector" property="source"/>
+			<condition value="Availability" property="name"/>
+		</conditions>
+		<object type="StorageVolume">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+				<id key="displayName" expression="{partid}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" type="xsd:string" expression="{partid}"/>
+                <attribute name="volumeWWN" type="xsd:string" expression="{partsn}"/>
+				<attribute name="serialNumber" type="xsd:string" expression="{device}"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnStorageArray" type="StorageArray" inverseOf="containsStorageVolume">
+					<id key="serialNumber" expression="{device}"/>
+				</relation>
+			</relations>
+		</object>
+		<object type="StorageArray">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{device}" type="xsd:string"/>
+				<attribute name="model" expression="VNXBlock" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="containsStorageVolume" type="StorageVolume" inverseOf="residesOnStorageArray">
+					<id key="serialNumber" expression="{device}"/>
+					<id key="displayName" expression="{partid}"/>
+				</relation>
+			</relations>
+		</object>
+	</mapping>
+
+	<!-- define of storage group and mapping relationship to lun  -->
+	<mapping>
+		<conditions>
+			<condition value="Array" property="devtype"/>
+			<condition value="LUN" property="parttype"/>
+			<condition value="VNXBlock-Collector" property="source"/>
+			<condition value="Capacity" property="name"/>
+			<condition value="1" property="ismapped"/>
+		</conditions>
+		<expansion>
+			<expand expression="{sgname}" delimiter="|" variable="sgn" />
+		</expansion>
+
+		<object type="StorageVolumeGroup">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+				<id key="displayName" expression="{sgn}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" type="xsd:string" expression="{sgn}"/>
+			</attributes>
+			<relations>
+			   <relation type="StorageVolume" name="containsStorageVolume" inverseOf="residesOnStorageVolumeGroup">
+                  <id key="serialNumber" expression="{device}"/>
+                  <id key="displayName" expression="{partid}" />          
+               </relation>
+               <relation type="StorageArray" name="residesOnStorageArray" inverseOf="containsStorageVolumeGroup">
+                  <id key="serialNumber" expression="{device}"/>
+               </relation>
+			</relations>
+		</object>
+	</mapping>
+	
+	<!-- define of masking from HBA to Storage group through FA port -->
+		<mapping>
+		<conditions>
+			<condition value="Array" property="devtype"/>
+			<condition value="Initiator" property="parttype"/>
+			<condition value="VNXBlock-Collector" property="source"/>
+			<condition value="InitiatorID" property="name"/>
+		</conditions>
+		<expansion>
+			<expand expression="{sgname}" delimiter="|" variable="sgn" />
+		</expansion>
+
+	     <object type="ProtocolEndpoint">
+         <idmapping>
+            <id key="wwn" expression="{part}"/>
+         </idmapping>
+         <relations>
+            <relation type="MaskingView" name="maskedTo" inverseOf="maskedToInitiator">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="viewName" expression="{part}"/>
+            </relation>
+         </relations>
+        </object>
+		
+		<object type="StorageFrontEndPort">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+				<id key="adapterName" expression="{memberof}"/>
+				<id key="portNumber" expression="{portid}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{portid}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnStorageFrontEndAdapter" type="StorageFrontEndAdapter" 
+					 inverseOf="containsStorageFrontEndPort">
+					<id key="serialNumber" expression="{device}"/>
+					<id key="displayName" expression="{memberof}"/>
+				</relation>
+				<relation name="containsProtocolEndpoint" type="ProtocolEndpoint" inverseOf="residesOnStorageFrontEndPort">
+					<id key="wwn" expression="{partsn}"/>
+				</relation>
+				<relation type="MaskingView" name="maskedTo" inverseOf="maskedToTarget">
+                   <id key="serialNumber" expression="{device}"/>
+                   <id key="viewName" expression="{part}"/>
+                </relation>
+			</relations>
+		</object> 
+		
+		<object type="StorageVolumeGroup">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+				<id key="displayName" expression="{sgn}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" type="xsd:string" expression="{sgn}"/>
+			</attributes>
+			<relations>
+               <relation type="StorageArray" name="residesOnStorageArray" inverseOf="containsStorageVolumeGroup">
+                  <id key="serialNumber" expression="{device}"/>
+               </relation>
+            <relation type="MaskingView" name="maskedTo" inverseOf="maskedToStorageVolumeGroup">
+               <id key="serialNumber" expression="{device}"/>
+               <id key="viewName" expression="{part}"/>
+            </relation>
+			</relations>
+		</object>
+		
+		 <object type="MaskingView">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="viewName" expression="{part}"/>
+         </idmapping>
+
+      </object>
+	</mapping>
+
+    <!-- Get luntagid for Storage Volume -->
+    <mapping>
+        <conditions>
+            <condition value="Array" property="devtype"/>
+            <condition value="LUN" property="parttype"/>
+            <condition value="VNXBlock-Collector" property="source"/>
+            <condition value="UsedCapacity" property="name"/>
+        </conditions>
+        <object type="StorageVolume">
+            <idmapping>
+                <id key="serialNumber" expression="{device}"/>
+                <id key="displayName" expression="{partid}"/>
+            </idmapping>
+            <attributes>
+                <attribute name="displayName" type="xsd:string" expression="{partid}"/>
+                <attribute name="lunTagId" type="xsd:string" expression="{luntagid}"/>
+            </attributes>
+            <relations>
+                <relation name="residesOnStorageArray" type="StorageArray" inverseOf="containsStorageVolume">
+                    <id key="serialNumber" expression="{device}"/>
+                </relation>
+            </relations>
+        </object>
+        <object type="StorageArray">
+            <idmapping>
+                <id key="serialNumber" expression="{device}"/>
+            </idmapping>
+            <relations>
+                <relation name="containsStorageVolume" type="StorageVolume" inverseOf="residesOnStorageArray">
+                    <id key="serialNumber" expression="{device}"/>
+                    <id key="displayName" expression="{partid}"/>
+                </relation>
+            </relations>
+        </object>
+    </mapping>
+
+    <!-- Get luntagid for NAS Disks -->
+	<mapping>
+        <conditions>
+            <condition value="FileServer" property="devtype"/>
+            <condition value="Disk" property="parttype"/>
+            <condition value="VNXFile-Collector" property="source"/>
+            <condition value="Capacity" property="name"/>
+        </conditions>
+        <object type="NASDisk">
+            <idmapping>
+                <id key="serialNumber" expression="{device}"/>
+                <id key="displayName" expression="{part}"/>
+            </idmapping>
+            <attributes>
+                <attribute name="displayName" type="xsd:string" expression="{part}"/>
+                <attribute name="lunTagId" type="xsd:string" expression="{luntagid}"/>
+            </attributes>
+        </object>
+    </mapping>
+	
+	<!-- Get VNX replication relations for LUNs -->
+	<mapping>
+		<conditions>
+			<condition property="name" value="StateOfReplica"/>
+			<condition property="devtype" value="Array"/>
+			<condition property="parttype" value="LUN"/>
+			<condition property="arraytyp" value="CLARiiON"/>
+			<condition property="srclun" op="not" value="N/A"/>
+			<condition property="srcarray" op="not" value=""/>
+		</conditions>
+		<object type="StorageVolume">
+			<idmapping>
+			       <id key="serialNumber" expression="{device}"/>
+				<id key="displayName" expression="{partid}"/>
+			</idmapping>
+			<relations>
+				<relation type="StorageVolume" name="replicatedFrom" inverseOf="replicatedTo">
+					<id key="serialNumber" expression="{srcarray}"/>
+					<id key="displayName" expression="{srclun}"/>
+				</relation>
+				<relation type="StorageArray" name="residesOnStorageArray" inverseOf="containsStorageVolume">
+					<id key="serialNumber" expression="{device}"/>
+				</relation>
+			</relations>
+		</object>
+	</mapping>
+	
+   <!-- Get 'isused' property for LUNs -->
+   <mapping>
+      <conditions>
+         <condition property="name" value="Capacity"/>
+         <condition property="devtype" value="Array"/>
+         <condition property="parttype" value="LUN"/>
+	     <condition property="arraytyp" value="CLARiiON"/>
+	  	 <condition property="dgtype" op="not" value=""/> 
+	     <condition property="dgtype" op="set"/>     
+      </conditions>
+      <object type="StorageVolume">
+         <idmapping>
+            <id key="serialNumber" expression="{device}"/>
+            <id key="displayName" expression="{partid}"/>
+         </idmapping>
+         <attributes>
+            <!-- Declared as short instead of boolean because topology service needs this as 'true/false' for boolean but the rawvalue comes as '1/0'
+                 This is queried from SPARQL for a PTF used by VNX SP which requires it to be again '1/0'. -->
+            <attribute name="isUsed" expression="{isused}" type="xsd:short"/>
+         </attributes>
+      </object>
+   </mapping>
+   
+   	<mapping>
+		<conditions>
+			<condition value="FileServer" property="devtype"/>
+			<condition value="VNXFile-Collector" property="source"/>
+			<condition value="FileSystem" property="parttype"/>
+		</conditions>
+		<object type="NasServer">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{device}" type="xsd:string"/>
+				<attribute name="model" expression="{sstype}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnStorageSystem" type="StorageSystem" inverseOf="containsNasServer">
+					<id key="serialNumber" expression="{device}"/>
+				</relation>
+			</relations>
+		</object>
+			<object type="StorageSystem">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{device}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="containsNasServer" type="NasServer"  
+						inverseOf="residesOnStorageSystem">
+					<id key="serialNumber" expression="{device}"/>
+				</relation>
+			</relations>
+		</object>
+	</mapping>
+	
+	
+	<mapping>
+		<conditions>
+			<condition value="FileServer" property="devtype"/>
+			<condition value="DataMover" property="parttype"/>
+			<condition value="VNXFile-Collector" property="source"/>
+			<condition value="Uptime" property="name"/>
+		</conditions>
+  		<object type="DataMover">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+				<id key="dataMoverID" expression="{moverid}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{part}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnNasServer" type="NasServer" inverseOf="containsDataMover">
+					<id key="serialNumber" expression="{device}"/>
+				</relation>
+			</relations>
+		</object>
+		<object type="NasServer">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{device}" type="xsd:string"/>
+				<attribute name="model" expression="{sstype}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="containsDataMover" type="DataMover"  
+						inverseOf="residesOnNasServer">
+					<id key="serialNumber" expression="{device}"/>
+					<id key="dataMoverID" expression="{moverid}"/>
+				</relation>
+			</relations>
+		</object>
+	</mapping>
+	
+	<mapping>
+		<conditions>
+			<condition value="FileServer" property="devtype"/>
+			<condition value="Port" property="parttype"/>
+			<condition value="VNXFile-Collector" property="source"/>
+			<condition value="StorageEndpoint" property="name"/>
+		</conditions>
+		<object type="DataMoverPort">
+			<idmapping>
+				<id key="serialNumber" expression="{device}"/>
+				<id key="dataMoverID" expression="{moverid}"/>
+				<id key="portId" expression="{partid}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="displayName" expression="{part}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnDataMover" type="DataMover" 
+					 inverseOf="containsDataMoverPort">
+					<id key="serialNumber" expression="{device}"/>
+					<id key="dataMoverID" expression="{moverid}"/>
+				</relation>
+				<relation name="containsProtocolEndpoint" type="ProtocolEndpoint" inverseOf="residesOnDataMoverPort">
+					<id key="wwn" expression="{partid}"/>
+				</relation>
+			</relations>
+		</object> 
+		
+		<object type="ProtocolEndpoint">
+			<idmapping>
+				<id key="wwn" expression="{partid}"/>
+			</idmapping>
+			<attributes>
+				<attribute name="wwn" expression="{partid}" type="xsd:string"/>
+			</attributes>
+			<relations>
+				<relation name="residesOnDataMoverPort" type="DataMoverPort" inverseOf="containsProtocolEndpoint">
+				   <id key="serialNumber" expression="{device}"/>
+				   <id key="dataMoverID" expression="{moverid}"/>
+				   <id key="portId" expression="{partid}"/>
+				</relation>
+			</relations>
+		</object> 
+	</mapping>
+
+</topology-mapping>

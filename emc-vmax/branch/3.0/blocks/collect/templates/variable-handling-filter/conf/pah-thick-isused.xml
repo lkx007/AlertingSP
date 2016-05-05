@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<tns:config xmlns:tns="http://www.watch4net.com/property-arithmetic-handler" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.watch4net.com/property-arithmetic-handler ../../src/conf/com/watch4net/apg/v2/collector/plugins/variablehandlingfilter/property-arithmetic-handler.xsd ">
+
+    <!-- Set IsUsed if LUN is a Pool Contributor (ispolctr=1) AND  
+         is bound to a Thin Pool or Save Pool (ispcbnd=1) -->
+    <tns:output-property>isused</tns:output-property>
+    <tns:input-property>ispolctr</tns:input-property>
+    <tns:input-property>ispcbnd</tns:input-property>
+    <tns:input-property>ismasked</tns:input-property>
+    <tns:input-property>ismapped</tns:input-property>
+    <tns:expression>if (ispolctr=='1' &amp; ispcbnd=='1') {1} 
+                    else { 
+                        if (ispolctr=='1' &amp; ispcbnd=='0') {0} 
+                        else {(ismasked * ismapped).intValue()}
+                    }
+    </tns:expression>
+</tns:config>

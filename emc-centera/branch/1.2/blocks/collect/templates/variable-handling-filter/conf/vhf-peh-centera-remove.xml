@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler ./property-extraction-handler.xsd">
+	<properties>
+		<!-- Remove the unit properties -->
+		<list-property name="sysbufu" separator=" " keep="false">
+			<part name="sysbufu" size="1"/>
+		</list-property>
+		<list-property name="regenbu" separator=" " keep="false">
+			<part name="regenbu" size="1"/>
+		</list-property>
+		<list-property name="availcapu" separator=" " keep="false">
+			<part name="availcapu" size="1"/>
+		</list-property>
+		<list-property name="totobju" separator=" " keep="false">
+			<part name="totobju" size="1"/>
+		</list-property>
+		<list-property name="usedobju" separator=" " keep="false">
+			<part name="usedobju" size="1"/>
+		</list-property>
+		<list-property name="freeobju" separator=" " keep="false">
+			<part name="freeobju" size="1"/>
+		</list-property>
+		<list-property name="trawcapu" separator=" " keep="false">
+			<part name="trawcapu" size="1"/>
+		</list-property>
+		<list-property name="urawcapu" separator=" " keep="false">
+			<part name="urawcapu" size="1"/>
+		</list-property>
+		<list-property name="frawcapu" separator=" " keep="false">
+			<part name="frawcapu" size="1"/>
+		</list-property>
+		<list-property name="sysresu" separator=" " keep="false">
+			<part name="sysresu" size="1"/>
+		</list-property>
+		<list-property name="offcapu" separator=" " keep="false">
+			<part name="offcapu" size="1"/>
+		</list-property>
+		<list-property name="spcapu" separator=" " keep="false">
+			<part name="spcapu" size="1"/>
+		</list-property>
+		<list-property name="usdcapu" separator=" " keep="false">
+			<part name="usdcapu" size="1"/>
+		</list-property>
+		<list-property name="amcapu" separator=" " keep="false">
+			<part name="amcapu" size="1"/>
+		</list-property>
+		<list-property name="userobju" separator=" " keep="false">
+			<part name="userobju" size="1"/>
+		</list-property>
+		<list-property name="prusrdtu" separator=" " keep="false">
+			<part name="prusrdtu" size="1"/>
+		</list-property>
+		<list-property name="ntcapu" separator=" " keep="false">
+			<part name="ntcapu" size="1"/>
+		</list-property>
+		<list-property name="nucapu" separator=" " keep="false">
+			<part name="nucapu" size="1"/>
+		</list-property>
+		<list-property name="nfcapu" separator=" " keep="false">
+			<part name="nfcapu" size="1"/>
+		</list-property>
+		<list-property name="nfacapu" separator=" " keep="false">
+			<part name="nfacapu" size="1"/>
+		</list-property>
+		<list-property name="paqcapu" separator=" " keep="false">
+			<part name="paqcapu" size="1"/>
+		</list-property>
+		<list-property name="phscapu" separator=" " keep="false">
+			<part name="phscapu" size="1"/>
+		</list-property>
+		<list-property name="pusdcapu" separator=" " keep="false">
+			<part name="pusdcapu" size="1"/>
+		</list-property>
+	</properties>
+</config>

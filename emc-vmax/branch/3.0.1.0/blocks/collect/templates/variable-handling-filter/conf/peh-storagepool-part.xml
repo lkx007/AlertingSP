@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<config xmlns="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler ./property-extraction-handler.xsd">
+    <properties>
+        <!-- Copy Storage Pool poolname property to part property -->
+        <regex-property keep="true" name="poolname">
+            <regex>(.+)</regex>
+            <part name="part" value="${1}" />
+        </regex-property>
+    </properties>
+</config>

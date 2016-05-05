@@ -1,0 +1,13 @@
+dependencies.vmware-vcenter-collect.vmware-vcenter.action.0=yes
+questions.vmware-vcenter.vmware-vcenter-collect.storage.failover=0
+questions.vmware-vcenter.vmware-vcenter-collect.storage.timeseries.socketconnector.host=localhost
+questions.vmware-vcenter.vmware-vcenter-collect.storage.timeseries.socketconnector.port=2020
+questions.vmware-vcenter.vmware-vcenter-collect.use_alert=0
+questions.vmware-vcenter.vmware-vcenter-collect.alert.timeseries.socketconnector.host=localhost
+questions.vmware-vcenter.vmware-vcenter-collect.alert.timeseries.socketconnector.port=2010
+#VMware-vCenter
+questions.vmware-vcenter.vmware-vcenter-collect.connection[0].primary.vcenter.host=10.32.190.57
+questions.vmware-vcenter.vmware-vcenter-collect.connection[0].primary.vcenter.username=vmware
+questions.vmware-vcenter.vmware-vcenter-collect.connection[0].primary.vcenter.password=admin
+questions.vmware-vcenter.vmware-vcenter-collect.connection[1].want=1
+questions.vmware-vcenter.vmware-vcenter-collect.use_advancedsettings=1

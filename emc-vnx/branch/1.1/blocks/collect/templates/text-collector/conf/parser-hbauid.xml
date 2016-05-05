@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>SG_</name>
+			<leaf>
+				<name>SG_NAME</name>
+				<group>sg-1</group>
+			</leaf>
+			<node>
+				<name>HBA_</name>
+				<leaf>
+					<name>HBA_UID</name>
+					<group>hba-1</group>
+				</leaf>
+				<leaf>
+					<name>REMOVE_ME</name>
+					<group>hba-2</group>
+				</leaf>
+			</node>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Storage Group Name(.*?)(?=(Storage Group Name|$))</regex>
+			<sub-regex group="1">
+				<regex name="sg">(?s):\s+(\p{Print}+)\r*\nStorage Group UID(.*)</regex>
+				<sub-regex group="2">
+					<regex name="alu">(?s)HBA UID(.*?)(?=(HLU/ALU|$))</regex>
+					<sub-regex group="1">
+						<regex name="hba">\s+([\w|:]+)\s+SP [A|B]\s+(\d)</regex>                        
+					</sub-regex>
+				</sub-regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>    
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Group</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@navisecclipath -h (host) -user @blockusername -password @blockpassword -scope @userscope storagegroup -list</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>

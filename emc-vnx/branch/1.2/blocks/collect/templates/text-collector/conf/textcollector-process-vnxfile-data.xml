@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/TextOutputCollector" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/TextOutputCollector textoutputcollector.xsd ">
+	<simultaneous-collecting>1</simultaneous-collecting>
+	<polling-interval>300</polling-interval>
+	<collecting-group>group</collecting-group>
+	<source>VNXFile-Collector</source>
+	<collecting-configuration name="VNXFile-nfs-totalCalls" timeout="120">
+		<!-- from 5mins data producer -->
+		<parsing-configuration-file>conf/textparsing-nfs-totalCalls.xml</parsing-configuration-file>
+		<raw-value-group-list delete-after-group="true" master-node="ROW.*" variable-id="serialnb device parttype part name">
+			<timestamp-id format="yyyy/MM/dd HH:mm:ss">../Timestamp</timestamp-id>
+			<property-list name="devtype">
+				<hardcoded>DataMover</hardcoded>
+			</property-list>
+			<property-list name="device">
+				<position>/device</position>
+			</property-list>
+			<property-list name="serialnb">
+				<hardcoded>@fileserial</hardcoded>
+			</property-list>
+			<property-list name="parttype">
+				<hardcoded>FileServer</hardcoded>
+			</property-list>
+			<property-list name="part">
+				<hardcoded>NFS</hardcoded>
+			</property-list>
+			<property-list name="datagrp">
+				<hardcoded>VNXFile-NFS-totalCalls</hardcoded>
+			</property-list>
+			<value-list name="totalCalls" leaf="Total NFS Ops diff" unit="Ops/s"/>
+		</raw-value-group-list>
+	</collecting-configuration>
+	<collecting-configuration name="VNXFile-TopUser" timeout="120">
+		<!-- from 60mins data producer ; this goes to events db ; yeah, will get data only every 1hour.. I know.. -->
+		<parsing-configuration-file>conf/textparsing-topn-client.xml</parsing-configuration-file>
+		<raw-value-group-list delete-after-group="true" master-node="ROW_[\d]+" variable-id="serialnb device protocol client user server">
+			<timestamp-id format="">Time</timestamp-id>
+			<property-list name="devtype">
+				<hardcoded>DataMover</hardcoded>
+			</property-list>
+			<property-list name="device">
+				<position>/device</position>
+			</property-list>
+			<property-list name="serialnb">
+				<hardcoded>@fileserial</hardcoded>
+			</property-list>
+			<property-list name="parttype">
+				<hardcoded>FileServer</hardcoded>
+			</property-list>
+			<property-list name="protocol">
+				<position>/protocol</position>
+				<replace value="nfs" by="NFS"/>
+				<replace value="cifs" by="CIFS"/>
+			</property-list>
+			<property-list name="datagrp">
+				<hardcoded>VNXFile-TopUser</hardcoded>
+			</property-list>
+			<property-list name="client">
+				<position>./IP</position>
+			</property-list>
+			<property-list name="user">
+				<position>./User</position>
+			</property-list>
+			<property-list name="server">
+				<position>./Server</position>
+			</property-list>
+			<property-list name="tcalls">
+				<position>./TotalOps</position>
+			</property-list>
+			<property-list name="wcalls">
+				<position>./WriteOps</position>
+			</property-list>
+			<property-list name="rcalls">
+				<position>./ReadOps</position>
+			</property-list>
+			<property-list name="scalls">
+				<position>./SuspectOps</position>
+			</property-list>
+			<property-list name="tbytes">
+				<position>./TotalBytes</position>
+			</property-list>
+			<property-list name="wbytes">
+				<position>./WriteBytes</position>
+			</property-list>
+			<property-list name="rbytes">
+				<position>./ReadBytes</position>
+			</property-list>
+			<property-list name="avgtime">
+				<position>./AvgTime</position>
+			</property-list>
+			<value-list name="null" leaf="./AvgTime" unit=""/>
+		</raw-value-group-list>
+	</collecting-configuration>
+	<collecting-configuration name="DEDUPE" timeout="120">
+		<parsing-configuration-file>./conf/textparsing-dedup.xml</parsing-configuration-file>
+		<raw-value-group-list delete-after-group="true" master-node="DEDUP_[\d]+" variable-id="serialnb serialnb partid name">
+			<property-list name="devtype">
+				<hardcoded>Array</hardcoded>
+			</property-list>
+			<property-list name="serialnb">
+				<hardcoded>@fileserial</hardcoded>
+			</property-list>
+			<property-list name="parttype">
+				<hardcoded>FileSystem</hardcoded>
+			</property-list>
+			<property-list name="part">
+				<position>./Name</position>
+			</property-list>
+			<property-list name="partid">
+				<position>./ID</position>
+			</property-list>
+			<property-list name="ddupstat">
+				<position>./Deduplication</position>
+			</property-list>
+			<property-list name="ddupstus">
+				<position>./Status</position>
+			</property-list>
+			<property-list name="dduplast">
+				<position>./LastScan</position>
+			</property-list>
+			<property-list name="datagrp">
+				<hardcoded>VNXFile-Dedupe</hardcoded>
+			</property-list>
+			<value-list leaf="FilesScanned" unit="Nb" name="FilesScanned"/>
+			<value-list leaf="FilesDeduped" unit="Nb" name="FilesDeduped"/>
+			<value-list leaf="Originaldatasize" unit="MB" name="Originaldatasize"/>
+			<value-list leaf="SpaceSaved" unit="MB" name="SpaceSaved"/>
+		</raw-value-group-list>
+	</collecting-configuration>
+	<collecting-configuration name="SAVVOL" timeout="120">
+		<parsing-configuration-file>./conf/textparsing-savvol.xml</parsing-configuration-file>
+		<raw-value-group-list delete-after-group="true" master-node="SAVVOL_[\d]+" variable-id="serialnb datagrp serialnb partid name">
+			<!--
+		ckptfstotal: 1008
+                ckptfsavail: 1008
+                ckptfsused: 1
+                ckptfsusedpercent: 0
+                ckptfsunit: MB
+                ckptfsblockcount: 2097152
+                ckptfsusage: 128
+                ckptfsusageunit: MB
+                ckptfsusagepercent: 13
+
+			-->
+			<property-list name="devtype">
+				<hardcoded>Array</hardcoded>
+			</property-list>
+			<property-list name="serialnb">
+				<hardcoded>@fileserial</hardcoded>
+			</property-list>
+			<property-list name="parttype">
+				<hardcoded>Checkpoint</hardcoded>
+			</property-list>
+			<property-list name="part">
+				<position>./Name</position>
+			</property-list>
+			<property-list name="partid">
+				<position>./ID</position>
+			</property-list>
+			<property-list name="datagrp">
+				<hardcoded>VNXFile-Savvol</hardcoded>
+			</property-list>
+			<property-list name="ppart">
+				<position>./checkpointof</position>
+			</property-list>
+			<value-list leaf="savvolsize" unit="MB" name="StorageSize"/>
+			<value-list leaf="savvolavailable" unit="MB" name="StorageFree"/>
+			<value-list leaf="savvolused" unit="MB" name="StorageUsed"/>
+			<value-list leaf="savvolusedpercent" unit="%" name="UtilizationPct"/>
+			<value-list leaf="ckptfsusage" unit="MB" name="Used on Savvol"/>
+			<value-list leaf="ckptfsusagepercent" unit="%" name="Percent Used on Savvol"/>
+		</raw-value-group-list>
+	</collecting-configuration>
+	<collecting-configuration name="VNXFile-cifs-server" timeout="120">
+		<parsing-configuration-file>conf/textparsing-cifs.xml</parsing-configuration-file>
+		<raw-value-group-list delete-after-group="true" master-node=".*Server name.*" variable-id="serialnb device parttype part name">
+			<timestamp-id format="yyyy/MM/dd HH:mm:ss">../Timestamp</timestamp-id>
+			<property-list name="devtype">
+				<hardcoded>DataMover</hardcoded>
+			</property-list>
+			<property-list name="device">
+				<hardcoded>@friendlyname</hardcoded>
+			</property-list>
+			<property-list name="serialnb">
+				<hardcoded>@fileserial</hardcoded>
+			</property-list>
+			<property-list name="parttype">
+				<hardcoded>FileServer</hardcoded>
+			</property-list>
+			<property-list name="part">
+				<hardcoded>CIFS</hardcoded>
+			</property-list>
+			<property-list name="datagrp">
+				<hardcoded>VNXFile-CIFS-server</hardcoded>
+			</property-list>
+			<property-list name="clientfs" use-leaf-name="true">
+				<position>./</position>
+				<replace value="Server name (.*) CIFS (.*) diff" by="$1"/>
+				<replace value="Server name (.*) CIFS Avg uSecs/call" by="$1"/>
+			</property-list>
+			<property-list name="name" use-leaf-name="true">
+				<position>./</position>
+				<replace value="Server name (.*) CIFS (.*) diff" by="$2"/>
+				<replace value="Server name (.*) CIFS (Avg uSecs)/call" by="$2"/>
+			</property-list>
+			<value-list leaf="./" unit=""/>
+		</raw-value-group-list>
+	</collecting-configuration>
+	<collecting-configuration name="REPLICATE" timeout="120">
+		<parsing-configuration-file>./conf/textparsing-nas_replicate.xml</parsing-configuration-file>
+		<raw-value-group-list delete-after-group="true" master-node="REPLICATE_[\d]+" variable-id="serialnb datagrp partid name">
+			<property-list name="devtype">
+				<hardcoded>Array</hardcoded>
+			</property-list>
+			<property-list name="device">
+				<hardcoded>@friendlyname</hardcoded>
+			</property-list>
+			<property-list name="serialnb">
+				<hardcoded>@fileserial</hardcoded>
+			</property-list>
+			<property-list name="datagrp">
+				<hardcoded>VNXFile-Replication</hardcoded>
+			</property-list>
+			<property-list name="parttype">
+				<hardcoded>Replication</hardcoded>
+			</property-list>
+			<property-list name="part">
+				<position>./name</position>
+			</property-list>
+			<property-list name="partid">
+				<position>./id</position>
+			</property-list>
+			<property-list name="ppart">
+				<position>./object</position>
+				<replace value="filesystem" by="FileSystem"/>
+				<replace value="vdm" by="VDM"/>
+			</property-list>
+			<property-list name="partstat">
+				<position>./localRole</position>
+			</property-list>
+			<property-list name="repllast">
+				<position>./lastSyncTime</position>
+			</property-list>
+			<property-list name="pdevice">
+				<position>./remoteSystem</position>
+			</property-list>
+			<value-list leaf="./prevTransferRateKB" unit="KB/s" name="Transfer Rate"/>
+			<value-list leaf="./prevReadRateKB" unit="KB/s" name="Read Rate"/>
+			<value-list leaf="./prevWriteRateKB" unit="KB/s" name="Write Rate"/>
+			<value-list leaf="./networkStatus" unit="%" name="Availability">
+				<replace value="OK" by="100"/>
+				<replace value="Active" by="100"/>
+				<replace value="Idle" by="100"/>
+				<replace value="Stopped" by="0"/>
+				<replace value="Error" by="0"/>
+				<replace value="Waiting" by="0"/>
+				<replace value="Info" by="100"/>
+				<replace value="Critical" by="0"/>
+			</value-list>
+			<value-list leaf="./sourceStatus" unit="%" name="Source Status">
+				<replace value="OK" by="100"/>
+				<replace value="Active" by="100"/>
+				<replace value="Idle" by="100"/>
+				<replace value="Stopped" by="0"/>
+				<replace value="Error" by="0"/>
+				<replace value="Waiting" by="0"/>
+				<replace value="Info" by="100"/>
+				<replace value="Critical" by="0"/>
+			</value-list>
+			<value-list leaf="./destinationStatus" unit="%" name="Destination Status">
+				<replace value="OK" by="100"/>
+				<replace value="Active" by="100"/>
+				<replace value="Idle" by="100"/>
+				<replace value="Stopped" by="0"/>
+				<replace value="Error" by="0"/>
+				<replace value="Waiting" by="0"/>
+				<replace value="Info" by="100"/>
+				<replace value="Critical" by="0"/>
+			</value-list>
+		</raw-value-group-list>
+	</collecting-configuration>
+</configuration>

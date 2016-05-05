@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler" xsi:schemaLocation="http://www.watch4net.com/VariableHandlingFilterPropertyExtractionHandler ./property-extraction-handler.xsd">
+  <properties>
+    <!-- Topo Backend need a metric without part and parttype to create the array itself ... -->
+    <regex-property name="part" keep="false">
+	<regex>(.*)$</regex>
+	<part name="WASpart" value="${1}" />
+    </regex-property>
+
+    <regex-property name="parttype" keep="false">
+        <regex>(.*)$</regex>
+        <part name="WASparttype" value="${1}" />
+    </regex-property>
+
+    <regex-property name="partsn" keep="true">
+        <regex>(.{16})(.{16})$</regex>
+        <part name="partsn" value="${2}" />
+    </regex-property>
+
+  </properties>
+</config>

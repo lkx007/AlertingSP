@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns="http://www.watch4net.com/CrossReferencingFilter" xsi:schemaLocation="http://www.watch4net.com/CrossReferencingFilter/cross-referencing-filter.xsd">
+	<blind-write>true</blind-write>
+	<data-accessor>com.watch4net.apg.v2.collector.plugins.crossreferencingfilter.data.mem.MemoryHashDataAccessor</data-accessor>
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">LUN</condition>
+		<match-on>device</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>sgname</get-property>
+		<get-property>dgstype</get-property>
+		<get-property>config</get-property>
+		<get-property>director</get-property>
+	</reference>
+	<reference>
+		<condition property="devtype">Array</condition>
+		<condition property="parttype">Storage Pool</condition>
+		<match-on>device</match-on>
+		<match-on>part</match-on>
+		<include-properties>true</include-properties>
+		<get-property>dgname</get-property>
+		<get-property>tiertype</get-property>
+		<get-property>tiername</get-property>
+	</reference>
+</configuration>

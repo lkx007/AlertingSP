@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.watch4net.com/OutputParsingLibrary" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary ../../../../../svn/branches/APGv43/collectors/navicli-collector/src/conf/com/watch4net/apg/v2/collector/plugins/textoutputcollector/collectingconfiguration.xsd">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+
+			<name>LUN_</name>
+			<leaf>
+				<name>LunID</name>
+				<group>lun-1</group>
+			</leaf>
+			<leaf>
+				<name>RemoveMe</name>
+				<group>lun-1</group>
+			</leaf>
+			<node>
+
+				<name>DISK_</name>
+				<leaf>
+					<name>DiskName</name>
+					<group>disk-1</group>
+				</leaf>
+			</node>
+			
+
+
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)LOGICAL UNIT NUMBER(.*?)(?=(LOGICAL UNIT NUMBER|$))</regex>
+			<sub-regex group="1">
+				<regex name="lun">(?s)([\d]+)(.*)</regex>
+				<sub-regex group="2">
+					<regex name="disk">(?s)((?:Bus\s+\d+\s+Enclosure\s+\d+\s+Disk\s+\d+\s+(Enabled|Disabled)([\r\n]|\s|$))+)</regex>
+				</sub-regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>LUNs</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) getlun -name -crus</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!--
+LOGICAL UNIT NUMBER 224
+Name                        RP_PD_Journal__0
+Bus 2 Enclosure 0  Disk 8  Enabled
+Bus 2 Enclosure 0  Disk 7  Enabled
+Bus 2 Enclosure 0  Disk 6  Enabled
+Bus 2 Enclosure 0  Disk 5  Enabled
+Bus 2 Enclosure 0  Disk 4  Enabled
+
+-->

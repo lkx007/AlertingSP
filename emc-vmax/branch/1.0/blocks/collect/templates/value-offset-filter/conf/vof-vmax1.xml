@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:value-offset-filter-config xmlns:xs="http://www.watch4net.com/value-offset-filter" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/value-offset-filter value-offset-filter.xsd ">
+	<xs:offset-sourceless>
+		<xs:stand-alone-offset name="Capacity">
+			<xs:simple-operation>
+				<xs:operator>/</xs:operator>
+				<xs:value>1024</xs:value>
+			</xs:simple-operation>
+		</xs:stand-alone-offset>
+		<xs:stand-alone-offset name="FreeCapacity">
+			<xs:simple-operation>
+				<xs:operator>/</xs:operator>
+				<xs:value>1024</xs:value>
+			</xs:simple-operation>
+		</xs:stand-alone-offset>
+		<xs:stand-alone-offset name="SubscribedCapacity">
+			<xs:simple-operation>
+				<xs:operator>/</xs:operator>
+				<xs:value>1024</xs:value>
+			</xs:simple-operation>
+		</xs:stand-alone-offset>
+		<xs:stand-alone-offset name="UserCapacity">
+			<xs:simple-operation>
+				<xs:operator>/</xs:operator>
+				<xs:value>1024</xs:value>
+			</xs:simple-operation>
+		</xs:stand-alone-offset>
+		<xs:stand-alone-offset name="ConsumedCapacity">
+			<xs:simple-operation>
+				<xs:operator>/</xs:operator>
+				<xs:value>1024</xs:value>
+			</xs:simple-operation>
+		</xs:stand-alone-offset>
+		<xs:stand-alone-offset name="UsedCapacity">
+			<xs:simple-operation>
+				<xs:operator>/</xs:operator>
+				<xs:value>1024</xs:value>
+			</xs:simple-operation>
+		</xs:stand-alone-offset>
+	</xs:offset-sourceless>
+</xs:value-offset-filter-config>

@@ -1,0 +1,32 @@
+[+storage.timeseries.socketconnector]
+host = hostname
+port = port
+
+[+alert.timeseries.socketconnector]
+host = hostname
+port = port
+
+[centera]
+host = hostname
+friendlyname = string
+username = username
+password = password
+
+[emccentera]
+centera +
+centeracli.path = string ?
+use_advancedsettings = boolean
+if use_advancedsettings
+  topo.pollingperiod = integer[900,]
+fi
+
+[main]
+# use_failover is defined in storage to avoid redefining timeseries which would fail
+storage.failover = boolean
+storage.timeseries.socketconnector
+# explicit condition since we can’t use ? which would redefine timeseries and fail
+use_alert = boolean
+if use_alert
+  alert.timeseries.socketconnector
+fi
+emccentera

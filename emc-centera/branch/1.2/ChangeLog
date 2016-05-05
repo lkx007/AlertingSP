@@ -1,0 +1,16 @@
+EMC Centera
+===========
+
+Version 1.2 (collect 1.2, reports 1.1)
+ * collect: Support for Centera viewer 4.3 (CQ607418), avoiding a java heap problem
+
+Version 1.1 (collect 1.1, reports 1.1)
+ * reports: Renamed Nodes Capacity report, to Total Clusters Capacity
+ * collect: Fix for #500. Specifying a custom centera viewer jar makes installation fail.
+ * reports: Minor report ajustments.  Use of auto scaling in centera summary, in top pool utilization. In Centera Summary, renamed column from RegenerationBuffer to Regeneration Buffer.
+ * reports: Fix for CQ644053. Centera Summary ->Profiles ->Profile/Home pool summary  does not displays all the profiles
+ * reports: Fix for CQ644052. Under All>>EMC Centera>>Centera Summary>>SerialNumbers>>Pools>>Top 10 Pool File Count>>Centera Overview with Pools, sub report is now removed
+
+Version 1.0 (collect 1.0, reports 1.0)
+ * collect: Fix for CQ00643743 & TRAC #497. Used Capacity column under node capacity summary section shows wrong result
+ * Initial release

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>Clone_</name>
+			<leaf>
+				<name>Clone_NAME</name>
+				<group>info-1</group>
+			</leaf>
+			<leaf>
+				<name>Clone_Uid</name>
+				<group>info-2</group>
+			</leaf>
+			<leaf>
+				<name>SourceLUNSize</name>
+				<group>info-3</group>
+			</leaf>
+			<leaf>
+				<name>Primary_LUN</name>
+				<group>info-4</group>
+			</leaf>
+	 		<node>
+				<name>CloneLun_</name>
+				<leaf>
+					<name>CloneLUN_Name</name>
+					<group>lun-1</group>
+				</leaf>	
+			</node>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Name(.*?)(?=(Name|$))</regex>
+			<sub-regex group="0">
+                            <regex name="info">(?s):\s+(\p{Print}+)\r*\nCloneGroupUid:\s+(.*)\r*\nInSync.*SourceLUNSize:\s*(\d+).*Sources:\s+(\d+).*</regex>
+				<sub-regex group="0">
+					<regex name="clones">(?s)SyncRate:(.*?)(?=(UseProtectedRestore:|$))</regex>
+                                   <sub-regex group="0">
+						<regex name="lun">CloneLUNs:\s+(\d+).*</regex>
+					</sub-regex>
+				</sub-regex>
+                     </sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+	    <data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Storage Processors</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) snapview -listclonegroup</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!-- NaviCLI command output:
+Name:  EMC RM Clonegroup 211
+CloneGroupUid:  50:06:01:60:C7:20:2B:D9:16:00:00:00:00:00:00:00
+InSync:  Yes
+Description:  EMC RM Created Clonegroup
+QuiesceThreshold:  60
+SourceMediaFailure:  No
+IsControllingSP:  Yes
+SourceLUNSize:  6291456
+CloneCount:  1
+Sources:  211
+Clones:
+CloneID:  0100000000000000
+CloneState:  Consistent
+CloneCondition:  Administratively Fractured
+AvailableForIO:  Yes
+CloneMediaFailure:  No
+IsDirty:  Yes
+PercentSynced:  N/A
+RecoveryPolicy:  Auto
+SyncRate:  Medium
+CloneLUNs:  210
+UseProtectedRestore:  Yes
+IsFractured:  Yes
+-->
+<!-- parsing-tester output:
+                Clone_NAME: EMC RM Clonegroup 211
+		  Clone_GroupUid: 50:06:01:60:C7:20:2B:D9:16:00:00:00:00:00:00:00
+                Primary_LUN: 211
+                CloneLun_15
+                        LUN_Name: 210
+
+-->

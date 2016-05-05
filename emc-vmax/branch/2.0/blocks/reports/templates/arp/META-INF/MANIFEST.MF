@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Built-By: Watch4Net
+Description: Watch4net Solutions ReportPack for EMC VMAX (formerly Sym
+ metrix)
+Report-Pack: EMC VMAX
+Created-By: Watch4Net
+Version: 2.0
+
+Name: EMC VMAX
+Hooks: #W4N_SP
+Description: Watch4net Solutions ReportPack for EMC VMAX (formerly Sym
+ metrix)
+Version: 2.0
+

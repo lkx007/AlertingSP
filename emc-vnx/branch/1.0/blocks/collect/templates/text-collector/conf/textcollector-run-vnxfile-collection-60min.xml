@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  xmlns="http://www.watch4net.com/TextOutputCollector"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:schemaLocation="http://www.watch4net.com/TextOutputCollector textoutputcollector.xsd ">
+	<simultaneous-collecting>1</simultaneous-collecting>
+	<polling-interval>3600</polling-interval>
+	<collecting-group>group</collecting-group>
+	<source>source</source>
+	<collecting-configuration name="VNXFile data producter 60 min" timeout="120">
+		<parsing-configuration-file>conf/textparsing-run-vnxfile-collection-60min.xml</parsing-configuration-file>
+		<raw-value-group-list delete-after-group="true" master-node="^$">
+			<value-list leaf="^$" name="useless" unit="unit"/>
+		</raw-value-group-list>
+	</collecting-configuration>
+</configuration>

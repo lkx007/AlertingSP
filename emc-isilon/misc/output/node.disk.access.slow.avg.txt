@@ -1,0 +1,72 @@
+https://10.247.96.201:8080/platform/1/statistics/keys/node.disk.access.slow.avg
+
+
+{
+"keys" : 
+[
+
+{
+"aggregation_type" : "avg",
+"base_name" : "node.disk.perfs",
+"default_cache_time" : 0,
+"description" : "Average slow accesses per second for all disks",
+"key" : "node.disk.access.slow.avg",
+"policies" : 
+[
+
+{
+"interval" : 5,
+"persistent" : false,
+"retention" : 4200
+},
+
+{
+"interval" : 120,
+"persistent" : true,
+"retention" : 1209600
+}
+],
+"policy_cache_time" : 7,
+"real_name" : null,
+"scope" : "node",
+"type" : "int32",
+"units" : "cents"
+}
+]
+}
+
+
+https://10.247.96.201:8080/platform/1/statistics/current?key=node.disk.access.slow.avg&devid=all
+
+{
+"stats" : 
+[
+
+{
+"devid" : 1,
+"error" : null,
+"error_code" : null,
+"key" : "node.disk.access.slow.avg",
+"time" : 1393258538,
+"value" : 0
+},
+
+{
+"devid" : 2,
+"error" : null,
+"error_code" : null,
+"key" : "node.disk.access.slow.avg",
+"time" : 1393258536,
+"value" : 0
+},
+
+{
+"devid" : 3,
+"error" : null,
+"error_code" : null,
+"key" : "node.disk.access.slow.avg",
+"time" : 1393258536,
+"value" : 0
+}
+]
+}

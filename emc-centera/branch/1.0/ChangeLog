@@ -1,0 +1,6 @@
+EMC Centera
+===========
+
+Version 1.0 (collect 1.0, reports 1.0)
+ * collect: Fix for CQ00643743 & TRAC #497. Used Capacity column under node capacity summary section shows wrong result
+ * Initial release

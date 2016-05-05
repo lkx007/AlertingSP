@@ -1,0 +1,4 @@
+#collect
+emcatmos.pollingperiod.default=3600
+emcatmos.smi.sysadmin.username.default=SysAdmin
+emcatmos.smi.tennant.username.default=TenantAdmin

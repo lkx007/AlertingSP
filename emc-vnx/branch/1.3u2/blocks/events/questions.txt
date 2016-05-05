@@ -1,0 +1,14 @@
+[event.database]
+type = string(mysql)
+host = hostname
+port = port
+schema = database
+username = username
+password = password
+
+[events]
+port = port
+
+[main]
+event.database
+events

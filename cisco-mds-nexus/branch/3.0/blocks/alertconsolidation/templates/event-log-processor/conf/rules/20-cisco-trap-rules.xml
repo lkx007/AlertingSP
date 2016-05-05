@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rules xmlns="http://www.watch4net.com/Events/EventLogProcessor" on-failure="continue">
+
+    <!-- File Parsing will be skipped if this rule does not match: -->
+    <regex field="source" pattern="Cisco">
+    </regex>
+    <!-- adding default mapping -->
+    <copy field="sourceIP" to="device" />
+    <!-- Alert message and part for SubCategory : linkDown -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="linkDown" type="STRING"/>
+        <format name="Port status change information" pattern="Port {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Port status down" pattern="{0} changed state to {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message  and part for SubCategory : linkUp -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="linkUp" type="STRING"/>
+        <format name="Port status change information" pattern="Port {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Port status up" pattern="{0} changed state to {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+	<!--Alert message and part for subcategory : casServerStateChange -->
+	<rules on-failure="continue">
+		<equals name="Match" field="sourcedomainname" value="casServerStateChange" type="STRING" />
+		<format name="AAA server status change" pattern="AAA server status change: State {0}, previous state duration {1}, total dead time {2}"
+			to="fullmsg" type="message">
+			<field name="fullmsg" type="STRING" />
+			<field name="casPreviousStateDuration" type="STRING" />
+			<field name="casTotalDeadTime" type="STRING" />
+		</format>
+	</rules>
+	<!--Alert message and part for subcategory : ciscoRFSwactNotif -->
+	<rules on-failure="continue">
+		<equals name="Match" field="sourcedomainname" value="ciscoRFSwactNotif" type="STRING" />
+		<format name="ciscoRFSwactNotif part information" pattern="cRF Status Unit Id {0}"
+			to="part" type="message">
+			<field name="part" type="STRING" />
+		</format>
+		<format name="ciscoRFSwactNotif message" pattern="A SWACT notification is sent by {0}, reason code {1}"
+			to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="cRFStatusLastSwactReasonCode" type="STRING" />
+		</format>
+	</rules>
+	<!--Alert message for subcategory : ciscoRFProgressionNotif -->
+	<rules on-failure="continue">
+		<equals name="Match" field="sourcedomainname" value="ciscoRFProgressionNotif" type="STRING" />
+		<format name="ciscoRFProgressionNotif part information" pattern="cRF Status Unit Id {0}"
+			to="part" type="message">
+			<field name="part" type="STRING" />
+		</format>
+		<format name="ciscoRFProgressionNotif message" pattern="A progression notification is sent by {0} with state {2}, peer unit id {1}, peer unit state {3}"
+			to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="cRFStatusPeerUnitId" type="STRING" />
+			<field name="fullmsg" type="STRING" />
+			<field name="cRFStatusPeerUnitState" type="STRING" />
+		</format>
+	</rules>
+	<!--Alert message for subcategory : ciscoRFIssuStateNotif -->
+	<rules on-failure="continue">
+		<equals name="Match" field="sourcedomainname" value="ciscoRFIssuStateNotif" type="STRING" />
+		<format name="ciscoRFIssuStateNotif part information" pattern="cRF Status Unit Id {0}"
+			to="part" type="message">
+			<field name="part" type="STRING" />
+		</format>
+		<format name="ciscoRFIssuStateNotif message" pattern="An ISSU notification is sent by {0} with state {1}, ISSU state {2}"
+			to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+			<field name="fullmsg" type="STRING" />
+			<field name="cRFStatusIssuState" type="STRING" />
+		</format>
+	</rules>
+	<!--Alert message for subcategory : fcsReqRejNotify -->
+	<rules on-failure="continue">
+		<equals name="Match" field="sourcedomainname" value="fcsReqRejNotify" type="STRING" />
+		<format name="fcsReqRejNotify message" pattern="Fabric Configuration Server request rejection: Reason: code {0}, explanation: {1}"
+			to="fullmsg" type="message">
+			<field name="fcsRejReasonCode" type="STRING" />
+			<field name="fcsRejReasonCodeExplanation" type="STRING" />
+		</format>
+	</rules>
+	<!--Alert message and part for subcategory : fcsDiscoveryCompleteNotify -->
+	<rules on-failure="continue">
+		<equals name="Match" field="sourcedomainname" value="fcsDiscoveryCompleteNotify" type="STRING" />
+		<format name="fcsDiscoveryCompleteNotify part information" pattern="FCS VSAN Discovery Name {0}"
+			to="part" type="message">
+			<field name="part" type="STRING" />
+		</format>
+		<format name="fcsDiscoveryCompleteNotify message" pattern="Fabric Configuration Server Discovery complete notification: {0}"
+			to="fullmsg" type="message">
+			<field name="part" type="STRING" />
+		</format>
+	</rules>
+	<!--Alert message, part and other details for subcategory : cHcRisingAlarm -->
+	<rules on-failure="continue">
+		<equals name="Match" field="sourcedomainname" value="cHcRisingAlarm" type="STRING" />
+		<format name="cHcRisingAlarm part information" pattern="cHc Alarm Rising Event Index {0}"
+			to="part" type="message">
+			<field name="part" type="STRING" />
+		</format>
+		<format name="cHcRisingAlarm message" pattern="High Capacity alarm for alarm variable {2} having its value status as {1} crossed its rising threshold {0}"
+			to="fullmsg" type="message">
+				<field name="cHcAlarmRisingThresholdValStatus" type="STRING" />
+				<field name="cHcAlarmValueStatus" type="STRING" />
+				<field name="cHcAlarmVariable" type="STRING" />
+		</format>
+	</rules>
+	<!--Alert message, part and other details for subcategory : cHcFallingAlarm -->
+	<rules on-failure="continue">
+		<equals name="Match" field="sourcedomainname" value="cHcFallingAlarm" type="STRING" />
+		<format name="cHcFallingAlarm part information" pattern="cHc Alarm Falling Event Index {0}"
+			to="part" type="message">
+			<field name="part" type="STRING" />
+		</format>
+		<format name="cHcFallingAlarm message" pattern="High Capacity alarm with alarm variable {2} having its value status as {1} crossed its falling threshold {0}"
+			to="fullmsg" type="message">
+				<field name="cHcAlarmFallingThrsholdValStatus" type="STRING" />
+				<field name="cHcAlarmValueStatus" type="STRING" />
+				<field name="cHcAlarmVariable" type="STRING" />
+		</format>
+	</rules>
+    <!-- Alert message and part for SubCategory : VsanPortMembershipChange -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="VsanPortMembershipChange" type="STRING"/>
+        <format name="VSAN membership change information" pattern="Port {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Port status change message" pattern="{0} membership change for switch with WWN {2} in VSAN {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+		    <field name="notifyVsanIndex" type="STRING"/>
+			<field name="vsanFcFeElementName" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message  and part for SubCategory : vsanStatusChange -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="vsanStatusChange" type="STRING"/>
+        <format name="VSAN status information" pattern="VSAN {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Port status change message" pattern="{0} status changed to Operational state {1} and Admin state {2}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="vsanOperState" type="STRING"/>
+            <field name="vsanAdminState" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : dmNewPrincipalSwitchNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="dmNewPrincipalSwitchNotify" type="STRING"/>
+        <format name="VSAN information" pattern="VSAN {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Port status change message" pattern="{1} is new principal switch for {0}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="cffFcFeElementName" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : dmDomainIdNotAssignedNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="dmDomainIdNotAssignedNotify" type="STRING"/>
+        <format name="VSAN information" pattern="VSAN {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Port status change message" pattern="Domain ID not assigned to {0} - switch {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="cffFcFeElementName" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : dmFabricChangeNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="dmFabricChangeNotify" type="STRING"/>
+        <format name="VSAN information" pattern="VSAN {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Port status change message" pattern="Build Fabric (BF) or ReConfigure Fabric(RCF) invoked on {0}." to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <set to="eventtext" type="STRING" value="A new link causes two disjoint fabrics in a VSAN to merge into one fabric or An upsteam principal ISL which connects to Principal switch and other switches in a VSAN fails or a switch asks for a different set of Domain IDs than the currently assigned list" />
+    </rules>
+    <!-- Alert message and part for SubCategory : ciscoCFSMergeFailNotif -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="ciscoCFSMergeFailNotif" type="STRING"/>
+        <format name="cfs merger failure notif" pattern="CFS feature {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="CFS merge failure message" pattern="Merge failure occured in Fabric for {0}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : ciscoCFSFeatureActionNotif -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="ciscoCFSFeatureActionNotif" type="STRING"/>
+        <format name="cfs merger failure notif" pattern="CFS feature {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="CFS state change message" pattern="CFS state change. Last action result - {0}" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : Entity module status change -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="Entity module status change" type="STRING"/>
+        <format name="Entity module status change" pattern="Entity module operation status change {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="CFS state change message" pattern="Entity module operation status change: Status {0}, Status change time {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : FRU entity power status change -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="FRU entity power status change" type="STRING"/>
+        <format name="Entity power status change message" pattern="FRU entity power status change to {0}" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : cefcFRUInserted -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cefcFRUInserted" type="STRING"/>
+	    <format name="Entity module status change" pattern="FRU Container {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Entity insert message" pattern="FRU inserted in {0}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message for SubCategory : cefcFRURemoved -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cefcFRURemoved" type="STRING"/>
+        <format name="Entity module status change" pattern="FRU Container {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Entity removed message" pattern="FRU removed from {0}" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : cefcUnrecognizedFRU -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cefcUnrecognizedFRU" type="STRING"/>
+        <format name="Entity unrecognized message" pattern="FRU was inserted whose product ID is not supported. FRU belongs to {0}, Vendor is {1}, Model {2} and Name is {3} for {4}" to="fullmsg" type="message">
+            <field name="entPhysicalClass" type="STRING"/>
+            <field name="entPhysicalVendorType" type="STRING"/>
+            <field name="entPhysicalModelName" type="STRING"/>
+            <field name="entPhysicalName" type="STRING"/>
+            <field name="cefcPhysicalStatus" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message for SubCategory : cefcFanTrayStatusChange -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cefcFanTrayStatusChange" type="STRING"/>
+        <format name="Fan tray status change message" pattern="Fan tray status changed to {0}" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message for SubCategory : cefcPowerSupplyOutputChange -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cefcPowerSupplyOutputChange" type="STRING"/>
+        <format name="Fan tray status change message" pattern="Power supplies output capacity changed to {0} for {1}" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+            <field name="part" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : Cisco extended link down -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="Cisco extended link down" type="STRING"/>
+        <format name="ce link down" pattern=" Interface {0} " to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Fan tray status change message" pattern="Cisco extended {0}: Name {2} type {3}, entered {1} state" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+            <field name="ifName" type="STRING"/>
+            <field name="ifType" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : Cisco extended link up -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="Cisco extended link up" type="STRING"/>
+        <format name="ce link down" pattern=" Interface {0} " to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="Fan tray status change message" pattern="Cisco extended {0}: Name {3} type {2}, entered {1} state" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+            <field name="ifType" type="STRING"/>
+            <field name="ifName" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : cieDelayedLinkUpDownNotif -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cieDelayedLinkUpDownNotif" type="STRING"/>
+        <format name="ce link down notify" pattern="Interface {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="ce link down notify message" pattern="{0} of type {2} has changed status to {1}." to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+            <field name="ifType" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message for SubCategory : clmLicenseExpiryNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="clmLicenseExpiryNotify" type="STRING"/>
+        <format name="License expired notification" pattern="License expired on date {0}" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message for SubCategory : clmNoLicenseForFeatureNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="clmNoLicenseForFeatureNotify" type="STRING"/>
+        <format name="No license for feature notification" pattern="No license for feature. License grace period {0}" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message for SubCategory : clmLicenseFileMissingNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="clmLicenseFileMissingNotify" type="STRING"/>
+        <format name="Missing license file notification" pattern="There are {0} license(s) missing" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message for SubCategory : clmlicenseexpirywarningnotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="clmlicenseexpirywarningnotify" type="STRING"/>
+        <format name="License expirey warning notification" pattern="License is expiring on {0}" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : zoneServiceReqRejNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="zoneServiceReqRejNotify" type="STRING"/>
+        <format name="ce link down" pattern=" Zone Member ID {0} " to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="zoneServiceReqRejNotify" pattern="Zone Server Registeration Request rejected for {0}, reason code {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : zoneMergeSuccessNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="zoneMergeSuccessNotify" type="STRING"/>
+        <format name="ce link down" pattern="VSAN {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="zoneMergeSuccessNotify" pattern="Zone merge success in {0} with interface ID {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : zoneMergeFailureNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="zoneMergeFailureNotify" type="STRING"/>
+        <format name="ce link down" pattern="VSAN {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="zoneMergeFailureNotify" pattern="Zone merge failure for object {2}, interface index {3} in {0}, failure reason: {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+            <field name="zoneMergeFailureObject" type="STRING"/> 
+            <field name="ifIndex" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message  and part for SubCategory : zoneDefZoneBehaviourChngNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="zoneDefZoneBehaviourChngNotify" type="STRING"/>
+        <format name="zoneDefZoneBehaviourChngNotify" pattern="Zone Default Behaviour changed to {0}" to="fullmsg" type="message">
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : zoneUnsuppMemInIntOpModeNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="zoneUnsuppMemInIntOpModeNotify" type="STRING"/>
+        <format name="zoneUnsuppMemInIntOpModeNotify part" pattern="VSAN {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="zoneUnsuppMemInIntOpModeNotify message" pattern="{0} is not interoperable in the mode in which the local switch is currently configured to function." to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : virtualNwIfCreateEntryNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="virtualNwIfCreateEntryNotify" type="STRING"/>
+        <format name="ce link down" pattern="Virtual Network Interface {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="virtualNwIfCreateEntryNotify" pattern="{0} index {1} created" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="virtualNwIfIndex" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : virtualNwIfDeleteEntryNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="virtualNwIfDeleteEntryNotify" type="STRING"/>
+        <format name="ce link down" pattern=" Virtual Network Interface {0} " to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="virtualNwIfDeleteEntryNotify" pattern="{0} deleted" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : risingAlarm -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="risingAlarm" type="STRING"/>
+        <format name="risingAlarm" pattern="Alarm index {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="risingAlarm" pattern="Alarm entry crossed rising threshold {2} for variable {3}. Details:{0} having value {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="alarmValue" type="STRING"/>
+            <field name="alarmRisingThreshold" type="STRING"/>
+            <field name="alarmVariable" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : fallingAlarm -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="fallingAlarm" type="STRING"/>
+        <format name="fallingAlarm" pattern="Alarm index {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="fallingAlarm" pattern="Alarm entry crossed falling threshold {2} for variable {3}. Details: {0} having value {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="alarmValue" type="STRING"/>
+            <field name="alarmFallingThreshold" type="STRING"/>
+            <field name="alarmVariable" type="STRING"/>
+        </format>
+    </rules>
+	<!-- Alert message and part for ccmCLIRunningConfigChanged -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="ccmCLIRunningConfigChanged" type="STRING"/>
+        <format name="ccmCLIRunningConfigChanged" pattern="History Event terminal type {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="ccmCLIRunningConfigChanged" pattern="CLI configuration changed: {0}, running configuration last changed {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="ccmHistoryRunningLastChanged" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : ciscoExtScsiLunDiscDoneNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="ciscoExtScsiLunDiscDoneNotify" type="STRING"/>
+        <format name="ciscoExtScsiLunDiscDoneNotify" pattern="SCSI LUN discovered: SCSI LUN discovery status {0}" to="fullmsg" type="message">
+            <field name="ciscoExtScsiLunDiscStatus" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : fcTraceRouteCompletionNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="fcTraceRouteCompletionNotify" type="STRING"/>
+        <format name="fcTraceRouteCompletionNotify part" pattern="FC Trace Route Target Address {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="fcTraceRouteCompletionNotify message" pattern="FC Trace Route Test complete for {0}, trace route test status {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+	 <!-- Alert message and part for SubCategory : cefcModuleStatusChange -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cefcModuleStatusChange" type="STRING"/>
+        <format name="cefcModuleStatusChange message" pattern="the value of cefcModuleOperStatus changed to {0} at {1}" to="fullmsg" type="message">
+            <field name="cefcModuleOperStatus" type="STRING"/>
+            <field name="cefcModuleStatusLastChangeTime" type="STRING"/>
+        </format>
+    </rules>
+	<!-- Alert message and part for SubCategory : cefcPowerStatusChange -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cefcPowerStatusChange" type="STRING"/>
+        <format name="cefcPowerStatusChange message" pattern="Power status of FRU changed to operation status {0} and admin status {1}" to="fullmsg" type="message">
+            <field name="cefcFRUPowerOperStatus" type="STRING"/>
+            <field name="cefcFRUPowerAdminStatus" type="STRING"/>
+        </format>
+    </rules>
+	<!-- Alert message and part for SubCategory : cefcPowerSupplyOutputChange -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cefcPowerSupplyOutputChange" type="STRING"/>
+		 <format name="cefcPowerSupplyOutputChange part" pattern="cefc physical entity {0} " to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="cefcPowerSupplyOutputChange message" pattern="Power supply's output capacity changed,cefc power supply current output mode {0}, entity name {1}, model {2} " to="fullmsg" type="message">
+            <field name="cefcPSOutputModeCurrent" type="STRING"/>
+			<field name="part" type="STRING"/>
+			<field name="entPhysicalModelName" type="STRING"/>
+        </format>
+    </rules>
+	<!-- Alert message and part for SubCategory : cVrrpNotificationNewMaster -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cVrrpNotificationNewMaster" type="STRING"/>
+        <format name="cVrrpNotificationNewMaster part" pattern="{0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="cVrrpNotificationNewMaster message" pattern="The sending agent has transitioned to 'Master' state. Reason - {1}" to="fullmsg" type="message">
+            <field name="cVrrpNotificationNewMasterReason" type="STRING"/>
+        </format>
+    </rules>
+
+    <!-- Alert message and part for SubCategory : cfdmiRejectRegNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cfdmiRejectRegNotify" type="STRING"/>
+        <format name="cfdmiRejectRegNotify" pattern="VSAN {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="cfdmiRejectRegNotify" pattern="FDMI registeration failed in {3} for HBA port ID {0} with rejection code {2}:{1}" to="fullmsg" type="message">
+            <field name="cfdmiNotifyHBAPortId" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+            <field name="cfdmiRejectReasonCode" type="STRING"/>
+            <field name="part" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : cseFailSwCoreNotifyExtended -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="cseFailSwCoreNotifyExtended" type="STRING"/>
+        <format name="cseFailSwCoreNotifyExtended" pattern="Crashed software filename {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="cseFailSwCoreNotifyExtended" pattern="Software crash on system {1}, sw filename {3}, sw core path {0}, sw core PID {2}" to="fullmsg" type="message">
+            <field name="cseSwCorePath" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+            <field name="cseSwCoresPID" type="STRING"/>
+            <field name="part" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : ciscoFeatureOpStatusChange -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="ciscoFeatureOpStatusChange" type="STRING"/>
+        <format name="ciscoFeatureOpStatusChangeMessage" pattern="Feature Control operational status changed to {0}" to="fullmsg" type="message">
+            <field name="cfcFeatureCtrlOpStatus" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : ciscoFeatOpStatusChange -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="ciscoFeatOpStatusChange" type="STRING"/>
+        <format name="ciscoFeatOpStatusChangeMessage" pattern="Feature Control operational status changed to {0}" to="fullmsg" type="message">
+            <field name="cfcFeatureCtrlOpStatus2" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : rscnIlsRxRejectReqNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="rscnIlsRxRejectReqNotify" type="STRING"/>
+        <format name="rscnIlsRxRejectReqNotifyPart" pattern="RSCN notify FC ID {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="rscnIlsRxRejectReqNotifyMessage" pattern="RSCN ILS Rxrequest rejected for {0}. Reason - {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : rscnElsRejectReqNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="rscnElsRejectReqNotify" type="STRING"/>
+        <format name="rscnElsRejectReqNotify" pattern="RSCN notify FC ID {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="rscnElsRejectReqNotify" pattern="RSCN ELS request rejected for {0}. Reason - {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="rscnElsRejReasonCode" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : rscnIlsRejectReqNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="rscnIlsRejectReqNotify" type="STRING"/>
+        <format name="rscnIlsRejectReqNotify" pattern="RSCN notify FC ID {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="rscnIlsRejectReqNotify" pattern="RSCN Ils request rejected for {0}. Reason - {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="rscnIlsRejReasonCode" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : rscnElsRxRejectReqNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="rscnElsRxRejectReqNotify" type="STRING"/>
+        <format name="rscnElsRxRejectReqNotify" pattern="RSCN notify FC ID {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="rscnElsRxRejectReqNotify" pattern="RSCN Els Rxrequest rejected for {0}. Reason - {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="rscnElsRejReasonCode" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : fcNameServerRejectRegNotify -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="fcNameServerRejectRegNotify" type="STRING"/>
+        <format name="fcNameServerRejectRegNotify" pattern="Port {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="fcNameServerRejectRegNotify" pattern="FC name server registeration rejected for {0}. Reason - {1}:{2}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="fcNameServerRejectReasonCode" type="STRING"/>
+            <field name="fullmsg" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : fcNameServerDatabaseFull -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="fcNameServerDatabaseFull" type="STRING"/>
+        <format name="fcNameServerDatabaseFull" pattern="VSAN {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="fcNameServerDatabaseFull" pattern="FC Name server database full for {0}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : fcNameServerEntryAdd -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="fcNameServerEntryAdd" type="STRING"/>
+        <format name="fcNameServerEntryAdd" pattern="Port {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="fcNameServerEntryAdd" pattern="FC name server entry added for {0}, port type {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="parttype" type="STRING"/>
+        </format>
+    </rules>
+    <!-- Alert message and part for SubCategory : fcNameServerEntryDelete -->
+    <rules on-failure="continue">
+        <equals name="Match" field="sourcedomainname" value="fcNameServerEntryDelete" type="STRING"/>
+        <format name="fcNameServerEntryDelete" pattern="Port {0}" to="part" type="message">
+            <field name="part" type="STRING"/>
+        </format>
+        <format name="fcNameServerEntryDelete" pattern="FC name server entry deleted for {0}, port type {1}" to="fullmsg" type="message">
+            <field name="part" type="STRING"/>
+            <field name="parttype" type="STRING"/>
+        </format>
+    </rules>
+    <!-- event name key -->
+    <rules on-failure="continue">
+        <format name="Unique key attributes" pattern="{0}_{1}_{2}" to="name" type="message">
+            <field name="sourceip" type="STRING"/>
+            <field name="sourceeventtype" type="STRING"/>
+            <field name="sourcedomainname" type="STRING"/>
+        </format>
+    </rules>
+    <rules on-failure="continue">
+        <exists name="null part check" field="part" allow-null="false" />
+        <not-equals name="Check for part field" field="part" value="" type="STRING" />
+        <format name="null name construction" pattern="{0}_{1}" to="name" type="message">
+            <field name="name" type="STRING" />
+            <field name="part" type="STRING" />
+        </format>
+    </rules>
+    <!-- Unique Finalizer - Allow fixup things sending to Writer -->
+    <include name="Call Finalizer Rule" includes="99-Finalizer.xml"/>
+</rules>

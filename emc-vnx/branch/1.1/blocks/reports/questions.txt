@@ -1,0 +1,14 @@
+[+gateway]
+host = hostname
+port = port
+username = string
+password = password
+
+[admin.webservice]
+gateway
+category = string
+module = string
+instance = string
+
+[main]
+admin.webservice

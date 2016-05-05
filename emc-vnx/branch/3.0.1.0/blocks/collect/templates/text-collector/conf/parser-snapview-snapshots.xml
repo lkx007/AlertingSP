@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+* Copyright (c) 2014 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>SNAPSHOT_</name>
+			<leaf>
+				<name>Name</name>
+				<group>block-1</group>
+			</leaf>
+			<leaf>
+				<name>UID</name>
+				<group>block-2</group>
+			</leaf>
+			<leaf>
+				<name>Target LUN</name>
+				<group>block-3</group>
+			</leaf>
+			<leaf>
+				<name>State</name>
+				<group>block-4</group>
+			</leaf>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)SnapView logical unit name:(.*?)(?=(SnapView logical unit name:|$))</regex>
+			<sub-regex group="1">
+				<regex name="block">(?s)(.+)\r*SnapView logical unit ID:\s+(.*)Target Logical Unit:\s+(.*)\r*\nState:\s+(\w+)\r*\n</regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Snapshots</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) snapview -listsnapshots</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+
+<!-- 
+SnapView logical unit name:  196_2_Snapshot
+SnapView logical unit ID:  60:06:01:60:54:C1:2D:00:3E:67:A7:FE:7A:8C:E2:11
+Target Logical Unit:  196
+State:  Inactive
+
+SnapView logical unit name:  lrmk137-0474-2083
+SnapView logical unit ID:  60:06:01:60:54:C1:2D:00:28:31:B0:B8:FB:7C:E3:11
+Target Logical Unit:  474
+State:  Active
+Session Name:  lrmk137-0474-2083
+
+SnapView logical unit name:  ProviderTena-GoodSnapJunk-54bc5b49-d725-4ca8-8cb5-b07d6d172e24
+SnapView logical unit ID:  60:06:01:60:75:C1:2D:00:24:8A:3F:8F:3D:B6:E2:11
+Target Logical Unit:  937
+State:  Active
+Session Name:  Mon_May_06_07:16:38_201300937 -->
+

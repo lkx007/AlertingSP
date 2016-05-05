@@ -1,0 +1,4 @@
+#collect
+username.default=admin
+## not sure what the default password is...   password.default=centera
+topo.pollingperiod.default=900

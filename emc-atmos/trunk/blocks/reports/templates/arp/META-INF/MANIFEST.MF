@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Built-By: [Watch4Net, Watch4net]
+Description: This SolutionPack contains reports that were specifically
+  designed for EMC Atmos
+Report-Pack: EMC Atmos
+Created-By: [Watch4Net, Watch4net]
+Version: 1.0.0.0
+
+Name: EMC Atmos
+Hooks: #W4N_SP
+Description: This SolutionPack contains reports that were specifically
+  designed for EMC Atmos
+Version: 1.0.0.0
+

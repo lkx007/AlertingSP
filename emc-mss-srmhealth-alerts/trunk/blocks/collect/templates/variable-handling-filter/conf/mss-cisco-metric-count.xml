@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.watch4net.com/spatial-aggregation-handler" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.watch4net.com/spatial-aggregation-handler spatial-aggregation-handler.xsd"> 
+ 
+    <!-- Count of Switch metrics -->
+    <aggregation id="APG_Cisco-MetricCount" forward-input="true">
+        <filter>devtype=='FabricSwitch'</filter>
+	<group-by>device</group-by>
+        <compute spatial="count">
+            <output-timestamp use="max" rounding="ceiling" rounding-base="1" />
+            <output-group>group</output-group>
+            <inventory period="600" removal-timeout="1200" />
+        </compute>
+        <properties>
+            <add name="w4ncert">1.0</add>
+            <add name="datatype">Cisco FCC</add>
+            <add name="sstype">Switch</add>
+            <add name="source">W4NSNMP-MC</add>
+            <add name="datagrp">APG-SAF-MC</add>
+            <add name="name">ciscometrics</add>
+            <add name="unit">nb</add>
+        </properties>
+    </aggregation>
+	
+</config>

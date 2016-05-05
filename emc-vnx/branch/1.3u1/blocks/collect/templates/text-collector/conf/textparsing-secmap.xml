@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 	xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary conf/com/watch4net/apg/v2/collector/plugins/outputparsing/collectingconfiguration.xsd ">
+	<max-threads>1</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>SERVER_</name>
+			<leaf>
+				<name>server</name>
+				<group>main-1</group>
+			</leaf>
+			<node>
+				<name>UID_</name>
+				<leaf>
+					<name>uid</name>
+					<group>table1-1</group>
+				</leaf>
+				<leaf>
+					<name>origin</name>
+					<group>data1-1</group>
+				</leaf>
+				<leaf>
+					<name>date</name>
+					<group>data1-2</group>
+				</leaf>
+				<leaf>
+					<name>name</name>
+					<group>data1-3</group>
+				</leaf>
+				<leaf>
+					<name>sid</name>
+					<group>data1-5</group>
+				</leaf>
+			</node>
+			<node>
+				<name>GID_</name>
+				<leaf>
+					<name>gid</name>
+					<group>table2-1</group>
+				</leaf>
+				<leaf>
+					<name>origin</name>
+					<group>data2-1</group>
+				</leaf>
+				<leaf>
+					<name>date</name>
+					<group>data2-2</group>
+				</leaf>
+				<leaf>
+					<name>name</name>
+					<group>data2-3</group>
+				</leaf>
+				<leaf>
+					<name>sid</name>
+					<group>data2-5</group>
+				</leaf>
+			</node>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)([\w-]+) :(.*?)(?=([\w-]+ :|$))</regex>
+			<sub-regex group="2">
+				<regex name="uid">(?s)UID(.*)SECMAP GROUP</regex>
+				<sub-regex group="1">
+					<regex name="table1">(?s)([\d]+\s{6,})(.*?)(?=([\d]+\s{6,}|$))</regex>
+					<sub-regex group="2">
+						<regex name="data1">(\w+)\s+(.{24})\s+(([\w]+[ \\]?\w)+)(.*)</regex>
+					</sub-regex>
+				</sub-regex>
+			</sub-regex>
+			<sub-regex group="2">
+				<regex name="gid">(?s)GID(.*)$</regex>
+				<sub-regex group="1">
+					<regex name="table2">(?s)([\d]+\s{6,})(.*?)(?=([\d]+\s{6,}|$))</regex>
+					<sub-regex group="2">
+						<regex name="data2">(\w+)\s+(.{24})\s+(([\w]+[ \\]?\w)+)(.*)</regex>
+					</sub-regex>
+				</sub-regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-file.xml</include-contexts>
+	<data-config>
+		<data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.remote.cli.RemoteCLICommandExecutor</data-accessor>
+		<stop-on-first-result>false</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>VNXFile-group</group-name>
+				<host-config>
+					<connection-type>ssh</connection-type>
+					<host-list>@csprimary</host-list>
+					<parameter name="auth-method">
+						<value>password</value>
+					</parameter>
+					<parameter name="username">
+						<value>@fileusername</value>
+					</parameter>
+					<parameter name="password">
+						<value>@filepassword</value>
+					</parameter>
+					<parameter name="hardcoded-os">
+						<value>vnxfile-secmap</value>
+					</parameter>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<group-name>VNXFile-group</group-name>
+			<command-list>
+				<command type="defined">VNXFile secmap</command>
+				<argument/>
+				<result-must-be-parsed>true</result-must-be-parsed>
+			</command-list>
+		</command-configuration>
+		<parameter name="command-definition-directory">
+			<value>./conf</value>
+		</parameter>
+	</data-config>
+</configuration>

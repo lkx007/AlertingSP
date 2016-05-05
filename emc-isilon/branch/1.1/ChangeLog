@@ -1,0 +1,10 @@
+EMC Isilon
+==========
+
+Version 1.1 (reports 1.1, snmp 1.1)
+ * reports: Added 5 new reports ( License, Network, Quota and SnapShot ). Reorganized the reports. Fixed problem with CPU usage, interface usage and IOPS
+ * snmp: Fixed problems with the SNMP mask.
+ * block: Modified VHF for Isilon and added SNAP_SHOT_ACTIVE section to remove snapshots with no data from reports.
+
+Version 1.0 (reports 1.0, snmp 1.0)
+ * Initial release, from ReportPack for Isilon

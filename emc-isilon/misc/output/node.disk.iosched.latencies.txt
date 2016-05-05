@@ -1,0 +1,73 @@
+https://10.247.96.201:8080/platform/1/statistics/keys/node.disk.iosched.latencies
+
+
+{
+"keys" : 
+[
+
+{
+"aggregation_type" : "custom",
+"base_name" : "node.disk.perfs",
+"default_cache_time" : 0,
+"description" : "Iosched latencies of all disks",
+"key" : "node.disk.iosched.latencies",
+"policies" : 
+[
+
+{
+"interval" : 5,
+"persistent" : false,
+"retention" : 4200
+},
+
+{
+"interval" : 120,
+"persistent" : true,
+"retention" : 1209600
+}
+],
+"policy_cache_time" : 7,
+"real_name" : null,
+"scope" : "node",
+"type" : "disk_latencies",
+"units" : "none"
+}
+]
+}
+
+
+https://10.247.96.201:8080/platform/1/statistics/current?key=node.disk.iosched.latencies&devid=all
+
+
+{
+"stats" : 
+[
+
+{
+"devid" : 1,
+"error" : "value of type=12 is not representable",
+"error_code" : null,
+"key" : "node.disk.iosched.latencies",
+"time" : 1393261264,
+"value" : null
+},
+
+{
+"devid" : 2,
+"error" : "value of type=12 is not representable",
+"error_code" : null,
+"key" : "node.disk.iosched.latencies",
+"time" : 1393261265,
+"value" : null
+},
+
+{
+"devid" : 3,
+"error" : "value of type=12 is not representable",
+"error_code" : null,
+"key" : "node.disk.iosched.latencies",
+"time" : 1393261265,
+"value" : null
+}
+]
+}

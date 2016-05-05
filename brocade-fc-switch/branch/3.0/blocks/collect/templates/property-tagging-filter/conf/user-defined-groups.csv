@@ -1,0 +1,4 @@
+"Host",".*","All Physical Hosts|${nodegrp}"
+"Hypervisor",".*","All Hypervisors|${nodegrp}"
+"VirtualMachine",".*","All VM Guests|${nodegrp}"
+"PassiveHost",".*","All Passive Hosts|${nodegrp}"

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node xmlns="http://www.watch4net.com/APG/Web/XmlTree1" name="VMAX - Device Details" singleNodeId="15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <property xsi:type="NodeFilter" filterExpression="source=='VMAX-Collector'"/>
+  <property xsi:type="ReportPreferences" defaultMode="imx"/>
+  <property xsi:type="DisplayPreferences" displayPolicy="hideIfLeafOrEmpty"/>
+  <property xsi:type="NodePropertyNodeColumn" name="Name" nodeProperty="name"/>
+  <link singleNodeId="870d13d0" linkID="*:#W4N-EMC-VMAX-REQUESTS" order="0"/>
+  <link singleNodeId="335ffc0d" linkID="*:#W4N-EMC-VMAX-THROUGHPUT" order="1"/>
+  <link singleNodeId="51ce6942" linkID="*:#W4N-EMC-VMAX-FRONTEND-DIRECTOR-SUMMARY" order="2"/>
+  <link singleNodeId="c0a76e92" linkID="*:#W4N-EMC-VMAX-STORAGEGROUP-SUMMARY" order="3"/>
+</node>

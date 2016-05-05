@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- version:v9-613 -->
+<!--
+* Copyright (c) 2013 EMC Corporation
+* All Rights Reserved
+*
+* This software contains the intellectual property of EMC Corporation
+* or is licensed to EMC Corporation from third parties.  Use of this
+* software and the intellectual property contained therein is expressly
+* limited to the terms and conditions of the License Agreement under which
+* it is provided by or on behalf of EMC.
+-->
+<configuration xmlns="http://www.watch4net.com/OutputParsingLibrary" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.watch4net.com/OutputParsingLibrary collectingconfiguration.xsd ">
+	<max-threads>2</max-threads>
+	<parser-config>
+		<parser-class>com.watch4net.apg.v2.collector.plugins.outputparsing.parsing.generictext.RegexTextParser</parser-class>
+		<tree-type>regex-group-tree</tree-type>
+		<tree-schema>
+			<name>SG_</name>
+			<leaf>
+				<name>SG_NAME</name>
+				<group>sg-1</group>
+			</leaf>
+			<node>
+				<name>LUN_</name>
+				<leaf>
+					<name>LUN_ID</name>
+					<group>lun-1</group>
+				</leaf>
+			</node>
+			<node>
+				<name>HBA_</name>
+				<leaf>
+					<name>HBA_ID</name>
+					<group>host-1</group>
+				</leaf>
+				<leaf>
+					<name>SPName</name>
+					<group>host-2</group>
+				</leaf>
+				<leaf>
+					<name>SPPort</name>
+					<group>host-3</group>
+				</leaf>
+			</node>
+		</tree-schema>
+		<regex-group-config group="-1">
+			<regex name="main">(?s)Storage Group Name(.*?)(?=(Storage Group Name|$))</regex>
+			<sub-regex group="1">
+				<regex name="sg">(?s):\s+(\p{Print}+)\r*\nStorage Group UID(.*)</regex>
+				<sub-regex group="2">
+					<regex name="alu">(?s)HLU/ALU Pairs(.*?)(?=(Shareable|$))</regex>
+					<sub-regex group="1">
+						<regex name="lun">\s+\d+\s+(\d+)</regex>
+					</sub-regex>
+				</sub-regex>
+				<sub-regex group="2">
+					<regex name="hba">(?s)HBA/SP Pairs(.*?)(?=(HLU/ALU Pairs|$))</regex>
+					<sub-regex group="0">
+						<regex name="host">\s+(..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..)\s+SP\s+(\w+)\s+(\d+).*</regex>
+					</sub-regex>
+				</sub-regex>
+			</sub-regex>
+		</regex-group-config>
+	</parser-config>
+	<data-formatter-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.formatting.RawValueFormatter</data-formatter-config>
+	<data-handler-config>com.watch4net.apg.v2.collector.plugins.textoutputcollector.handling.DeltaRateRawValueHandler</data-handler-config>
+	<include-contexts>conf/context-block.xml</include-contexts>
+	<data-config>
+	    <data-accessor>com.watch4net.apg.v2.collector.plugins.outputparsing.executing.local.CLICommandExecutor</data-accessor>
+		<stop-on-first-result>true</stop-on-first-result>
+		<host-group-config>
+			<custom-group>
+				<group-name>Storage Processors</group-name>
+				<host-config>
+					<host-list>@spa</host-list>
+					<host-list>@spb</host-list>
+				</host-config>
+			</custom-group>
+		</host-group-config>
+		<command-configuration>
+			<command-list>
+				<command>@command -h (host) storagegroup -list</command>
+			</command-list>
+		</command-configuration>
+	</data-config>
+</configuration>
+<!-- NaviCLI command output:
+Storage Group Name:    lgloe023_linux
+Storage Group UID:     6C:4C:4A:E6:21:DB:E0:11:94:58:00:60:16:37:DD:A5
+HBA/SP Pairs:
+
+  HBA UID                                          SP Name     SPPort
+  20:01:00:E0:8B:27:C0:BE:21:01:00:E0:8B:27:C0:BE   SP A         4
+  20:01:00:E0:8B:27:C0:BE:21:01:00:E0:8B:27:C0:BE   SP B         4
+
+HLU/ALU Pairs:
+
+  HLU Number     ALU Number
+    0               31
+    1               32
+    2               33
+    3               34
+    4               395
+Shareable:             YES
+-->
+<!-- parsing-tester output:
+SG_518
+                SG_NAME: losar063
+                LUN_519
+                        LUN_ID: 239
+                LUN_520
+                        LUN_ID: 241
+                HBA_521
+                        HBA_ID: 20:00:00:00:C9:60:E4:8A:10:00:00:00:C9:60:E4:8A
+                        SPPort: 1
+                HBA_522
+                        HBA_ID: 20:00:00:00:C9:60:E4:8A:10:00:00:00:C9:60:E4:8A
+                        SPPort: 1
+
+-->

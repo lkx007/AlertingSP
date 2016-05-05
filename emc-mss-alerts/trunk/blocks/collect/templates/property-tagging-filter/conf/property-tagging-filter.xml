@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is the configuration for the property tagging filter. -->
+<property-tagging-filter-config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter 
+        property-tagging-filter-config.xsd"
+	xmlns="http://www.watch4net.com/APG/Filter/PropertyTaggingFilter">
+
+	<!-- Set refresh to check for reload every interval of time. -->
+	<!-- Unit can be "seconds", "minutes", "hours" or "days". -->
+	<refresh unit="minutes">60</refresh>
+	<files>
+
+		<!-- Use a "text-file" tag for each input file -->
+		<text-file path="conf/global-enrichment.csv" encoding="UTF-8">
+
+			<!-- The field separator for the input file -->
+			<field-separator>,</field-separator>
+			<!-- The quoting character. Double it to escape. -->
+			<field-quoting>"</field-quoting>
+
+			<!-- The default symbol for the input file. To use with key properties only. -->
+			<default-symbol>**</default-symbol>
+			<!-- The null symbol for the input file. Means property not there. To use with key properties only. -->
+			<null-symbol>@@</null-symbol>
+
+			<!-- Use to insert property value for new properties. To use with new properties only. -->
+			<property-insertion start="${" end="}" />
+
+			<!-- List of the properties that make the key -->
+			<key-properties>
+				<!-- Use a "key-property" tag for each property to make the key. -->
+				<!-- string-type can be "string", "sqlpattern", "regex" or "range" -->
+				<!-- the order of the "key-property" must match the order of the columns in the input file -->
+				<key-property delete-after-use="false" string-type="string">source</key-property>
+			</key-properties>
+			<!-- List of the properties to add to the raw values -->
+			<new-properties>
+				<!-- Use a "new-property" tag for each new property to add to the raw values. -->
+				<new-property>msthirdparty</new-property>
+				<new-property>mstag1</new-property>
+				<new-property>mstag2</new-property>
+			</new-properties>
+		</text-file>
+	</files>
+</property-tagging-filter-config>
